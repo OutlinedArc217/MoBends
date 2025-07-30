@@ -1,69 +1,55 @@
 package goblinbob.mobends.core.asset;
 
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
-import goblinbob.mobends.core.supporters.AccessoryDetails;
-import goblinbob.mobends.core.supporters.SupporterContent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraftforge.fml.common.ProgressManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraftforge.resource.ResourceManagerHelper;
+import net.minecraftforge.resource.VanillaResourceType;
+import goblinbob.mobends.standard.main.ModStatics;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-public class AssetReloadListener implements IResourceManagerReloadListener
-{
-    private static final Logger LOGGER = LogManager.getLogger();
+public class AssetReloadListener implements ResourceManagerReloadListener {
+    private static final Gson GSON = new GsonBuilder().create();
+    private final AssetsModule module;
 
-    public AssetReloadListener()
-    {
+    public AssetReloadListener(AssetsModule module) {
+        this.module = module;
+        ResourceManagerHelper.get(VanillaResourceType.CLIENT_RESOURCES)
+            .registerReloadListener(this);
     }
 
-    public void onResourceManagerReload(IResourceManager resourceManager)
-    {
-        // Refreshing assets
-        AssetsModule.INSTANCE.updateAssets();
+    @Override
+    public void onResourceManagerReload(ResourceManager resourceManager) {
+        reload(resourceManager, Runnable::run);
+    }
 
-        AssetModels.INSTANCE.clearCache();
+    public CompletableFuture<Void> reload(ResourceManager manager, Executor executor) {
+        return CompletableFuture.supplyAsync(() -> {
+            module.clearAssets();
+            
+            manager.listResources("mobends/animations", 
+                location -> location.getPath().endsWith(".json"))
+                .forEach((location, resource) -> {
+                    try (var reader = resource.openAsReader()) {
+                        AnimationData animation = GSON.fromJson(reader, AnimationData.class);
+                        module.registerAnimation(getAnimationId(location), animation);
+                    } catch (Exception e) {
+                        ModStatics.LOGGER.error("Failed to load animation: " + location, e);
+                    }
+                });
 
-        Collection<AssetDefinition> assets = AssetsModule.INSTANCE.getAssets();
+            return null;
+        }, executor);
+    }
 
-        ProgressManager.ProgressBar bar = net.minecraftforge.fml.common.ProgressManager.push("Reloading Mo' Bends Assets", assets.size(), true);
-
-        for (AssetDefinition asset : assets)
-        {
-            AssetLocation location = asset.getPath();
-
-            bar.step(location.toString());
-
-            AssetType assetType = location.getAssetType();
-
-            if (assetType == AssetType.TEXTURE)
-            {
-                AssetTexture assetTexture = new AssetTexture(location);
-
-                if (!Minecraft.getMinecraft().getTextureManager().loadTexture(location, assetTexture))
-                {
-                    LOGGER.error("Couldn't upload asset texture: {}", location.toString());
-                }
-            }
-            else if (assetType == AssetType.MODEL)
-            {
-                try
-                {
-                    AssetModels.INSTANCE.register(location);
-                }
-                catch (IOException | JsonSyntaxException e)
-                {
-                    LOGGER.error("Couldn't register asset model: {}", location.toString());
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        net.minecraftforge.fml.common.ProgressManager.pop(bar);
+    private static ResourceLocation getAnimationId(ResourceLocation fullPath) {
+        String path = fullPath.getPath();
+        String name = path.substring(path.lastIndexOf('/') + 1, path.length() - 5);
+        return new ResourceLocation(ModStatics.MODID, name);
     }
 }
