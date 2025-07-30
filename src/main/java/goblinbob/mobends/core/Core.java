@@ -2,94 +2,90 @@ package goblinbob.mobends.core;
 
 import goblinbob.mobends.core.configuration.CoreConfig;
 import goblinbob.mobends.core.module.IModule;
-import goblinbob.mobends.core.network.msg.MessageConfigRequest;
-import goblinbob.mobends.core.network.msg.MessageConfigResponse;
+import goblinbob.mobends.core.network.NetworkConfiguration;
+import goblinbob.mobends.core.network.NetworkHandler;
 import goblinbob.mobends.standard.main.ModStatics;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Logger;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-public abstract class Core<T extends CoreConfig>
-{
-    private static Core INSTANCE;
-    public static final Logger LOG = Logger.getLogger("mobends-core");
+public abstract class Core<T extends CoreConfig> {
+    private static Core<?> INSTANCE;
+    public static final Logger LOGGER = LogManager.getLogger(ModStatics.MODID);
+    private final Collection<IModule> modules = new ArrayList<>();
+    private final NetworkHandler networkHandler;
+    protected final IEventBus modEventBus;
 
-    private SimpleNetworkWrapper networkWrapper;
-    private static final int MESSAGE_CONFIG_REQUEST = 0;
-    private static final int MESSAGE_CONFIG_RESPONSE = 1;
+    protected Core() {
+        INSTANCE = this;
+        modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        networkHandler = new NetworkHandler(new ResourceLocation(ModStatics.MODID, "main"));
+        modEventBus.addListener(this::commonSetup);
+        setupConfig();
+    }
 
-    private Collection<IModule> modules = new ArrayList<>();
+    protected void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            networkHandler.initialize();
+            for (IModule module : modules) {
+                module.initialize();
+            }
+        });
+    }
 
+    protected abstract void setupConfig();
     public abstract T getConfiguration();
 
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        networkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(ModStatics.MODID);
-        networkWrapper.registerMessage(MessageConfigRequest.Handler.class, MessageConfigRequest.class, MESSAGE_CONFIG_REQUEST, Side.SERVER);
-        networkWrapper.registerMessage(MessageConfigResponse.Handler.class, MessageConfigResponse.class, MESSAGE_CONFIG_RESPONSE, Side.CLIENT);
-
-        for (IModule module : modules)
-        {
-            module.preInit(event);
-        }
-    }
-
-    public void init(FMLInitializationEvent event)
-    {
-
-    }
-
-    public void postInit(FMLPostInitializationEvent event)
-    {
-
-    }
-
-    public void registerModule(IModule module)
-    {
+    protected void registerModule(IModule module) {
         this.modules.add(module);
     }
 
-    public void refreshModules()
-    {
-        for (IModule module : modules)
-        {
+    public void refreshModules() {
+        for (IModule module : modules) {
             module.onRefresh();
         }
     }
 
-    // Static methods
-
-    public static Core getInstance()
-    {
-        return INSTANCE;
+    protected CompletableFuture<Void> loadResources(Executor executor) {
+        return CompletableFuture.allOf(
+            modules.stream()
+                .map(module -> module.loadResources(executor))
+                .toArray(CompletableFuture[]::new)
+        );
     }
 
-    public static void createAsClient()
-    {
-        if (INSTANCE == null)
-            INSTANCE = new CoreClient();
+    public NetworkHandler getNetworkHandler() {
+        return networkHandler;
     }
 
-    public static void createAsServer()
-    {
-        if (INSTANCE == null)
-            INSTANCE = new CoreServer();
+    @SuppressWarnings("unchecked")
+    public static <T extends Core<?>> T getInstance() {
+        return (T) INSTANCE;
     }
 
-    public static SimpleNetworkWrapper getNetworkWrapper()
-    {
-        return INSTANCE.networkWrapper;
+    public static void createAsClient() {
+        if (INSTANCE == null) INSTANCE = new CoreClient();
     }
 
-    public static void saveConfiguration()
-    {
-        INSTANCE.getConfiguration().save();
+    public static void createAsServer() {
+        if (INSTANCE == null) INSTANCE = new CoreServer();
+    }
+
+    public static void saveConfiguration() {
+        if (INSTANCE != null) INSTANCE.getConfiguration().save();
+    }
+
+    protected Collection<IModule> getModules() {
+        return new ArrayList<>(modules);
     }
 }
