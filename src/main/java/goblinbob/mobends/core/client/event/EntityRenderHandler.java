@@ -1,56 +1,94 @@
 package goblinbob.mobends.core.client.event;
 
-import goblinbob.mobends.core.bender.EntityBender;
+import com.mojang.blaze3d.vertex.PoseStack;
+import goblinbob.mobends.core.animation.controller.IAnimationController;
 import goblinbob.mobends.core.bender.EntityBenderRegistry;
-import goblinbob.mobends.core.data.LivingEntityData;
-import goblinbob.mobends.core.mutators.Mutator;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.entity.EntityLivingBase;
+import goblinbob.mobends.core.client.model.ModelRenderer;
+import goblinbob.mobends.core.data.EntityData;
+import goblinbob.mobends.core.math.matrix.IMat4x4d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class EntityRenderHandler
-{
-    @SubscribeEvent
-    public void beforeLivingRender(RenderLivingEvent.Pre<? extends EntityLivingBase> event)
-    {
-        final EntityLivingBase living = event.getEntity();
-        final EntityBender<EntityLivingBase> entityBender = EntityBenderRegistry.instance.getForEntity(living);
+import java.util.WeakHashMap;
 
-        if (entityBender == null)
-            return;
+@OnlyIn(Dist.CLIENT)
+public class EntityRenderHandler {
+    private static final WeakHashMap<Entity, EntityData<?>> ENTITY_DATA_CACHE = new WeakHashMap<>();
+    private static final ModelRenderer MODEL_RENDERER = new ModelRenderer();
+    
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
+        if (!IAnimationController.getGlobalAnimationsEnabled()) return;
 
-        final RenderLivingBase<?> renderer = event.getRenderer();
-        final float pt = event.getPartialRenderTick();
+        LivingEntity entity = event.getEntity();
+        var definition = EntityBenderRegistry.instance.getDefinition(entity.getType());
+        
+        if (definition.isEmpty()) return;
 
-        GlStateManager.pushMatrix();
+        PoseStack matrixStack = event.getPoseStack();
+        float partialTick = event.getPartialTick();
+        
+        var entityData = getOrCreateEntityData(entity);
+        if (entityData == null) return;
 
-        if (entityBender.isAnimated())
-        {
-            if (entityBender.applyMutation(renderer, living, pt))
-            {
-                final Mutator mutator = entityBender.getMutator(renderer);
-                final LivingEntityData<EntityLivingBase> data = mutator.getData(living);
-                entityBender.beforeRender(data, living, pt);
-            }
-        }
-        else
-        {
-            entityBender.deapplyMutation(event.getRenderer(), living);
+        entityData.updateClient(partialTick);
+        
+        matrixStack.pushPose();
+        IMat4x4d transform = entityData.getGlobalTransform();
+        if (transform != null) {
+            applyTransform(matrixStack, transform);
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
+        if (!IAnimationController.getGlobalAnimationsEnabled()) return;
+
+        LivingEntity entity = event.getEntity();
+        var definition = EntityBenderRegistry.instance.getDefinition(entity.getType());
+        
+        if (definition.isEmpty()) return;
+
+        event.getPoseStack().popPose();
+    }
+
     @SubscribeEvent
-    public void afterLivingRender(RenderLivingEvent.Post<? extends EntityLivingBase> event)
-    {
-        final EntityBender<EntityLivingBase> entityBender = EntityBenderRegistry.instance.getForEntity(event.getEntity());
+    public void onRenderTick(TickEvent.RenderTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) return;
+        
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
 
-        if (entityBender == null)
-            return;
+        MODEL_RENDERER.prepare();
+        
+        // Clean up stale entity data
+        ENTITY_DATA_CACHE.entrySet().removeIf(entry -> 
+            entry.getKey().isRemoved() || !entry.getKey().isAlive());
+    }
 
-        entityBender.afterRender(event.getEntity(), event.getPartialRenderTick());
+    private <T extends LivingEntity> EntityData<T> getOrCreateEntityData(T entity) {
+        @SuppressWarnings("unchecked")
+        EntityData<T> data = (EntityData<T>) ENTITY_DATA_CACHE.get(entity);
+        
+        if (data == null) {
+            var dataProvider = EntityBenderRegistry.instance.getDataProvider(entity.getType());
+            if (dataProvider.isPresent()) {
+                data = dataProvider.get().createData(entity);
+                ENTITY_DATA_CACHE.put(entity, data);
+            }
+        }
+        
+        return data;
+    }
 
-        GlStateManager.popMatrix();
+    private void applyTransform(PoseStack matrixStack, IMat4x4d transform) {
+        matrixStack.last().pose().multiply(transform.toMatrix4f());
     }
 }
