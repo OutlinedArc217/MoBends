@@ -1,181 +1,117 @@
 package goblinbob.mobends.core.pack;
 
-import goblinbob.mobends.core.Core;
-import goblinbob.mobends.core.configuration.CoreClientConfig;
-import goblinbob.mobends.core.flux.ObservableMap;
-import goblinbob.mobends.core.util.ErrorReporter;
+import goblinbob.mobends.core.configuration.CoreConfig;
+import goblinbob.mobends.core.data.IDataSyncable;
+import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.NetworkEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
-public class PackManager
-{
-
+@OnlyIn(Dist.CLIENT)
+public class PackManager implements IDataSyncable {
     public static final PackManager INSTANCE = new PackManager();
+    private static final Logger LOGGER = LogManager.getLogger();
+    
+    private final Map<ResourceLocation, BendsPack> loadedPacks;
+    private final Map<ResourceLocation, PackState> packStates;
+    private boolean initialized;
 
-    private File localDirectory;
-    private PackCache cache;
-    private ThumbnailProvider thumbnailProvider;
-
-    private ObservableMap<String, LocalBendsPack> localPacks = new ObservableMap<>();
-
-    private CoreClientConfig config;
-    private final List<IBendsPack> appliedPacks;
-
-    public PackManager()
-    {
-        appliedPacks = new LinkedList<>();
+    private PackManager() {
+        this.loadedPacks = new ConcurrentHashMap<>();
+        this.packStates = new ConcurrentHashMap<>();
+        this.initialized = false;
     }
 
-    public void initialize(CoreClientConfig config)
-    {
-        localDirectory = new File(Minecraft.getMinecraft().mcDataDir, "bendspacks");
-        localDirectory.mkdir();
+    public void initialize(CoreConfig config) {
+        if (initialized) return;
+        initialized = true;
 
-        cache = new PackCache(new File(localDirectory, "public_cache"));
-        thumbnailProvider = new ThumbnailProvider(cache);
-
-        this.config = config;
-        try
-        {
-            initLocalPacks();
-        }
-        catch (InvalidPackFormatException e)
-        {
-            // Some of the packs were in an invalid format.
-            e.printStackTrace();
-            ErrorReporter.showErrorToPlayer(e);
-        }
+        loadDefaultPacks();
+        applyConfig(config);
     }
 
-    public void initLocalPacks() throws InvalidPackFormatException
-    {
-        localPacks.clear();
-        appliedPacks.clear();
+    private void loadDefaultPacks() {
+        ResourceLocation defaultPackId = new ResourceLocation(ModStatics.MODID, "default");
+        BendsPack defaultPack = new BendsPack(defaultPackId);
+        loadedPacks.put(defaultPackId, defaultPack);
+        packStates.put(defaultPackId, PackState.ENABLED);
+    }
 
-        File[] files = localDirectory.listFiles();
-        if (files == null)
-        {
-            return;
-        }
-
-        for (File file : files)
-        {
-            if (file.getAbsolutePath().endsWith(".bendsmeta"))
-            {
-                try
-                {
-                    LocalBendsPack bendsPack = LocalBendsPack.readFromFile(file);
-                    localPacks.put(bendsPack.getKey(), bendsPack);
-                }
-                catch(IOException ex)
-                {
-                    Core.LOG.severe(String.format("Couldn't load local bends pack: '%s'", file.getName()));
-                }
+    public CompletableFuture<Void> reloadPacks() {
+        return CompletableFuture.runAsync(() -> {
+            loadedPacks.clear();
+            loadDefaultPacks();
+            if (Minecraft.getInstance().getResourceManager() != null) {
+                Minecraft.getInstance().reloadResourcePacks();
             }
-        }
+        });
+    }
 
-        // Re-adding the applied packs.
-        for (String key : config.appliedPackKeys)
-        {
-            IBendsPack pack = localPacks.get(key);
-            if (pack != null)
-            {
-                appliedPacks.add(pack);
+    public Optional<BendsPack> getPack(ResourceLocation location) {
+        return Optional.ofNullable(loadedPacks.get(location));
+    }
+
+    public PackState getPackState(ResourceLocation location) {
+        return packStates.getOrDefault(location, PackState.DISABLED);
+    }
+
+    public void setPackState(ResourceLocation location, PackState state) {
+        packStates.put(location, state);
+    }
+
+    public Collection<BendsPack> getLoadedPacks() {
+        return Collections.unmodifiableCollection(loadedPacks.values());
+    }
+
+    @Override
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(packStates.size());
+        packStates.forEach((location, state) -> {
+            buffer.writeResourceLocation(location);
+            buffer.writeEnum(state);
+        });
+    }
+
+    @Override
+    public void decode(FriendlyByteBuf buffer) {
+        packStates.clear();
+        int size = buffer.readVarInt();
+        for (int i = 0; i < size; i++) {
+            ResourceLocation location = buffer.readResourceLocation();
+            PackState state = buffer.readEnum(PackState.class);
+            packStates.put(location, state);
+        }
+    }
+
+    public static void handleSync(PackManager packManager, Supplier<NetworkEvent.Context> contextSupplier) {
+        NetworkEvent.Context context = contextSupplier.get();
+        context.enqueueWork(() -> {
+            if (context.getDirection().getReceptionSide().isClient()) {
+                INSTANCE.packStates.clear();
+                INSTANCE.packStates.putAll(packManager.packStates);
             }
-        }
-
-        try
-        {
-            PackDataProvider.INSTANCE.createBendsPackData(appliedPacks);
-        }
-        catch(InvalidPackFormatException ex)
-        {
-            resetAppliedPacks(true);
-            throw ex;
-        }
+        });
+        context.setPacketHandled(true);
     }
 
-    public void setAppliedPacks(Collection<String> packKeys, boolean saveToConfig) throws InvalidPackFormatException
-    {
-        List<IBendsPack> newAppliedPacks = new LinkedList<>();
-
-        for (String key : packKeys)
-        {
-            IBendsPack pack = localPacks.get(key);
-            if (pack != null)
-            {
-                newAppliedPacks.add(pack);
-            }
-        }
-
-        PackDataProvider.INSTANCE.createBendsPackData(newAppliedPacks);
-
-        this.appliedPacks.clear();
-        this.appliedPacks.addAll(newAppliedPacks);
-
-        if (saveToConfig)
-        {
-            config.setAppliedPacks(packKeys);
-        }
+    private void applyConfig(CoreConfig config) {
+        // Apply configuration settings to packs
+        loadedPacks.values().forEach(pack -> pack.applyConfig(config));
     }
 
-    public void resetAppliedPacks(boolean saveToConfig)
-    {
-        appliedPacks.clear();
-
-        if (saveToConfig)
-        {
-            config.setAppliedPacks(new String[] {});
-        }
-
-        try
-        {
-            PackDataProvider.INSTANCE.createBendsPackData(appliedPacks);
-        }
-        catch(InvalidPackFormatException ignored)
-        {
-            // Never should happen.
-        }
+    public enum PackState {
+        ENABLED,
+        DISABLED,
+        SERVER_DISABLED
     }
-
-    public Collection<IBendsPack> getAppliedPacks()
-    {
-        return appliedPacks;
-    }
-
-    public Collection<LocalBendsPack> getLocalPacks()
-    {
-        return localPacks.values();
-    }
-
-    public ResourceLocation getThumbnailLocation(String packName, String thumbnailUrl)
-    {
-        return this.thumbnailProvider.getThumbnailLocation(packName, thumbnailUrl);
-    }
-
-    public File getLocalDirectory()
-    {
-        return localDirectory;
-    }
-
-    public File getMetaFileForPack(String filename) throws IOException
-    {
-        File packFile = new File(localDirectory, filename + ".bendsmeta");
-        packFile.createNewFile();
-        return packFile;
-    }
-
-    public File getDataFileForPack(String filename) throws IOException
-    {
-        File packFile = new File(localDirectory, filename + ".bends");
-        packFile.createNewFile();
-        return packFile;
-    }
-
 }
