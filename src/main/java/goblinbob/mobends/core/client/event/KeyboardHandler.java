@@ -1,38 +1,77 @@
 package goblinbob.mobends.core.client.event;
 
-import goblinbob.mobends.core.client.gui.GuiBendsMenu;
-import goblinbob.mobends.standard.main.MoBends;
+import com.mojang.blaze3d.platform.InputConstants;
+import goblinbob.mobends.core.animation.controller.IAnimationController;
+import goblinbob.mobends.core.client.gui.GuiMainMenu;
+import goblinbob.mobends.standard.main.ModStatics;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
-public class KeyboardHandler
-{
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final String MAIN_CATEGORY = "Mo' Bends";
-    private static final KeyBinding KEY_MENU = new KeyBinding("Mo' Bends Menu", Keyboard.KEY_G, MAIN_CATEGORY);
-    private static final KeyBinding KEY_REFRESH = new KeyBinding("Refresh Animations", Keyboard.KEY_F10, MAIN_CATEGORY);
+@OnlyIn(Dist.CLIENT)
+public class KeyboardHandler {
+    private static final List<KeyMapping> KEY_MAPPINGS = new ArrayList<>();
+    
+    private static final KeyMapping TOGGLE_ANIMATIONS = registerKey("toggle_animations", 
+        GLFW.GLFW_KEY_B, "key.categories." + ModStatics.MODID);
+    
+    private static final KeyMapping OPEN_MENU = registerKey("open_menu",
+        GLFW.GLFW_KEY_RIGHT_SHIFT, "key.categories." + ModStatics.MODID);
 
-    public static void initKeyBindings()
-    {
-        ClientRegistry.registerKeyBinding(KEY_MENU);
-        ClientRegistry.registerKeyBinding(KEY_REFRESH);
+    public static void initKeyBindings() {
+        MinecraftForge.EVENT_BUS.register(KeyboardHandler.class);
+    }
+
+    private static KeyMapping registerKey(String name, int keyCode, String category) {
+        KeyMapping keyMapping = new KeyMapping(
+            "key." + ModStatics.MODID + "." + name,
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            keyCode,
+            category
+        );
+        KEY_MAPPINGS.add(keyMapping);
+        return keyMapping;
     }
 
     @SubscribeEvent
-    public void onKeyPressed(InputEvent.KeyInputEvent event)
-    {
-        if (KEY_MENU.isPressed())
-        {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiBendsMenu());
+    public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+        KEY_MAPPINGS.forEach(event::register);
+    }
+
+    @SubscribeEvent
+    public static void onKeyInput(InputEvent.Key event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen != null) return;
+
+        while (TOGGLE_ANIMATIONS.consumeClick()) {
+            boolean newState = !IAnimationController.getGlobalAnimationsEnabled();
+            IAnimationController.setGlobalAnimationsEnabled(newState);
+            
+            String key = newState ? "message.animations_enabled" : "message.animations_disabled";
+            mc.player.displayClientMessage(
+                Component.translatable(ModStatics.MODID + "." + key),
+                true
+            );
         }
-        else if (KEY_REFRESH.isPressed())
-        {
-            MoBends.refreshSystems();
+
+        while (OPEN_MENU.consumeClick()) {
+            mc.setScreen(new GuiMainMenu());
         }
     }
 
+    public static void refreshMappings() {
+        KEY_MAPPINGS.forEach(KeyMapping::resetMapping);
+    }
 }
