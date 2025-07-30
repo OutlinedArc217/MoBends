@@ -1,136 +1,54 @@
 package goblinbob.mobends.core.bender;
 
-import goblinbob.mobends.core.Core;
-import goblinbob.mobends.core.configuration.CoreClientConfig;
-import goblinbob.mobends.standard.main.ModConfig;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraftforge.registries.ForgeRegistries;
+import goblinbob.mobends.core.configuration.CoreConfig;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-import java.util.*;
-
-/**
- * This class is responsible for keeping track of all entity benders.
- */
-public class EntityBenderRegistry
-{
-
+public class EntityBenderRegistry {
     public static final EntityBenderRegistry instance = new EntityBenderRegistry();
+    
+    private final Map<EntityType<?>, EntityBenderDefinition<?>> definitions;
+    private final Map<EntityType<?>, BenderEntityData<?>> dataProviders;
 
-    private final Map<Class<? extends EntityLivingBase>, EntityBender<?>> entityClassToBenderMap = new HashMap<>();
-
-    /**
-     * Used to cache entity-to-bender relationships, so they won't be calculated every time.
-     */
-    private final Map<EntityLivingBase, EntityBender<?>> entityToBenderMap = new HashMap<>();
-
-    public void registerBender(EntityBender<?> entityBender)
-    {
-        Core.LOG.info(String.format("Registering %s", entityBender.getKey()));
-        entityClassToBenderMap.put(entityBender.entityClass, entityBender);
+    private EntityBenderRegistry() {
+        this.definitions = new HashMap<>();
+        this.dataProviders = new HashMap<>();
     }
 
-    public void applyConfiguration(CoreClientConfig config)
-    {
-        for (EntityBender<?> entityBender : entityClassToBenderMap.values())
-        {
-            entityBender.setAnimate(config.isEntityAnimated(entityBender.getKey()));
-        }
+    public <T extends Entity> void registerBender(EntityType<T> entityType, 
+                                                EntityBenderDefinition<T> definition,
+                                                BenderEntityData<T> dataProvider) {
+        definitions.put(entityType, definition);
+        dataProviders.put(entityType, dataProvider);
     }
 
-    public Collection<EntityBender<?>> getRegistered()
-    {
-        return entityClassToBenderMap.values();
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> Optional<EntityBenderDefinition<T>> getDefinition(EntityType<T> entityType) {
+        return Optional.ofNullable((EntityBenderDefinition<T>) definitions.get(entityType));
     }
 
-    public Collection<EntityBender<?>> getRegistered(Filter filter)
-    {
-        List<EntityBender<?>> benderList = new ArrayList<>(entityClassToBenderMap.values());
-
-        if (filter.query != null)
-        {
-            benderList.removeIf(bender -> !bender.getUnlocalizedName().toLowerCase().contains(filter.query.toLowerCase()));
-        }
-
-        benderList.sort(Comparator.comparing(EntityBender::getKey));
-
-        return benderList;
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> Optional<BenderEntityData<T>> getDataProvider(EntityType<T> entityType) {
+        return Optional.ofNullable((BenderEntityData<T>) dataProviders.get(entityType));
     }
 
-    public <E extends EntityLivingBase> EntityBender<E> getForEntityClass(Class<E> c)
-    {
-        // noinspection unchecked
-        return (EntityBender<E>) entityClassToBenderMap.get(c);
-    }
-
-    public <E extends EntityLivingBase> EntityBender<E> getForEntity(E entity)
-    {
-        if (entityToBenderMap.containsKey(entity))
-            // noinspection unchecked
-            return (EntityBender<E>) entityToBenderMap.get(entity);
-
-        // Checking the config blacklist
-        if (ModConfig.shouldKeepEntityAsVanilla(entity))
-        {
-            return null;
-        }
-
-        // Checking direct registration
-        Class<? extends EntityLivingBase> entityClass = entity.getClass();
-        for (EntityBender<?> entityBender : entityClassToBenderMap.values())
-        {
-            if (entityBender.entityClass.equals(entityClass))
-            {
-                entityToBenderMap.put(entity, entityBender);
-                // noinspection unchecked
-                return (EntityBender<E>) entityBender;
+    public void applyConfiguration(CoreConfig config) {
+        definitions.forEach((type, definition) -> {
+            ResourceLocation registryName = ForgeRegistries.ENTITY_TYPES.getKey(type);
+            if (registryName != null) {
+                definition.applyConfig(config);
             }
-        }
-
-        // Checking indirect inheritance
-        for (EntityBender<?> entityBender : entityClassToBenderMap.values())
-        {
-            if (entityBender.entityClass.isInstance(entity))
-            {
-                entityToBenderMap.put(entity, entityBender);
-                // noinspection unchecked
-                return (EntityBender<E>) entityBender;
-            }
-        }
-
-        return null;
+        });
     }
 
-    public <E extends EntityLivingBase> void clearCache(E entity)
-    {
-        entityToBenderMap.remove(entity);
+    public void clearRegistries() {
+        definitions.clear();
+        dataProviders.clear();
     }
-
-    /**
-     * Will clear any associations between entities and EntityBenders.
-     * This is usually called whenever the player joins a new world.
-     */
-    public void clearCache()
-    {
-        entityToBenderMap.clear();
-    }
-
-    public void refreshMutators()
-    {
-        clearCache();
-
-        for (EntityBender<?> entityBender : entityClassToBenderMap.values())
-            entityBender.refreshMutation();
-    }
-
-    public static class Filter
-    {
-        public boolean ascending = false;
-        public SortingKey sortingKey = SortingKey.NAME;
-        public String query = null;
-
-        public enum SortingKey
-        {
-            NAME,
-        }
-    }
-
 }
