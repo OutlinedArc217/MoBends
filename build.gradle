@@ -1,8 +1,16 @@
-plugins {
-    id 'net.minecraftforge.gradle' version '4.1.+'
-    id 'eclipse'
-    id 'maven-publish'
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:4.1.+'
+    }
 }
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
 version = "${mod_version}-${getDate()}"
 group = "goblinbob.mobends"
@@ -58,7 +66,6 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
-
 
 processResources {
     inputs.property "version", mod_version
