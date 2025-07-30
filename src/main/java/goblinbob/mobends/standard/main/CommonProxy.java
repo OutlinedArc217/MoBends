@@ -1,23 +1,42 @@
 package goblinbob.mobends.standard.main;
 
 import goblinbob.mobends.core.Core;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 public class CommonProxy
 {
-
-    public void preInit()
+    protected void setup(final FMLCommonSetupEvent event)
     {
-        // No behaviour.
+        // Common setup code
     }
 
-    public void init()
+    protected void loadComplete(final FMLLoadCompleteEvent event)
     {
-        // No behaviour.
+        // Load complete code
     }
 
-    public void postInit()
+    protected void enqueueIMC(final InterModProcessEvent event)
     {
-        // No behaviour.
+        // Inter-mod communication
+    }
+
+    public void initialize()
+    {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        
+        // Register the setup methods
+        modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::loadComplete);
+        modEventBus.addListener(this::enqueueIMC);
+        
+        // Create core
+        createCore();
     }
 
     public void createCore()
@@ -25,4 +44,19 @@ public class CommonProxy
         Core.createAsServer();
     }
 
+    // Optional method for compatibility with older code during transition
+    @Deprecated
+    public void preInit() {
+        // Deprecated - use setup() instead
+    }
+
+    @Deprecated
+    public void init() {
+        // Deprecated - use setup() instead
+    }
+
+    @Deprecated
+    public void postInit() {
+        // Deprecated - use loadComplete() instead
+    }
 }
