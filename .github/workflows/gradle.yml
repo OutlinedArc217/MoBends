@@ -25,7 +25,11 @@ jobs:
       uses: gradle/gradle-build-action@v2
       
     - name: Build mod
-      run: gradle build --no-daemon
+      run: |
+        gradle build --no-daemon \
+          -Porg.gradle.java.home=$JAVA_HOME \
+          -Pminecraft_version=1.20.1 \
+          -Pforge_version=47.3.0
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
