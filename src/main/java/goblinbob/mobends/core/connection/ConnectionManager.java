@@ -1,101 +1,88 @@
 package goblinbob.mobends.core.connection;
 
-import com.google.gson.JsonObject;
-import goblinbob.mobends.core.env.EnvironmentModule;
 import goblinbob.mobends.core.module.IModule;
-import goblinbob.mobends.core.util.ConnectionHelper;
-import goblinbob.mobends.core.util.ErrorReporter;
-import goblinbob.mobends.standard.main.MoBends;
+import goblinbob.mobends.core.network.NetworkConfiguration;
+import goblinbob.mobends.core.pack.PackManager;
 import goblinbob.mobends.standard.main.ModStatics;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-public class ConnectionManager
-{
-    public static ConnectionManager INSTANCE;
+public class ConnectionManager implements IModule {
+    private static final String PROTOCOL_VERSION = ModStatics.PROTOCOL_VERSION;
+    private final NetworkConfiguration networkConfig;
 
-    private boolean initialized = false;
-    private PingTask pingTask;
-    private Thread pingTaskThread;
-    private PlayerSettingsDownloader playerSettingsDownloader;
-    private Thread playerSettingsDownloaderThread;
-
-    private ConnectionManager()
-    {
-        this.setup();
+    public ConnectionManager(NetworkConfiguration networkConfig) {
+        this.networkConfig = networkConfig;
     }
 
-    public void setup()
-    {
-        if (initialized)
-        {
-            return;
-        }
-
-        String apiUrl = EnvironmentModule.getConfig().getApiUrl();
-
-        JoinResponse response = null;
-
-        try
-        {
-            JsonObject body = new JsonObject();
-            body.addProperty("app", "mobends");
-            body.addProperty("version", ModStatics.VERSION_STRING);
-
-            response = ConnectionHelper.sendPostRequest(new URL(apiUrl + "/api/activity/join"), body, JoinResponse.class);
-
-            MoBends.LOG.info("Ping interval: " + response.pingInterval);
-        }
-        catch (IOException e)
-        {
-            ErrorReporter.showErrorToPlayer("Couldn't join the API. Some features may be disabled. " +
-                    "Contact the developers if this is a prolonged issue.");
-            e.printStackTrace();
-            MoBends.LOG.log(Level.SEVERE, e.getMessage());
-            return;
-        }
-
-        pingTask = new PingTask(apiUrl, response.pingInterval);
-        pingTaskThread = new Thread(pingTask);
-        pingTaskThread.setDaemon(true);
-        pingTaskThread.start();
-
-        playerSettingsDownloader = new PlayerSettingsDownloader(apiUrl);
-        playerSettingsDownloaderThread = new Thread(playerSettingsDownloader);
-        playerSettingsDownloaderThread.setDaemon(true);
-        playerSettingsDownloaderThread.start();
-
-        initialized = true;
+    @Override
+    public void initialize() {
+        registerHandlers();
     }
 
-    public void fetchSettingsForPlayer(String playerName)
-    {
-        if (playerSettingsDownloader != null)
-        {
-            playerSettingsDownloader.fetchSettingsForPlayer(playerName);
+    private void registerHandlers() {
+        networkConfig.NETWORK.messageBuilder(HandshakeMessage.class, 0, NetworkDirection.PLAY_TO_SERVER)
+            .encoder(HandshakeMessage::encode)
+            .decoder(HandshakeMessage::decode)
+            .consumerMainThread(this::handleHandshake)
+            .add();
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            sendHandshake(player);
         }
     }
 
-    private static class JoinResponse
-    {
-        public float pingInterval;
+    private void sendHandshake(ServerPlayer player) {
+        HandshakeMessage message = new HandshakeMessage(PROTOCOL_VERSION);
+        networkConfig.NETWORK.sendTo(message, player.connection.connection, NetworkDirection.PLAY_TO_SERVER);
     }
 
-    public static class Factory implements IModule
-    {
+    private void handleHandshake(HandshakeMessage message, NetworkEvent.Context context) {
+        if (!PROTOCOL_VERSION.equals(message.protocolVersion())) {
+            String errorMessage = String.format("Protocol version mismatch! Server: %s, Client: %s", 
+                PROTOCOL_VERSION, message.protocolVersion());
+            context.enqueueWork(() -> {
+                context.getSender().disconnect(Component.literal(errorMessage));
+            });
+        }
+        context.setPacketHandled(true);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void onClientWorldJoin(ClientLevel world) {
+        PackManager.INSTANCE.reloadPacks()
+            .thenRun(() -> networkConfig.onWorldJoin());
+    }
+
+    public static class Factory implements IModule.Factory {
         @Override
-        public void preInit(FMLPreInitializationEvent event)
-        {
-            ConnectionManager.INSTANCE = new ConnectionManager();
+        public IModule create() {
+            return new ConnectionManager(NetworkConfiguration.instance);
+        }
+    }
+
+    public record HandshakeMessage(String protocolVersion) {
+        public void encode(FriendlyByteBuf buf) {
+            buf.writeUtf(protocolVersion);
         }
 
-        @Override
-        public void onRefresh()
-        {
-            ConnectionManager.INSTANCE.setup();
+        public static HandshakeMessage decode(FriendlyByteBuf buf) {
+            return new HandshakeMessage(buf.readUtf());
         }
     }
 }
