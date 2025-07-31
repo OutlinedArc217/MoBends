@@ -93,3 +93,4 @@ public class CoreClient extends Core<CoreClientConfig> {
     public static CoreClient getInstance() {
         return INSTANCE;
     }
+}
