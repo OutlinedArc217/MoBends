@@ -1,408 +1,78 @@
-name: 🔧 MoBends API Auto-Fix for MC 1.20.1
+name: Build MoBends
 
 on:
-  workflow_dispatch:  
-  push:  
+  push:
+    branches: [ "1.X/forge-1.12" ]
+  pull_request:
+    branches: [ "1.X/forge-1.12" ]
 
 jobs:
-  fix-api-compatibility:
+  build:
     runs-on: ubuntu-latest
     
-    permissions:
-      contents: write
-      pull-requests: write
-      
     steps:
-    - name: 📥 Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0
-
-    - name: ☕ Setup JDK 17
+      
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-
-    - name: 🔧 Create Comprehensive API Fixer
-      run: |
-        cat > mobends_api_fixer.py << 'EOF'
-        #!/usr/bin/env python3
-        """
-        MoBends Comprehensive API Fixer for Minecraft 1.20.1
-        Fixes all deprecated and removed API calls based on the build errors
-        """
         
-        import os
-        import re
-        import glob
-        import json
-        from pathlib import Path
-        from datetime import datetime
-        from typing import Dict, List, Set
-        
-        class MoBendsAPIFixer:
-            def __init__(self):
-                self.modified_files = []
-                self.errors = []
-                
-                # 完整的API映射规则，基于实际编译错误
-                self.fixes = {
-                    # 1. ResourceLocation 构造函数修复
-                    'resource_location_namespace': {
-                        'pattern': r'new ResourceLocation\(([^,)]+),\s*([^)]+)\)',
-                        'replacement': r'ResourceLocation.fromNamespaceAndPath(\1, \2)',
-                        'description': 'Fix ResourceLocation(namespace, path) constructor'
-                    },
-                    'resource_location_single': {
-                        'pattern': r'new ResourceLocation\(([^,)]+)\)',
-                        'replacement': r'ResourceLocation.parse(\1)',
-                        'description': 'Fix ResourceLocation(path) constructor'
-                    },
-                    
-                    # 2. 渲染系统修复
-                    'glstatemanager_to_rendersystem': {
-                        'pattern': r'GlStateManager\.',
-                        'replacement': 'RenderSystem.',
-                        'description': 'Replace GlStateManager with RenderSystem'
-                    },
-                    'bufferbuilder_to_vertexconsumer': {
-                        'pattern': r'\bBufferBuilder\b',
-                        'replacement': 'VertexConsumer',
-                        'description': 'Replace BufferBuilder with VertexConsumer'
-                    },
-                    'tessellator_getbuilder': {
-                        'pattern': r'Tessellator\.getInstance\(\)\.getBuilder\(\)',
-                        'replacement': 'vertexConsumer /* TODO: Get VertexConsumer from MultiBufferSource */',
-                        'description': 'Replace Tessellator.getInstance().getBuilder()'
-                    },
-                    
-                    # 3. 特定的渲染调用修复
-                    'gl_push_matrix': {
-                        'pattern': r'GlStateManager\.pushMatrix\(\)',
-                        'replacement': 'poseStack.pushPose()',
-                        'description': 'Replace pushMatrix with pushPose'
-                    },
-                    'gl_pop_matrix': {
-                        'pattern': r'GlStateManager\.popMatrix\(\)',
-                        'replacement': 'poseStack.popPose()',
-                        'description': 'Replace popMatrix with popPose'
-                    },
-                    'gl_translate': {
-                        'pattern': r'GlStateManager\.translate\(([^)]+)\)',
-                        'replacement': r'poseStack.translate(\1)',
-                        'description': 'Replace GlStateManager.translate'
-                    },
-                    'gl_rotate': {
-                        'pattern': r'GlStateManager\.rotate\(([^)]+)\)',
-                        'replacement': r'poseStack.mulPose(Axis.XP.rotationDegrees(\1)) /* TODO: Convert to proper quaternion rotation */',
-                        'description': 'Replace GlStateManager.rotate'
-                    },
-                    'gl_scale': {
-                        'pattern': r'GlStateManager\.scale\(([^)]+)\)',
-                        'replacement': r'poseStack.scale(\1)',
-                        'description': 'Replace GlStateManager.scale'
-                    },
-                    'gl_color': {
-                        'pattern': r'GlStateManager\.color\(([^)]+)\)',
-                        'replacement': r'RenderSystem.setShaderColor(\1)',
-                        'description': 'Replace GlStateManager.color'
-                    },
-                    'gl_enable_blend': {
-                        'pattern': r'GlStateManager\.enableBlend\(\)',
-                        'replacement': 'RenderSystem.enableBlend()',
-                        'description': 'Replace GlStateManager.enableBlend'
-                    },
-                    'gl_disable_blend': {
-                        'pattern': r'GlStateManager\.disableBlend\(\)',
-                        'replacement': 'RenderSystem.disableBlend()',
-                        'description': 'Replace GlStateManager.disableBlend'
-                    },
-                    
-                    # 4. ModLoadingContext 修复（添加兼容性注释）
-                    'mod_loading_context': {
-                        'pattern': r'ModLoadingContext\.get\(\)',
-                        'replacement': 'ModLoadingContext.get() /* TODO: Verify this is still available in your Forge version */',
-                        'description': 'Add compatibility note for ModLoadingContext.get()'
-                    },
-                    'fml_java_mod_loading_context': {
-                        'pattern': r'FMLJavaModLoadingContext\.get\(\)',
-                        'replacement': 'FMLJavaModLoadingContext.get() /* TODO: Verify this is still available */',
-                        'description': 'Add compatibility note for FMLJavaModLoadingContext.get()'
-                    }
-                }
-                
-                # 导入替换规则
-                self.import_replacements = {
-                    # 移除的导入
-                    'remove': [
-                        'import net.minecraft.client.renderer.BufferBuilder;',
-                        'import net.minecraft.client.renderer.GLAllocation;',
-                        'import net.minecraft.client.renderer.GlStateManager;',
-                        'import net.minecraft.client.model.TextureOffset;',
-                        'import net.minecraft.client.renderer.Tessellator;',
-                        'import net.minecraft.client.renderer.vertex.DefaultVertexFormats;',
-                        'import org.lwjgl.opengl.GL11;'
-                    ],
-                    # 添加的导入
-                    'add': [
-                        'import com.mojang.blaze3d.vertex.VertexConsumer;',
-                        'import com.mojang.blaze3d.vertex.PoseStack;',
-                        'import com.mojang.blaze3d.systems.RenderSystem;',
-                        'import net.minecraft.client.renderer.MultiBufferSource;',
-                        'import net.minecraft.client.renderer.RenderType;',
-                        'import org.joml.Matrix4f;',
-                        'import org.joml.Matrix3f;',
-                        'import com.mojang.math.Axis;',
-                        'import net.minecraft.client.model.geom.ModelPart;',
-                        'import net.minecraft.client.model.geom.PartPose;'
-                    ]
-                }
-        
-            def should_add_imports(self, content: str) -> bool:
-                """检查是否需要添加新的导入"""
-                indicators = [
-                    'VertexConsumer', 'PoseStack', 'RenderSystem', 'MultiBufferSource',
-                    'Matrix4f', 'Matrix3f', 'Axis', 'ModelPart', 'PartPose'
-                ]
-                return any(indicator in content for indicator in indicators)
-        
-            def fix_imports(self, content: str) -> str:
-                """修复导入语句"""
-                # 移除废弃的导入
-                for imp in self.import_replacements['remove']:
-                    if imp in content:
-                        content = content.replace(imp, f'// REMOVED DEPRECATED: {imp}')
-                        print(f"    • Removed deprecated import: {imp.split()[-1].rstrip(';')}")
-                
-                # 如果需要，添加新的导入
-                if self.should_add_imports(content):
-                    # 找到最后一个import语句的位置
-                    import_matches = list(re.finditer(r'import\s+[^;]+;', content))
-                    if import_matches:
-                        last_import_end = import_matches[-1].end()
-                        
-                        # 检查哪些导入还不存在
-                        new_imports = []
-                        for imp in self.import_replacements['add']:
-                            if imp not in content and not imp.replace('import ', '// REMOVED DEPRECATED: import ') in content:
-                                new_imports.append(imp)
-                        
-                        if new_imports:
-                            import_block = '\n' + '\n'.join(new_imports)
-                            content = content[:last_import_end] + import_block + content[last_import_end:]
-                            print(f"    • Added {len(new_imports)} new imports")
-                
-                return content
-        
-            def apply_api_fixes(self, content: str) -> tuple[str, List[str]]:
-                """应用所有API修复"""
-                applied_fixes = []
-                
-                for fix_name, fix_data in self.fixes.items():
-                    pattern = fix_data['pattern']
-                    replacement = fix_data['replacement']
-                    
-                    if re.search(pattern, content):
-                        content = re.sub(pattern, replacement, content)
-                        applied_fixes.append(fix_data['description'])
-                
-                return content, applied_fixes
-        
-            def fix_file(self, file_path: str) -> bool:
-                """修复单个文件"""
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        original_content = f.read()
-                    
-                    content = original_content
-                    
-                    # 应用API修复
-                    content, applied_fixes = self.apply_api_fixes(content)
-                    
-                    # 修复导入
-                    content = self.fix_imports(content)
-                    
-                    # 如果内容有变化，写回文件
-                    if content != original_content:
-                        with open(file_path, 'w', encoding='utf-8') as f:
-                            f.write(content)
-                        
-                        self.modified_files.append(file_path)
-                        print(f"✓ {file_path}")
-                        for fix in applied_fixes:
-                            print(f"    • {fix}")
-                        return True
-                        
-                except Exception as e:
-                    error_msg = f"Error processing {file_path}: {e}"
-                    self.errors.append(error_msg)
-                    print(f"✗ {error_msg}")
-                
-                return False
-        
-            def process_all_files(self):
-                """处理所有Java文件"""
-                print("🔧 Starting MoBends API compatibility fixes for MC 1.20.1...")
-                print("📂 Scanning for Java files...")
-                
-                java_files = glob.glob('**/*.java', recursive=True)
-                print(f"📋 Found {len(java_files)} Java files to process")
-                
-                print("\n🔨 Applying fixes...")
-                for file_path in java_files:
-                    self.fix_file(file_path)
-                
-                # 生成报告
-                print(f"\n📊 Fix Summary:")
-                print(f"   Files processed: {len(java_files)}")
-                print(f"   Files modified: {len(self.modified_files)}")
-                print(f"   Errors: {len(self.errors)}")
-                
-                if self.errors:
-                    print(f"\n❌ Errors encountered:")
-                    for error in self.errors:
-                        print(f"   • {error}")
-                
-                # 生成详细报告
-                self.generate_report()
-        
-            def generate_report(self):
-                """生成详细的修复报告"""
-                report = {
-                    'timestamp': str(datetime.now()),
-                    'total_files': len(glob.glob('**/*.java', recursive=True)),
-                    'modified_files': self.modified_files,
-                    'errors': self.errors,
-                    'fixes_applied': list(self.fixes.keys())
-                }
-                
-                with open('mobends_api_fix_report.json', 'w') as f:
-                    json.dump(report, f, indent=2)
-                
-                # 文本报告
-                with open('mobends_api_fix_summary.txt', 'w') as f:
-                    f.write("MoBends API Compatibility Fix Report\n")
-                    f.write("="*40 + "\n\n")
-                    f.write(f"Files processed: {report['total_files']}\n")
-                    f.write(f"Files modified: {len(self.modified_files)}\n")
-                    f.write(f"Success rate: {len(self.modified_files)/report['total_files']*100:.1f}%\n\n")
-                    
-                    f.write("Modified files:\n")
-                    for file in self.modified_files:
-                        f.write(f"  ✓ {file}\n")
-                    
-                    f.write(f"\nFixes applied:\n")
-                    for fix_name, fix_data in self.fixes.items():
-                        f.write(f"  • {fix_data['description']}\n")
-                    
-                    if self.errors:
-                        f.write(f"\nErrors:\n")
-                        for error in self.errors:
-                            f.write(f"  ✗ {error}\n")
-                    
-                    f.write(f"\nNext steps:\n")
-                    f.write(f"  1. Review vertex consumer and pose stack usage\n")
-                    f.write(f"  2. Test rendering functionality\n")
-                    f.write(f"  3. Verify mod loading context calls\n")
-                    f.write(f"  4. Run gradle build to check for remaining errors\n")
-        
-                # 运行修复器
-        if __name__ == "__main__":
-            # 移除重复的 import datetime
-            fixer = MoBendsAPIFixer()
-            fixer.process_all_files()
-        EOF
-        
-        python3 mobends_api_fixer.py
-
-    - name: 📋 Check for Changes
-      id: check_changes
-      run: |
-        if [ -n "$(git status --porcelain)" ]; then
-          echo "changes=true" >> $GITHUB_OUTPUT
-          echo "📝 Changes detected - will commit and push"
-          git status --short
-        else
-          echo "changes=false" >> $GITHUB_OUTPUT
-          echo "✅ No changes needed"
-        fi
-
-    - name: 🔍 Show Diff (if dry run)
-      if: github.event.inputs.dry_run == 'true' && steps.check_changes.outputs.changes == 'true'
-      run: |
-        echo "🔍 Changes that would be made:"
-        git diff --name-only
-        echo ""
-        echo "📄 Sample of changes:"
-        git diff | head -100
-
-    - name: 📝 Commit and Push Changes
-      if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.dry_run != 'true'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        # 配置Git
-        git config --local user.email "z3407323905@outlook.com"
-        git config --local user.name "OutlinedArc217"
-        
-        # 添加所有修改的文件
-        git add -A
-        
-        # 创建提交消息
-        cat > commit_message.txt << 'EOF'
-        🔧 Auto-fix MoBends API compatibility for MC 1.20.1
-        
-        This automated fix addresses all major API compatibility issues:
-        
-        ✅ Fixed ResourceLocation deprecated constructors
-        ✅ Replaced GlStateManager with RenderSystem
-        ✅ Updated BufferBuilder to VertexConsumer
-        ✅ Removed deprecated imports (GLAllocation, TextureOffset, etc.)
-        ✅ Added modern rendering imports
-        ✅ Updated matrix operations for new API
-        ✅ Added compatibility notes for verification
-        
-        Files modified: See mobends_api_fix_summary.txt
-        
-        ⚠️  Manual verification needed:
-        - Check VertexConsumer usage in rendering code
-        - Verify ModLoadingContext calls work with Forge version
-        - Test quaternion rotations replace old rotate calls
-        - Review pose stack transformations
-        
-        Auto-generated by GitHub Actions 🤖
-        EOF
-        
-        # 提交更改
-        git commit -F commit_message.txt
-        
-        # 推送到远程仓库
-        git push origin 1.X/forge-1.12
-        
-        echo "✅ Changes committed and pushed successfully!"
-
-    - name: 📤 Upload Fix Reports
-      if: steps.check_changes.outputs.changes == 'true'
-      uses: actions/upload-artifact@v4
+    - name: Setup Gradle 8.7
+      uses: gradle/gradle-build-action@v2
       with:
-        name: mobends-api-fix-reports
-        path: |
-          mobends_api_fix_summary.txt
-          mobends_api_fix_report.json
-
-    - name: 🧪 Test Build After Fixes
-      if: steps.check_changes.outputs.changes == 'true'
-      run: |
-        echo "🔨 Testing build after API fixes..."
-        set +e  # Don't fail the action if build fails
-        ./gradlew build --no-daemon --stacktrace
-        BUILD_EXIT_CODE=$?
+        gradle-version: 8.7
         
-        if [ $BUILD_EXIT_CODE -eq 0 ]; then
-          echo "✅ Build successful after fixes!"
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper --gradle-version 8.7
+      
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+      
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+          
+    - name: List available Gradle tasks
+      run: ./gradlew tasks --no-daemon
+      
+    - name: Setup Minecraft Development Kit
+      run: |
+        # For modern Forge (1.20.1), check for genEclipseRuns/genIntellijRuns
+        if ./gradlew tasks --no-daemon | grep -q "genEclipseRuns"; then
+          ./gradlew genEclipseRuns genIntellijRuns --no-daemon
         else
-          echo "⚠️  Build still has issues - manual review needed"
-          echo "This is expected as some fixes may require additional manual adjustments"
+          echo "No IDE setup tasks found, proceeding directly to build"
         fi
+      
+    - name: Build with Gradle
+      run: ./gradlew build --no-daemon
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: mobends-build
+        path: |
+          build/libs/*.jar
+          !build/libs/*-sources.jar
+          !build/libs/*-dev.jar
+        retention-days: 30
+        
+    - name: Upload build logs
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: build-logs
+        path: |
+          build/logs/
+          .gradle/
+        retention-days: 7
