@@ -6,6 +6,16 @@ import goblinbob.mobends.core.math.SmoothOrientation;
 import goblinbob.mobends.core.supporters.SupporterContent;
 import goblinbob.mobends.standard.client.renderer.entity.SwordTrail;
 import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public abstract class BipedEntityData<E extends EntityLivingBase> extends LivingEntityData<E>
 {

@@ -8,8 +8,8 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderBendsTippedArrow extends RenderBendsArrow<EntityTippedArrow>
 {
-	public static final ResourceLocation RES_ARROW = new ResourceLocation("textures/entity/projectiles/arrow.png");
-	public static final ResourceLocation RES_TIPPED_ARROW = new ResourceLocation(
+	public static final ResourceLocation RES_ARROW = ResourceLocation.parse("textures/entity/projectiles/arrow.png");
+	public static final ResourceLocation RES_TIPPED_ARROW = ResourceLocation.parse(
 			"textures/entity/projectiles/tipped_arrow.png");
 
 	public RenderBendsTippedArrow(RenderManager manager)

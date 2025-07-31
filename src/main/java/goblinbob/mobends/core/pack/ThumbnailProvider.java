@@ -8,8 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class ThumbnailProvider
 {
-    public static final ResourceLocation DEFAULT_THUMBNAIL_LOCATION = new ResourceLocation(ModStatics.MODID,
-            "textures/gui/default_pack_thumbnail.png");
+    public static final ResourceLocation DEFAULT_THUMBNAIL_LOCATION = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/gui/default_pack_thumbnail.png");
 
     private final PackCache packCache;
 
@@ -20,8 +19,7 @@ public class ThumbnailProvider
 
     public ResourceLocation getThumbnailLocation(String packName, String thumbnailUrl)
     {
-        final ResourceLocation resourceLocation = new ResourceLocation(ModStatics.MODID,
-                "bendsPackThumbnails/" + packName);
+        final ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "bendsPackThumbnails/" + packName);
         ITextureObject itextureobject = Minecraft.getMinecraft().getTextureManager().getTexture(resourceLocation);
 
         if (itextureobject == null)

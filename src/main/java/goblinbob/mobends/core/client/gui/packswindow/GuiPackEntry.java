@@ -6,9 +6,19 @@ import goblinbob.mobends.core.pack.IBendsPack;
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiPackEntry implements IGuiListElement, IGuiDraggable
 {
@@ -185,7 +195,7 @@ public class GuiPackEntry implements IGuiListElement, IGuiDraggable
         final TextureManager textureManager = mc.getTextureManager();
 
         textureManager.bindTexture(GuiPacksWindow.BACKGROUND_TEXTURE);
-        GlStateManager.color(1, 1, 1, 1);
+        RenderSystem.color(1, 1, 1, 1);
         final int SELECTED_TEXTURE_Y = 62;
         final int HOVER_TEXTURE_Y = 31;
         final int NEUTRAL_TEXTURE_Y = 0;
@@ -193,7 +203,7 @@ public class GuiPackEntry implements IGuiListElement, IGuiDraggable
         Draw.texturedModalRect(viewX - 1, viewY - (selected ? 1 : 0), 0, textureY, 102, HEIGHT);
 
         textureManager.bindTexture(thumbnailLocation);
-        GlStateManager.color(1, 1, 1, 1);
+        RenderSystem.color(1, 1, 1, 1);
         Draw.texturedRectangle(viewX + 2, viewY + 2, 25, 25, 0, 0, 25F / 32F, 25F / 32F);
 
         fontRenderer.drawStringWithShadow(fontRenderer.trimStringToWidth(this.displayName, 70), viewX + 32, viewY + 1, 0xffffff);

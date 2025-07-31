@@ -50,6 +50,6 @@ public class AssetReloadListener implements ResourceManagerReloadListener {
     private static ResourceLocation getAnimationId(ResourceLocation fullPath) {
         String path = fullPath.getPath();
         String name = path.substring(path.lastIndexOf('/') + 1, path.length() - 5);
-        return new ResourceLocation(ModStatics.MODID, name);
+        return ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, name);
     }
 }

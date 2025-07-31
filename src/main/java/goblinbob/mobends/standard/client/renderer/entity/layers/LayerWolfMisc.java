@@ -8,19 +8,28 @@ import goblinbob.mobends.core.util.MeshBuilder;
 import goblinbob.mobends.standard.data.WolfData;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class LayerWolfMisc implements LayerRenderer<EntityWolf>
 {
 
-    private static final ResourceLocation WOLF_MISC_TEXTURE = new ResourceLocation(ModStatics.MODID,
-            "textures/entity/wolf_misc.png");
+    private static final ResourceLocation WOLF_MISC_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/entity/wolf_misc.png");
     private static final int textureWidth = 8;
     private static final int textureHeight = 8;
 
@@ -70,10 +79,10 @@ public class LayerWolfMisc implements LayerRenderer<EntityWolf>
 
             boolean isChild = wolf.isChild();
 
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
             if (isChild)
             {
-                GlStateManager.translate(0.0F, 10.0F * scale, 0.0F * scale);
+                RenderSystem.translate(0.0F, 10.0F * scale, 0.0F * scale);
                 data.body.applyLocalTransform(scale * 0.5F);
             }
             else
@@ -82,36 +91,36 @@ public class LayerWolfMisc implements LayerRenderer<EntityWolf>
             }
             data.head.applyLocalTransform(scale);
 
-            GlStateManager.enableCull();
+            RenderSystem.enableCull();
             // Mouth inside
-            GlStateManager.pushMatrix();
-            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.scale(scale, scale, scale);
+            RenderSystem.pushMatrix();
+            RenderSystem.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+            RenderSystem.scale(scale, scale, scale);
             mouthInside.display();
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
 
             // Mouth bottom
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
             data.nose.applyLocalTransform(scale);
-            GlStateManager.scale(scale, scale, scale);
+            RenderSystem.scale(scale, scale, scale);
             mouthTop.display();
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
 
             // Mouth top
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
             data.mouth.applyLocalTransform(scale);
-            GlStateManager.scale(scale, scale, scale);
+            RenderSystem.scale(scale, scale, scale);
             mouthBottom.display();
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
 
             // Tongue
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
             data.tongue.applyLocalTransform(scale);
-            GlStateManager.scale(scale, scale, scale);
+            RenderSystem.scale(scale, scale, scale);
             tongue.display();
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
 
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         }
     }
 

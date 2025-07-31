@@ -2,7 +2,17 @@ package goblinbob.mobends.core.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class ModelPartExtended extends ModelPart
 {
@@ -37,10 +47,10 @@ public class ModelPartExtended extends ModelPart
         if (!this.compiled)
             this.compileDisplayList(scale);
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
 
         this.applyCharacterTransform(scale);
-        GlStateManager.callList(this.displayList);
+        RenderSystem.callList(this.displayList);
         if (extension != null)
             extension.renderJustPart(scale);
 
@@ -51,7 +61,7 @@ public class ModelPartExtended extends ModelPart
 				childModel.render(scale);
 			}
         }
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override
@@ -61,10 +71,10 @@ public class ModelPartExtended extends ModelPart
         if (!this.compiled)
             this.compileDisplayList(scale);
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
 
         this.applyLocalTransform(scale);
-        GlStateManager.callList(this.displayList);
+        RenderSystem.callList(this.displayList);
         if (extension != null)
             extension.renderJustPart(scale);
 
@@ -75,7 +85,7 @@ public class ModelPartExtended extends ModelPart
 				childModel.render(scale);
 			}
         }
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override

@@ -9,15 +9,24 @@ import goblinbob.mobends.core.util.GuiHelper;
 import goblinbob.mobends.core.util.IColorRead;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiSectionButton
 {
 
-    public static final ResourceLocation BUTTONS_TEXTURE = new ResourceLocation(ModStatics.MODID,
-            "textures/gui/buttons.png");
+    public static final ResourceLocation BUTTONS_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/gui/buttons.png");
 
     // Expressed in ticks
     public static final float HOVER_ICON_ANIMATION_DURATION = 2.0F;
@@ -127,9 +136,9 @@ public class GuiSectionButton
         this.ticksAfterHovered += DataUpdateHandler.ticksPerFrame;
 
         if (this.hover)
-            GlStateManager.color(this.bgColor.r, this.bgColor.g, this.bgColor.b, this.bgColor.a);
+            RenderSystem.color(this.bgColor.r, this.bgColor.g, this.bgColor.b, this.bgColor.a);
         else
-            GlStateManager.color(this.neutralColor.r, this.neutralColor.g, this.neutralColor.b, this.neutralColor.a);
+            RenderSystem.color(this.neutralColor.r, this.neutralColor.g, this.neutralColor.b, this.neutralColor.a);
         Minecraft.getMinecraft().getTextureManager().bindTexture(BUTTONS_TEXTURE);
 
         int tX = this.bgTextureU;
@@ -139,13 +148,13 @@ public class GuiSectionButton
         float vScale = 0.0078125F;
 
         if (this.hover)
-            GlStateManager.color(this.bgColor.r, this.bgColor.g, this.bgColor.b, this.bgColor.a);
+            RenderSystem.color(this.bgColor.r, this.bgColor.g, this.bgColor.b, this.bgColor.a);
         else
-            GlStateManager.color(this.neutralColor.r, this.neutralColor.g, this.neutralColor.b, this.neutralColor.a);
+            RenderSystem.color(this.neutralColor.r, this.neutralColor.g, this.neutralColor.b, this.neutralColor.a);
 
-        GlStateManager.disableTexture2D();
+        RenderSystem.disableTexture2D();
         Draw.rectangle(x, y, width, height);
-        GlStateManager.enableTexture2D();
+        RenderSystem.enableTexture2D();
 
         float bgt = 1;
         if (this.hover)
@@ -182,28 +191,28 @@ public class GuiSectionButton
 
             if (leftIcon != null)
             {
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(x + iconSpacing, y + height / 2F, 0);
-                GlStateManager.scale(scale, scale, 1);
+                RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.pushMatrix();
+                RenderSystem.translate(x + iconSpacing, y + height / 2F, 0);
+                RenderSystem.scale(scale, scale, 1);
                 leftIcon.draw(uScale, vScale);
-                GlStateManager.popMatrix();
+                RenderSystem.popMatrix();
             }
 
             if (rightIcon != null)
             {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(x + width - iconSpacing, y + height / 2F, 0);
-                GlStateManager.scale(scale, scale, 1);
+                RenderSystem.pushMatrix();
+                RenderSystem.translate(x + width - iconSpacing, y + height / 2F, 0);
+                RenderSystem.scale(scale, scale, 1);
                 rightIcon.draw(uScale, vScale);
-                GlStateManager.popMatrix();
+                RenderSystem.popMatrix();
             }
         }
 
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.fontRenderer.drawCenteredText(this.label, x + width / 2, y + height / 2 + 6);
 
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public void setPosition(int i, int j)

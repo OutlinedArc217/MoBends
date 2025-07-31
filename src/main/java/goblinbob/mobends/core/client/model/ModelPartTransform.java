@@ -6,7 +6,17 @@ import goblinbob.mobends.core.math.matrix.IMat4x4d;
 import goblinbob.mobends.core.math.vector.IVec3f;
 import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.util.GlHelper;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 /**
  * Used for manipulating the transform of things that are
@@ -98,7 +108,7 @@ public class ModelPartTransform implements IModelPart
 	public void applyPreTransform(float scale)
 	{
 		if (this.globalOffset.x != 0.0F || this.globalOffset.y != 0.0F || this.globalOffset.z != 0.0F)
-			GlStateManager.translate(this.globalOffset.x * scale, this.globalOffset.y * scale, this.globalOffset.z * scale);
+			RenderSystem.translate(this.globalOffset.x * scale, this.globalOffset.y * scale, this.globalOffset.z * scale);
 	}
 
 	@Override
@@ -112,15 +122,15 @@ public class ModelPartTransform implements IModelPart
 	public void applyLocalTransform(float scale)
 	{
 		if (this.position.x != 0.0F || this.position.y != 0.0F || this.position.z != 0.0F)
-        	GlStateManager.translate(this.position.x * scale * offsetScale, this.position.y * scale * offsetScale, this.position.z * scale * offsetScale);
+        	RenderSystem.translate(this.position.x * scale * offsetScale, this.position.y * scale * offsetScale, this.position.z * scale * offsetScale);
 
 		if (this.offset.x != 0.0F || this.offset.y != 0.0F || this.offset.z != 0.0F)
-			GlStateManager.translate(this.offset.x * scale * offsetScale, this.offset.y * scale * offsetScale, this.offset.z * scale * offsetScale);
+			RenderSystem.translate(this.offset.x * scale * offsetScale, this.offset.y * scale * offsetScale, this.offset.z * scale * offsetScale);
 
 		GlHelper.rotate(this.rotation.getSmooth());
 
 		if(this.scale.x != 0.0F || this.scale.y != 0.0F || this.scale.z != 0.0F)
-        	GlStateManager.scale(this.scale.x, this.scale.y, this.scale.z);
+        	RenderSystem.scale(this.scale.x, this.scale.y, this.scale.z);
 	}
 
 	@Override

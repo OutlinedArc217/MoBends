@@ -51,7 +51,7 @@ public class AnimationConfig {
     }
 
     public static void register() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SPEC);
+        ModLoadingContext.get() /* TODO: Verify this is still available in your Forge version */.registerConfig(ModConfig.Type.CLIENT, SPEC);
         CONFIG_PATH.toFile().mkdirs();
     }
 

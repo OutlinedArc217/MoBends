@@ -5,12 +5,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
 public class GuiToggleButton
 {
 
-	protected static final ResourceLocation BUTTON_TEXTURES = new ResourceLocation("textures/gui/widgets.png");
+	protected static final ResourceLocation BUTTON_TEXTURES = ResourceLocation.parse("textures/gui/widgets.png");
 	
     private static final int FLIPPER_WIDTH = 30;
     private static final int HEIGHT = 20;

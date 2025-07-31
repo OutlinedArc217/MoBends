@@ -3,7 +3,17 @@ package goblinbob.mobends.core.client.gui.elements;
 import goblinbob.mobends.core.client.gui.GuiBendsMenu;
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiHelpButton
 {
@@ -35,7 +45,7 @@ public class GuiHelpButton
 
     public void display()
     {
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(GuiBendsMenu.ICONS_TEXTURE);
         int textureY = hovered ? 64 : 44;
         Draw.texturedModalRect(x, y, 88, textureY, WIDTH, HEIGHT);

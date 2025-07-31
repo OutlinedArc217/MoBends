@@ -21,8 +21,7 @@ import java.io.IOException;
 public class GuiSettingsWindow extends GuiScreen
 {
 
-    public static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(ModStatics.MODID,
-            "textures/gui/pack_window.png");
+    public static final ResourceLocation BACKGROUND_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/gui/pack_window.png");
     public static final int EDITOR_WIDTH = 280;
     public static final int EDITOR_HEIGHT = 177;
     private static final int COMPONENT_BUTTON_BACK = 0;

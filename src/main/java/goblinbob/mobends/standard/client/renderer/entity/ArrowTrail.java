@@ -4,14 +4,24 @@ import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.math.vector.VectorUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.math.Vec3d;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class ArrowTrail
 {
@@ -79,17 +89,17 @@ public class ArrowTrail
         float g = 1;
         float b = 1;
         float a = 0.5F;
-        GlStateManager.color(r, g, b, a);
+        RenderSystem.color(r, g, b, a);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.disableTexture2D();
-        GlStateManager.disableLighting();
-        GlStateManager.disableCull();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.pushMatrix();
+        RenderSystem.disableTexture2D();
+        RenderSystem.disableLighting();
+        RenderSystem.disableCull();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         for (int i = 1; i < MAX_LENGTH; i++)
         {
@@ -131,10 +141,10 @@ public class ArrowTrail
         }
         tessellator.draw();
 
-        GlStateManager.enableCull();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
+        RenderSystem.enableCull();
+        RenderSystem.enableTexture2D();
+        RenderSystem.enableLighting();
+        RenderSystem.popMatrix();
     }
 
     /**
@@ -151,34 +161,34 @@ public class ArrowTrail
         up = new Vec3d(-up.x, -up.y, up.z);
         Vec3d right = forward.crossProduct(up);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.disableTexture2D();
-        GlStateManager.disableLighting();
-        GlStateManager.disableCull();
-        GlStateManager.depthFunc(GL11.GL_ALWAYS);
-        GlStateManager.translate(x, y, z);
+        RenderSystem.pushMatrix();
+        RenderSystem.disableTexture2D();
+        RenderSystem.disableLighting();
+        RenderSystem.disableCull();
+        RenderSystem.depthFunc(GL11.GL_ALWAYS);
+        RenderSystem.translate(x, y, z);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.color(1, 0, 0, 1);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.color(1, 0, 0, 1);
         vertexbuffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_TEX);
         vertexbuffer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0.15625D).endVertex();
         vertexbuffer.pos(right.x, right.y, right.z).tex(0.15625D, 0.15625D).endVertex();
         tessellator.draw();
-        GlStateManager.color(0, 1, 0, 1);
+        RenderSystem.color(0, 1, 0, 1);
         vertexbuffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_TEX);
         vertexbuffer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0.15625D).endVertex();
         vertexbuffer.pos(up.x, up.y, up.z).tex(0.15625D, 0.15625D).endVertex();
         tessellator.draw();
-        GlStateManager.color(0, 0, 1, 1);
+        RenderSystem.color(0, 0, 1, 1);
         vertexbuffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_TEX);
         vertexbuffer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0.15625D).endVertex();
         vertexbuffer.pos(forward.x, forward.y, forward.z).tex(0.15625D, 0.15625D).endVertex();
         tessellator.draw();
-        GlStateManager.depthFunc(GL11.GL_LEQUAL);
-        GlStateManager.enableCull();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        RenderSystem.enableCull();
+        RenderSystem.enableTexture2D();
+        RenderSystem.enableLighting();
+        RenderSystem.popMatrix();
     }
 
     public boolean shouldBeRemoved()

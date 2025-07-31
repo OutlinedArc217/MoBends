@@ -3,9 +3,19 @@ package goblinbob.mobends.core.client.gui.elements;
 import goblinbob.mobends.core.client.gui.GuiBendsMenu;
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.GlStateManager.DestFactor;
-import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderSystem.DestFactor;
+import net.minecraft.client.renderer.RenderSystem.SourceFactor;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiIconButton
 {
@@ -49,9 +59,9 @@ public class GuiIconButton
 		int bgTextureY = hovered ? 64 : 44;
 		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(GuiBendsMenu.ICONS_TEXTURE);
-		GlStateManager.color(1F, 1F, 1F, 1F);
-		GlStateManager.enableAlpha();
-		GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.color(1F, 1F, 1F, 1F);
+		RenderSystem.enableAlpha();
+		RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 		Draw.texturedModalRect(x, y, 88, bgTextureY, WIDTH, HEIGHT);
 		Draw.texturedModalRect(x + WIDTH/2 - this.iconWidth / 2, y + HEIGHT/2 - this.iconHeight / 2, this.iconU, this.iconV, this.iconWidth, this.iconHeight);
 	}

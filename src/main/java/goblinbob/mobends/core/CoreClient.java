@@ -30,7 +30,7 @@ public class CoreClient extends Core<CoreClientConfig> {
     CoreClient() {
         INSTANCE = this;
         
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get() /* TODO: Verify this is still available */ /* TODO: Verify this is still available in your Forge version */.getModEventBus();
         
         modEventBus.addListener(this::clientSetup);
     
@@ -76,7 +76,7 @@ public class CoreClient extends Core<CoreClientConfig> {
     @Override
     public void setupConfig() {
         configuration = new CoreClientConfig();
-        ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.CLIENT, configuration.getSpec());
+        ModLoadingContext.get() /* TODO: Verify this is still available in your Forge version */.registerConfig(net.minecraftforge.fml.config.ModConfig.Type.CLIENT, configuration.getSpec());
     }
 
     @Override

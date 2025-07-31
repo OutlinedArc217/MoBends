@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NetworkConfiguration {
     private static final String PROTOCOL_VERSION = ModStatics.PROTOCOL_VERSION;
     public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
-        new ResourceLocation(ModStatics.MODID, "network"),
+        ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "network"),
         () -> PROTOCOL_VERSION,
         PROTOCOL_VERSION::equals,
         PROTOCOL_VERSION::equals

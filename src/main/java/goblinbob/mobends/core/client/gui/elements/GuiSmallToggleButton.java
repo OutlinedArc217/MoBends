@@ -3,15 +3,25 @@ package goblinbob.mobends.core.client.gui.elements;
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiSmallToggleButton
 {
 
-	protected static final ResourceLocation BUTTON_TEXTURES = new ResourceLocation("textures/gui/widgets.png");
+	protected static final ResourceLocation BUTTON_TEXTURES = ResourceLocation.parse("textures/gui/widgets.png");
 
     private static final int WIDTH = 30;
     private static final int HEIGHT = 20;
@@ -48,22 +58,22 @@ public class GuiSmallToggleButton
         Minecraft mc = Minecraft.getMinecraft();
         FontRenderer fontRenderer = mc.fontRenderer;
         mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
+        RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.enableBlend();
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         
         int k = this.hovered ? 1 : 0;
         
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
         	if(this.toggleState)
-                GlStateManager.color(0.3F, 1.0F, 0.7F);
+                RenderSystem.color(0.3F, 1.0F, 0.7F);
         	else
-                GlStateManager.color(1.0F, 0.3F, 0.4F);
+                RenderSystem.color(1.0F, 0.3F, 0.4F);
 
         	Draw.texturedModalRect(this.x, this.y, 0, 66 + k * 20, WIDTH / 2, HEIGHT);
         	Draw.texturedModalRect(this.x + WIDTH / 2, this.y, 200 - WIDTH / 2, 66 + k * 20, WIDTH / 2, HEIGHT);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
         
         int l = 14737632;
 
@@ -80,7 +90,7 @@ public class GuiSmallToggleButton
         int textWidth = fontRenderer.getStringWidth(stateText);
         fontRenderer.drawString(stateText, this.x - textWidth/2 + WIDTH /2, this.y + (HEIGHT - 8) / 2, l);
 
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
     
     public void setToggleState(boolean state)

@@ -7,16 +7,26 @@ import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.core.util.IColorRead;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.GlStateManager.DestFactor;
-import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderSystem.DestFactor;
+import net.minecraft.client.renderer.RenderSystem.SourceFactor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHandSide;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Supplier;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class SwordTrail
 {
@@ -98,40 +108,40 @@ public class SwordTrail
                 point.add(position);
             }
 
-            GlStateManager.color(baseColor.getR(), baseColor.getG(), baseColor.getB(), alpha);
+            RenderSystem.color(baseColor.getR(), baseColor.getG(), baseColor.getB(), alpha);
 
             if (!first)
             {
                 // Closing up the previous strand
-                GlStateManager.glVertex3f(points[1].x, points[1].y, points[1].z);
-                GlStateManager.glVertex3f(points[0].x, points[0].y, points[0].z);
+                RenderSystem.glVertex3f(points[1].x, points[1].y, points[1].z);
+                RenderSystem.glVertex3f(points[0].x, points[0].y, points[0].z);
             }
 
-            GlStateManager.glVertex3f(points[0].x, points[0].y, points[0].z);
-            GlStateManager.glVertex3f(points[1].x, points[1].y, points[1].z);
+            RenderSystem.glVertex3f(points[0].x, points[0].y, points[0].z);
+            RenderSystem.glVertex3f(points[1].x, points[1].y, points[1].z);
 
             if (last)
             {
                 // Closing the trail
-                GlStateManager.glVertex3f(points[1].x, points[1].y, points[1].z);
-                GlStateManager.glVertex3f(points[0].x, points[0].y, points[0].z);
+                RenderSystem.glVertex3f(points[1].x, points[1].y, points[1].z);
+                RenderSystem.glVertex3f(points[0].x, points[0].y, points[0].z);
             }
         }
     }
 
     public void render()
     {
-        GlStateManager.depthFunc(GL11.GL_LEQUAL);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-        GlStateManager.disableCull();
-        GlStateManager.disableLighting();
-        GlStateManager.disableTexture2D();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.disableCull();
+        RenderSystem.disableLighting();
+        RenderSystem.disableTexture2D();
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        GlStateManager.pushMatrix();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        RenderSystem.pushMatrix();
 
-        GlStateManager.glBegin(GL11.GL_QUADS);
+        RenderSystem.glBegin(GL11.GL_QUADS);
 
         Iterator<TrailPart> it = trailPartList.iterator();
         boolean first = true;
@@ -141,12 +151,12 @@ public class SwordTrail
 			part.draw(first, !it.hasNext());
 			first = false;
 		}
-        GlStateManager.glEnd();
+        RenderSystem.glEnd();
 
-        GlStateManager.popMatrix();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableCull();
-        GlStateManager.enableLighting();
+        RenderSystem.popMatrix();
+        RenderSystem.enableTexture2D();
+        RenderSystem.disableCull();
+        RenderSystem.enableLighting();
     }
 
     public void add(BipedEntityData<?> entityData, float velocityX, float velocityY, float velocityZ)

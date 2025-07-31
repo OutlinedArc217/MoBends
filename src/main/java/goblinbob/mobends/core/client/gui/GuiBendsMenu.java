@@ -11,22 +11,30 @@ import goblinbob.mobends.core.util.Draw;
 import goblinbob.mobends.core.util.GuiHelper;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiBendsMenu extends GuiScreen
 {
 	
-	private static final ResourceLocation MENU_TITLE_TEXTURE = new ResourceLocation(ModStatics.MODID,
-			"textures/gui/title.png");
-	public static final ResourceLocation ICONS_TEXTURE = new ResourceLocation(ModStatics.MODID,
-			"textures/gui/icons.png");
+	private static final ResourceLocation MENU_TITLE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/gui/title.png");
+	public static final ResourceLocation ICONS_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/gui/icons.png");
 
 	private GuiSectionButton settingsButton;
 	private GuiSectionButton packsButton;
@@ -184,7 +192,7 @@ public class GuiBendsMenu extends GuiScreen
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_BLEND);
 
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(MENU_TITLE_TEXTURE);
 		int titleWidth = 167 * 2;
 		int titleHeight = 37 * 2;
@@ -202,10 +210,10 @@ public class GuiBendsMenu extends GuiScreen
 
 		if (this.popUp != null)
 		{
-			GlStateManager.disableDepth();
+			RenderSystem.disableDepth();
 			this.drawDefaultBackground();
 			this.popUp.display(mouseX, mouseY, partialTicks);
-			GlStateManager.enableDepth();
+			RenderSystem.enableDepth();
 		}
 	}
 

@@ -4,7 +4,7 @@ import goblinbob.mobends.core.util.BenderHelper;
 import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelElytra;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -15,12 +15,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 @SideOnly(Side.CLIENT)
 public class LayerCustomElytra implements LayerRenderer<AbstractClientPlayer>
 {
     /** The basic Elytra texture. */
-    private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation("textures/entity/elytra.png");
+    private static final ResourceLocation TEXTURE_ELYTRA = ResourceLocation.parse("textures/entity/elytra.png");
     /** Instance of the player renderer. */
     protected final RenderPlayer renderPlayer;
     /** The model used by the Elytra. */
@@ -40,9 +50,9 @@ public class LayerCustomElytra implements LayerRenderer<AbstractClientPlayer>
 
         if (itemstack.getItem() == Items.ELYTRA)
         {
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
 
             if (player.isPlayerInfoSet() && player.getLocationElytra() != null)
             {
@@ -57,12 +67,12 @@ public class LayerCustomElytra implements LayerRenderer<AbstractClientPlayer>
                 this.renderPlayer.bindTexture(TEXTURE_ELYTRA);
             }
 
-            GlStateManager.pushMatrix();
-            //GlStateManager.translate(0.0F, 0.0F, 0.225F);
+            RenderSystem.pushMatrix();
+            //RenderSystem.translate(0.0F, 0.0F, 0.225F);
             data.body.applyCharacterTransform(0.0625F);
-            //GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-            //GlStateManager.translate(0.0F, 0.0F, 0.125F);
-            GlStateManager.translate(0.0F, -12.0F * scale, 0.0F);
+            //RenderSystem.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            //RenderSystem.translate(0.0F, 0.0F, 0.125F);
+            RenderSystem.translate(0.0F, -12.0F * scale, 0.0F);
             this.modelElytra.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, player);
             this.modelElytra.render(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
@@ -71,8 +81,8 @@ public class LayerCustomElytra implements LayerRenderer<AbstractClientPlayer>
                 LayerArmorBase.renderEnchantedGlint(this.renderPlayer, player, this.modelElytra, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
             }
 
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+            RenderSystem.disableBlend();
+            RenderSystem.popMatrix();
         }
     }
 

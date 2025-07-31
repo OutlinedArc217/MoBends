@@ -15,10 +15,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiAnimationEditor extends Screen {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation("mobends:textures/gui/editor_background.png");
+    private static final ResourceLocation BACKGROUND = ResourceLocation.parse("mobends:textures/gui/editor_background.png");
     private static final int WINDOW_WIDTH = 248;
     private static final int WINDOW_HEIGHT = 166;
 

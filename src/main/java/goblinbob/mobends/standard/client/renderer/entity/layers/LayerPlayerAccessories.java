@@ -10,22 +10,32 @@ import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 import java.util.Map;
 import java.util.Set;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class LayerPlayerAccessories implements LayerRenderer<AbstractClientPlayer>
 {
@@ -83,29 +93,29 @@ public class LayerPlayerAccessories implements LayerRenderer<AbstractClientPlaye
             return;
         }
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
 
         // Reverting the sneak transform
         if (player.isSneaking())
         {
             if (player.capabilities.isFlying)
             {
-                GlStateManager.translate(0F, 4F * scale, 0F);
+                RenderSystem.translate(0F, 4F * scale, 0F);
             }
             else
             {
-                GlStateManager.translate(0F, 3F * scale, 0F);
+                RenderSystem.translate(0F, 3F * scale, 0F);
             }
         }
 
         applyBindPointTransform(data, part.getBindPoint(), scale);
 
         ItemTransformVec3f transformVec3f = simpleBakedModel.getItemCameraTransforms().head;
-        GlStateManager.translate(transformVec3f.translation.x, transformVec3f.translation.y, transformVec3f.translation.z);
-        GlStateManager.rotate(transformVec3f.rotation.x, 1, 0, 0);
-        GlStateManager.rotate(transformVec3f.rotation.y, 0, 1, 0);
-        GlStateManager.rotate(transformVec3f.rotation.z, 0, 0, 1);
-        GlStateManager.scale(transformVec3f.scale.x, transformVec3f.scale.y, transformVec3f.scale.z);
+        RenderSystem.translate(transformVec3f.translation.x, transformVec3f.translation.y, transformVec3f.translation.z);
+        RenderSystem.rotate(transformVec3f.rotation.x, 1, 0, 0);
+        RenderSystem.rotate(transformVec3f.rotation.y, 0, 1, 0);
+        RenderSystem.rotate(transformVec3f.rotation.z, 0, 0, 1);
+        RenderSystem.scale(transformVec3f.scale.x, transformVec3f.scale.y, transformVec3f.scale.z);
 
         // Diffuse pass
         textureManager.bindTexture(part.getDiffuseTexturePath());
@@ -116,18 +126,18 @@ public class LayerPlayerAccessories implements LayerRenderer<AbstractClientPlaye
         if (inkedLocation != null)
         {
             textureManager.bindTexture(inkedLocation);
-            GlStateManager.color(1, 0, 0);
+            RenderSystem.color(1, 0, 0);
             drawModel(simpleBakedModel, Color.asHex(settings.getColor()));
-            GlStateManager.color(1, 1, 0);
+            RenderSystem.color(1, 1, 0);
         }
 
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     private void drawModel(IBakedModel model, int color)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        VertexConsumer bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
         for (EnumFacing enumfacing : EnumFacing.values())

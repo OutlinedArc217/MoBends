@@ -12,16 +12,26 @@ import goblinbob.mobends.core.util.GlHelper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.model.TextureOffset;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import net.minecraft.client.model.TextureOffset;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GLAllocation;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class ModelPart extends ModelRenderer implements IModelPart
 {
@@ -86,10 +96,10 @@ public class ModelPart extends ModelRenderer implements IModelPart
         if (!this.compiled)
             this.compileDisplayList(scale);
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
 
         this.applyCharacterTransform(scale);
-        GlStateManager.callList(this.displayList);
+        RenderSystem.callList(this.displayList);
 
         if (this.childModels != null)
         {
@@ -99,7 +109,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
 			}
         }
 
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override
@@ -109,10 +119,10 @@ public class ModelPart extends ModelRenderer implements IModelPart
         if (!this.compiled)
             this.compileDisplayList(scale);
 
-        GlStateManager.pushMatrix();
+        RenderSystem.pushMatrix();
 
         this.applyLocalTransform(scale);
-        GlStateManager.callList(this.displayList);
+        RenderSystem.callList(this.displayList);
 
         if (this.childModels != null)
         {
@@ -122,7 +132,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
 			}
         }
 
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override
@@ -137,7 +147,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
     public void applyPreTransform(float scale)
     {
         if (this.globalOffset.x != 0.0F || this.globalOffset.y != 0.0F || this.globalOffset.z != 0.0F)
-            GlStateManager.translate(this.globalOffset.x * scale, this.globalOffset.y * scale, this.globalOffset.z * scale);
+            RenderSystem.translate(this.globalOffset.x * scale, this.globalOffset.y * scale, this.globalOffset.z * scale);
     }
 
     @Override
@@ -151,15 +161,15 @@ public class ModelPart extends ModelRenderer implements IModelPart
     public void applyLocalTransform(float scale)
     {
         if (this.position.x != 0.0F || this.position.y != 0.0F || this.position.z != 0.0F)
-            GlStateManager.translate(this.position.x * scale * offsetScale, this.position.y * scale * offsetScale, this.position.z * scale * offsetScale);
+            RenderSystem.translate(this.position.x * scale * offsetScale, this.position.y * scale * offsetScale, this.position.z * scale * offsetScale);
 
         if (this.offset.x != 0.0F || this.offset.y != 0.0F || this.offset.z != 0.0F)
-            GlStateManager.translate(this.offset.x * scale * offsetScale, this.offset.y * scale * offsetScale, this.offset.z * scale * offsetScale);
+            RenderSystem.translate(this.offset.x * scale * offsetScale, this.offset.y * scale * offsetScale, this.offset.z * scale * offsetScale);
 
         GlHelper.rotate(rotation.getSmooth());
 
         if (this.scale.x != 0.0F || this.scale.y != 0.0F || this.scale.z != 0.0F)
-            GlStateManager.scale(this.scale.x, this.scale.y, this.scale.z);
+            RenderSystem.scale(this.scale.x, this.scale.y, this.scale.z);
     }
 
     @Override
@@ -189,15 +199,15 @@ public class ModelPart extends ModelRenderer implements IModelPart
     protected void compileDisplayList(float scale)
     {
         this.displayList = GLAllocation.generateDisplayLists(1);
-        GlStateManager.glNewList(this.displayList, 4864);
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+        RenderSystem.glNewList(this.displayList, 4864);
+        VertexConsumer bufferbuilder = Tessellator.getInstance().getBuffer();
 
 		for (net.minecraft.client.model.ModelBox modelBox : this.cubeList)
 		{
 			modelBox.render(bufferbuilder, scale);
 		}
 
-        GlStateManager.glEndList();
+        RenderSystem.glEndList();
         this.compiled = true;
     }
 

@@ -41,7 +41,7 @@ public class PackManager implements IDataSyncable {
     }
 
     private void loadDefaultPacks() {
-        ResourceLocation defaultPackId = new ResourceLocation(ModStatics.MODID, "default");
+        ResourceLocation defaultPackId = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "default");
         BendsPack defaultPack = new BendsPack(defaultPackId);
         loadedPacks.put(defaultPackId, defaultPack);
         packStates.put(defaultPackId, PackState.ENABLED);

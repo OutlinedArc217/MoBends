@@ -1,10 +1,20 @@
 package goblinbob.mobends.core.util;
 
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class Draw
 {
@@ -17,36 +27,36 @@ public class Draw
         float blue = (float) (color & 255) / 255.0F;
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.color(red, green, blue, alpha);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture2D();
+        RenderSystem.tryBlendFuncSeparate(RenderSystem.SourceFactor.SRC_ALPHA, RenderSystem.DestFactor.ONE_MINUS_SRC_ALPHA, RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
+        RenderSystem.color(red, green, blue, alpha);
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION);
         vertexbuffer.pos((double) left, (double) top + height, 0.0D).endVertex();
         vertexbuffer.pos((double) left + width, (double) top + height, 0.0D).endVertex();
         vertexbuffer.pos((double) left + width, (double) top, 0.0D).endVertex();
         vertexbuffer.pos((double) left, (double) top, 0.0D).endVertex();
         tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
+        RenderSystem.enableTexture2D();
+        RenderSystem.disableBlend();
     }
 
     public static void rectangle(float left, float top, float width, float height)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture2D();
+        RenderSystem.tryBlendFuncSeparate(RenderSystem.SourceFactor.SRC_ALPHA, RenderSystem.DestFactor.ONE_MINUS_SRC_ALPHA, RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
         vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         vertexbuffer.pos((double) left, (double) top + height, 0.0D).endVertex();
         vertexbuffer.pos((double) left + width, (double) top + height, 0.0D).endVertex();
         vertexbuffer.pos((double) left + width, (double) top, 0.0D).endVertex();
         vertexbuffer.pos((double) left, (double) top, 0.0D).endVertex();
         tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
+        RenderSystem.enableTexture2D();
+        RenderSystem.disableBlend();
     }
 
     public static void rectangle(float x, float y, float w, float h, int color)
@@ -56,54 +66,54 @@ public class Draw
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
 
-        GlStateManager.color(r, g, b, a);
+        RenderSystem.color(r, g, b, a);
         rectangle(x, y, w, h);
     }
 
     public static void rectangleHorizontalGradient(float x, float y, float w, float h, IColorRead color0, IColorRead color1)
     {
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        GlStateManager.disableTexture2D();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        RenderSystem.disableTexture2D();
 
-        GlStateManager.glBegin(GL11.GL_QUADS);
-        GlStateManager.color(color0.getR(), color0.getG(), color0.getB(), color0.getA());
-        GlStateManager.glTexCoord2f(0, 0); GlStateManager.glVertex3f((float) (x + 0), (float) (y + 0), (float) 0);
-        GlStateManager.glTexCoord2f(0, 1); GlStateManager.glVertex3f((float) (x + 0), (float) (y + h), (float) 0);
-        GlStateManager.color(color1.getR(), color1.getG(), color1.getB(), color1.getA());
-        GlStateManager.glTexCoord2f(1, 1); GlStateManager.glVertex3f((float) (x + w), (float) (y + h), (float) 0);
-        GlStateManager.glTexCoord2f(1, 0); GlStateManager.glVertex3f((float) (x + w), (float) (y + 0), (float) 0);
-        GlStateManager.glEnd();
+        RenderSystem.glBegin(GL11.GL_QUADS);
+        RenderSystem.color(color0.getR(), color0.getG(), color0.getB(), color0.getA());
+        RenderSystem.glTexCoord2f(0, 0); RenderSystem.glVertex3f((float) (x + 0), (float) (y + 0), (float) 0);
+        RenderSystem.glTexCoord2f(0, 1); RenderSystem.glVertex3f((float) (x + 0), (float) (y + h), (float) 0);
+        RenderSystem.color(color1.getR(), color1.getG(), color1.getB(), color1.getA());
+        RenderSystem.glTexCoord2f(1, 1); RenderSystem.glVertex3f((float) (x + w), (float) (y + h), (float) 0);
+        RenderSystem.glTexCoord2f(1, 0); RenderSystem.glVertex3f((float) (x + w), (float) (y + 0), (float) 0);
+        RenderSystem.glEnd();
 
-        GlStateManager.enableTexture2D();
+        RenderSystem.enableTexture2D();
     }
 
     public static void rectangleVerticalGradient(float x, float y, float w, float h, IColorRead color0, IColorRead color1)
     {
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        GlStateManager.disableTexture2D();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        RenderSystem.disableTexture2D();
 
-        GlStateManager.glBegin(GL11.GL_QUADS);
-        GlStateManager.color(color0.getR(), color0.getG(), color0.getB(), color0.getA());
-        GlStateManager.glTexCoord2f(1, 0); GlStateManager.glVertex3f((float) (x + w), (float) (y + 0), (float) 0);
-        GlStateManager.glTexCoord2f(0, 0); GlStateManager.glVertex3f((float) (x + 0), (float) (y + 0), (float) 0);
-        GlStateManager.color(color1.getR(), color1.getG(), color1.getB(), color1.getA());
-        GlStateManager.glTexCoord2f(0, 1); GlStateManager.glVertex3f((float) (x + 0), (float) (y + h), (float) 0);
-        GlStateManager.glTexCoord2f(1, 1); GlStateManager.glVertex3f((float) (x + w), (float) (y + h), (float) 0);
-        GlStateManager.glEnd();
+        RenderSystem.glBegin(GL11.GL_QUADS);
+        RenderSystem.color(color0.getR(), color0.getG(), color0.getB(), color0.getA());
+        RenderSystem.glTexCoord2f(1, 0); RenderSystem.glVertex3f((float) (x + w), (float) (y + 0), (float) 0);
+        RenderSystem.glTexCoord2f(0, 0); RenderSystem.glVertex3f((float) (x + 0), (float) (y + 0), (float) 0);
+        RenderSystem.color(color1.getR(), color1.getG(), color1.getB(), color1.getA());
+        RenderSystem.glTexCoord2f(0, 1); RenderSystem.glVertex3f((float) (x + 0), (float) (y + h), (float) 0);
+        RenderSystem.glTexCoord2f(1, 1); RenderSystem.glVertex3f((float) (x + w), (float) (y + h), (float) 0);
+        RenderSystem.glEnd();
 
-        GlStateManager.enableTexture2D();
+        RenderSystem.enableTexture2D();
     }
 
     public static void rectangleHorizontalGradient(float x, float y, float width, float height, int color0, int color1)
     {
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         float a0 = (float) (color0 >> 24 & 255) / 255.0F;
         float r0 = (float) (color0 >> 16 & 255) / 255.0F;
@@ -115,25 +125,25 @@ public class Draw
         float b1 = (float) (color1 & 255) / 255.0F;
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture2D();
+        RenderSystem.tryBlendFuncSeparate(RenderSystem.SourceFactor.SRC_ALPHA, RenderSystem.DestFactor.ONE_MINUS_SRC_ALPHA, RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
         vertexbuffer.pos((double) x, (double) y + height, 0.0D).color(r0, g0, b0, a0).endVertex();
         vertexbuffer.pos((double) x + width, (double) y + height, 0.0D).color(r1, g1, b1, a1).endVertex();
         vertexbuffer.pos((double) x + width, (double) y, 0.0D).color(r1, g1, b1, a1).endVertex();
         vertexbuffer.pos((double) x, (double) y, 0.0D).color(r0, g0, b0, a0).endVertex();
         tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
+        RenderSystem.enableTexture2D();
+        RenderSystem.disableBlend();
     }
 
     public static void rectangleVerticalGradient(float x, float y, float w, float h, int color0, int color1)
     {
-        GlStateManager.enableBlend();
+        RenderSystem.enableBlend();
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
 
         float a0 = (float) (color0 >> 24 & 255) / 255.0F;
         float r0 = (float) (color0 >> 16 & 255) / 255.0F;
@@ -145,25 +155,25 @@ public class Draw
         float b1 = (float) (color1 & 255) / 255.0F;
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.tryBlendFuncSeparate(RenderSystem.SourceFactor.SRC_ALPHA, RenderSystem.DestFactor.ONE_MINUS_SRC_ALPHA, RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
         vertexbuffer.pos((double) x, (double) y + h, 0.0D).color(r1, g1, b1, a1).endVertex();
         vertexbuffer.pos((double) x + w, (double) y + h, 0.0D).color(r1, g1, b1, a1).endVertex();
         vertexbuffer.pos((double) x + w, (double) y, 0.0D).color(r0, g0, b0, a0).endVertex();
         vertexbuffer.pos((double) x, (double) y, 0.0D).color(r0, g0, b0, a0).endVertex();
         tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
+        RenderSystem.enableTexture2D();
+        RenderSystem.disableBlend();
     }
 
     public static void circle(double x, double y, double radius, int vertices)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture2D();
+        RenderSystem.tryBlendFuncSeparate(RenderSystem.SourceFactor.SRC_ALPHA, RenderSystem.DestFactor.ONE_MINUS_SRC_ALPHA, RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
         vertexbuffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION);
 
         for (int i = 0; i < vertices; i++)
@@ -173,8 +183,8 @@ public class Draw
         }
 
         tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
+        RenderSystem.enableTexture2D();
+        RenderSystem.disableBlend();
     }
 
     public static void circle(double x, double y, double radius)
@@ -190,7 +200,7 @@ public class Draw
 		final float a = color.getA();
 
 		Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         // NEG_X
         vertexbuffer.pos(minX, maxY, minZ).tex(0, 0).color(r, g, b, a).normal(-1, 0, 0).endVertex();
@@ -230,7 +240,7 @@ public class Draw
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
         vertexbuffer.pos((double)(x + 0), (double)(y + height), 0).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
         vertexbuffer.pos((double)(x + width), (double)(y + height), 0).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
@@ -242,7 +252,7 @@ public class Draw
 	public static void texturedModalRect(int x, int y, int width, int height, int textureX, int textureY, int textureWidth, int textureHeight)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
         vertexbuffer.pos((double)(x + 0), (double)(y + height), 0).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + textureHeight) * 0.00390625F)).endVertex();
         vertexbuffer.pos((double)(x + width), (double)(y + height), 0).tex((double)((float)(textureX + textureWidth) * 0.00390625F), (double)((float)(textureY + textureHeight) * 0.00390625F)).endVertex();
@@ -254,7 +264,7 @@ public class Draw
     public static void texturedRectangle(int x, int y, int width, int height, float textureX, float textureY, float textureWidth, float textureHeight)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
         vertexbuffer.pos((double) (x + 0), (double) (y + height), 0).tex(textureX, textureY + textureHeight).endVertex();
         vertexbuffer.pos((double) (x + width), (double) (y + height), 0).tex(textureX + textureWidth, textureY + textureHeight).endVertex();
@@ -287,7 +297,7 @@ public class Draw
     public static void line(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, IColorRead color)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 
         vertexbuffer.pos(minX, minY, minZ).color(color.getR(), color.getG(), color.getB(), color.getA()).endVertex();

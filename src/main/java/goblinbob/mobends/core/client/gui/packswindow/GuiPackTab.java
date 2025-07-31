@@ -2,7 +2,17 @@ package goblinbob.mobends.core.client.gui.packswindow;
 
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiPackTab
 {
@@ -63,14 +73,14 @@ public class GuiPackTab
 
         if (this.selectedTransitionTween > 0)
         {
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            RenderSystem.enableBlend();
+            RenderSystem.tryBlendFuncSeparate(RenderSystem.SourceFactor.SRC_ALPHA, RenderSystem.DestFactor.ONE_MINUS_SRC_ALPHA, RenderSystem.SourceFactor.ONE, RenderSystem.DestFactor.ZERO);
 
-            GlStateManager.color(1F, 1F, 1F, this.selectedTransitionTween);
+            RenderSystem.color(1F, 1F, 1F, this.selectedTransitionTween);
             Draw.texturedModalRect(x, yOffset, textureIndex * WIDTH, SELECTED_TEXTURE_Y, WIDTH, HEIGHT);
-            GlStateManager.color(1F, 1F, 1F, 1F);
+            RenderSystem.color(1F, 1F, 1F, 1F);
 
-            GlStateManager.disableBlend();
+            RenderSystem.disableBlend();
         }
     }
 

@@ -1,8 +1,18 @@
 package goblinbob.mobends.core.client.gui.elements;
 
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.LinkedList;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public abstract class GuiElement implements IGuiElement, IGuiElementsContainer
 {
@@ -58,14 +68,14 @@ public abstract class GuiElement implements IGuiElement, IGuiElementsContainer
     @Override
     public void draw(float partialTicks)
     {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(this.getViewX(), this.getViewY(), 0);
+        RenderSystem.pushMatrix();
+        RenderSystem.translate(this.getViewX(), this.getViewY(), 0);
 
         this.drawBackground(partialTicks);
         this.drawChildren(partialTicks);
         this.drawForeground(partialTicks);
 
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     @Override

@@ -2,7 +2,7 @@ package goblinbob.mobends.core.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
 public class UIScissorHelper
 {

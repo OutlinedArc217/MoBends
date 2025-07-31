@@ -4,7 +4,7 @@ import goblinbob.mobends.core.util.BenderHelper;
 import goblinbob.mobends.standard.client.renderer.entity.BendsCapeRenderer;
 import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
@@ -13,6 +13,16 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 @SideOnly(Side.CLIENT)
 public class LayerCustomCape implements LayerRenderer<AbstractClientPlayer>
@@ -38,31 +48,31 @@ public class LayerCustomCape implements LayerRenderer<AbstractClientPlayer>
 
             if (itemstack.getItem() != Items.ELYTRA)
             {
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
                 this.playerRenderer.bindTexture(player.getLocationCape());
-                GlStateManager.pushMatrix();
+                RenderSystem.pushMatrix();
 
                 if (player.isSneaking())
                 {
                     if (player.capabilities.isFlying)
                     {
-                        GlStateManager.translate(0F, 4F * scale, 0F);
+                        RenderSystem.translate(0F, 4F * scale, 0F);
                     }
                     else
                     {
-                        GlStateManager.translate(0F, 4F * scale, 0F);
+                        RenderSystem.translate(0F, 4F * scale, 0F);
                     }
                 }
 
                 data.body.applyLocalTransform(0.0625F);
-                GlStateManager.translate(0.0F, -12.0F * scale, 2.2F * scale);
+                RenderSystem.translate(0.0F, -12.0F * scale, 2.2F * scale);
                 data.cape.applyLocalTransform(0.0625F);
-                GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+                RenderSystem.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 
                 capeRenderer.applyAnimation(data);
                 capeRenderer.render(0.0625F);
 
-                GlStateManager.popMatrix();
+                RenderSystem.popMatrix();
             }
         }
     }

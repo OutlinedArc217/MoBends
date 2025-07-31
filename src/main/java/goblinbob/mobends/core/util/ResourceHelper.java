@@ -23,7 +23,7 @@ public class ResourceHelper {
     private static final Gson GSON = new GsonBuilder().create();
 
     public static ResourceLocation createLocation(String path) {
-        return new ResourceLocation(ModStatics.MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, path);
     }
 
     public static CompletableFuture<Optional<Resource>> getResourceAsync(

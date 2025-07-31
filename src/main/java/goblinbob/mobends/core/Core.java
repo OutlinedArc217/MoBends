@@ -28,8 +28,8 @@ public abstract class Core<T extends CoreConfig> {
 
     protected Core() {
         INSTANCE = this;
-        modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        networkHandler = new NetworkHandler(new ResourceLocation(ModStatics.MODID, "main"));
+        modEventBus = FMLJavaModLoadingContext.get() /* TODO: Verify this is still available */ /* TODO: Verify this is still available in your Forge version */.getModEventBus();
+        networkHandler = new NetworkHandler(ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "main"));
         modEventBus.addListener(this::commonSetup);
         setupConfig();
     }

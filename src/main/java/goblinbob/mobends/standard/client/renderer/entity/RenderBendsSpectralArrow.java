@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderBendsSpectralArrow extends RenderBendsArrow<EntitySpectralArrow>
 {
-	public static final ResourceLocation RES_SPECTRAL_ARROW = new ResourceLocation(
+	public static final ResourceLocation RES_SPECTRAL_ARROW = ResourceLocation.parse(
 			"textures/entity/projectiles/spectral_arrow.png");
 
 	public RenderBendsSpectralArrow(RenderManager manager)

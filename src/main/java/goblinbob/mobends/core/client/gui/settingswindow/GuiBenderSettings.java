@@ -4,7 +4,17 @@ import goblinbob.mobends.core.bender.EntityBender;
 import goblinbob.mobends.core.client.gui.elements.GuiSmallToggleButton;
 import goblinbob.mobends.core.client.gui.elements.IGuiListElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiBenderSettings implements IGuiListElement
 {
@@ -50,7 +60,7 @@ public class GuiBenderSettings implements IGuiListElement
 
     public void draw(float partialTicks)
     {
-        GlStateManager.color(1F, 1F, 1F);
+        RenderSystem.color(1F, 1F, 1F);
 
 //        Minecraft.getMinecraft().getTextureManager().bindTexture(GuiSettingsWindow.BACKGROUND_TEXTURE);
 //

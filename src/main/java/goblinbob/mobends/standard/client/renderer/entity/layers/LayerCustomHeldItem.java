@@ -7,7 +7,7 @@ import goblinbob.mobends.core.util.GlHelper;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -16,6 +16,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 @SideOnly(Side.CLIENT)
 public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
@@ -36,17 +46,17 @@ public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
 
         if (!itemstack.isEmpty() || !itemstack1.isEmpty())
         {
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
 
             if (this.livingEntityRenderer.getMainModel().isChild)
             {
-                GlStateManager.translate(0.0F, 0.75F, 0.0F);
-                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+                RenderSystem.translate(0.0F, 0.75F, 0.0F);
+                RenderSystem.scale(0.5F, 0.5F, 0.5F);
             }
 
             this.renderHeldItem(entitylivingbaseIn, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
             this.renderHeldItem(entitylivingbaseIn, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, EnumHandSide.LEFT);
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         }
     }
 
@@ -54,20 +64,20 @@ public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
     {
         if (!p_188358_2_.isEmpty())
         {
-            GlStateManager.pushMatrix();
+            RenderSystem.pushMatrix();
 
             if (entity.isSneaking())
             {
-                GlStateManager.translate(0.0F, 0.2F, 0.0F);
+                RenderSystem.translate(0.0F, 0.2F, 0.0F);
             }
             // Forge: moved this call down, fixes incorrect offset while sneaking.
             this.translateToHand(handSide, entity);
-            GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            RenderSystem.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+            RenderSystem.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             boolean flag = handSide == EnumHandSide.LEFT;
-            GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
+            RenderSystem.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(entity, p_188358_2_, p_188358_3_, flag);
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         }
     }
 
@@ -85,9 +95,9 @@ public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
     		BipedEntityData<?> bipedData = (BipedEntityData<?>) entityData;
     		SmoothOrientation itemRotation = handSide == EnumHandSide.RIGHT ? bipedData.renderRightItemRotation : bipedData.renderLeftItemRotation;
     		
-    		GlStateManager.translate(0, 8F * 0.0625F, 0);
+    		RenderSystem.translate(0, 8F * 0.0625F, 0);
     		GlHelper.rotate(itemRotation.getSmooth());
-            GlStateManager.translate(0, -8F * 0.0625F, 0);
+            RenderSystem.translate(0, -8F * 0.0625F, 0);
     	}
     }
 

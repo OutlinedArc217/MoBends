@@ -28,7 +28,7 @@ public class CommonProxy
 
     public void initialize()
     {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get() /* TODO: Verify this is still available */ /* TODO: Verify this is still available in your Forge version */.getModEventBus();
         
         // Register the setup methods
         modEventBus.addListener(this::setup);

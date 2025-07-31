@@ -4,8 +4,18 @@ import goblinbob.mobends.core.client.MutatedRenderer;
 import goblinbob.mobends.core.data.EntityData;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import goblinbob.mobends.standard.main.ModConfig;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class BipedRenderer<T extends EntityLivingBase> extends MutatedRenderer<T>
 {
@@ -20,11 +30,11 @@ public class BipedRenderer<T extends EntityLivingBase> extends MutatedRenderer<T
             BipedEntityData<?> bipedData = (BipedEntityData<?>) data;
             if (ModConfig.showSwordTrail)
             {
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(scale, scale, scale);
+                RenderSystem.pushMatrix();
+                RenderSystem.scale(scale, scale, scale);
                 bipedData.swordTrail.render();
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager.popMatrix();
+                RenderSystem.color(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.popMatrix();
             }
         }
     }
@@ -34,7 +44,7 @@ public class BipedRenderer<T extends EntityLivingBase> extends MutatedRenderer<T
     {
         if (entity.isSneaking())
         {
-            GlStateManager.translate(0F, 5F * scale, 0F);
+            RenderSystem.translate(0F, 5F * scale, 0F);
         }
     }
 

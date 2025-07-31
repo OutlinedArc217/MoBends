@@ -3,10 +3,20 @@ package goblinbob.mobends.core.client;
 import goblinbob.mobends.core.data.EntityData;
 import goblinbob.mobends.core.util.GlHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public abstract class MutatedRenderer<T extends EntityLivingBase>
 {
@@ -37,29 +47,29 @@ public abstract class MutatedRenderer<T extends EntityLivingBase>
             viewY = viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks;
             viewZ = viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks;
         }
-        GlStateManager.translate(entityX - viewX, entityY - viewY, entityZ - viewZ);
-        GlStateManager.rotate(-interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks), 0F, 1F, 0F);
+        RenderSystem.translate(entityX - viewX, entityY - viewY, entityZ - viewZ);
+        RenderSystem.rotate(-interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks), 0F, 1F, 0F);
 
         this.renderLocalAccessories(entity, data, partialTicks);
 
         float globalScale = entity.isChild() ? getChildScale() : 1;
 
-        GlStateManager.translate(data.globalOffset.getX() * scale * globalScale,
+        RenderSystem.translate(data.globalOffset.getX() * scale * globalScale,
                 data.globalOffset.getY() * scale * globalScale,
                 data.globalOffset.getZ() * scale * globalScale);
-        GlStateManager.translate(0, entity.height / 2, 0);
+        RenderSystem.translate(0, entity.height / 2, 0);
         GlHelper.rotate(data.centerRotation.getSmooth());
-        GlStateManager.translate(0, -entity.height / 2, 0);
+        RenderSystem.translate(0, -entity.height / 2, 0);
         GlHelper.rotate(data.renderRotation.getSmooth());
 
-        GlStateManager.translate(data.localOffset.getX() * scale * globalScale,
+        RenderSystem.translate(data.localOffset.getX() * scale * globalScale,
                 data.localOffset.getY() * scale * globalScale,
                 data.localOffset.getZ() * scale * globalScale);
 
         this.transformLocally(entity, data, partialTicks);
 
-        GlStateManager.rotate(interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks), 0F, 1F, 0F);
-        GlStateManager.translate(viewX - entityX, viewY - entityY, viewZ - entityZ);
+        RenderSystem.rotate(interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks), 0F, 1F, 0F);
+        RenderSystem.translate(viewX - entityX, viewY - entityY, viewZ - entityZ);
     }
 
     /**

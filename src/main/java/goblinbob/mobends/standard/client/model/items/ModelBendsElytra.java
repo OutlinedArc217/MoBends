@@ -3,12 +3,22 @@ package goblinbob.mobends.standard.client.model.items;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 @SideOnly(Side.CLIENT)
 public class ModelBendsElytra extends ModelBase
@@ -29,8 +39,8 @@ public class ModelBendsElytra extends ModelBase
      */
     public void render(Entity entityIn, float p_78088_2_, float limbSwing, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.disableCull();
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.disableCull();
         this.field_187061_b.render(scale);
         this.field_187060_a.render(scale);
     }

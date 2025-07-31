@@ -1,9 +1,19 @@
 package goblinbob.mobends.core.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class CustomFontRenderer
 {
@@ -16,7 +26,7 @@ public class CustomFontRenderer
         this.font = font;
     }
 
-    protected void drawSymbol(CustomFont.Symbol symbol, BufferBuilder vertexBuffer, int x, int y)
+    protected void drawSymbol(CustomFont.Symbol symbol, VertexConsumer vertexBuffer, int x, int y)
     {
         x += symbol.offsetX;
         y += symbol.offsetY;
@@ -57,7 +67,7 @@ public class CustomFontRenderer
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(this.font.resourceLocation);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
         int nextCharX = x;
         for (int i = 0; i < textToDraw.length(); ++i)

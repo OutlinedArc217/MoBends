@@ -6,10 +6,20 @@ import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.math.vector.IVec3fRead;
 import goblinbob.mobends.core.math.vector.Vec3fReadonly;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class BipedPreviewer<D extends BipedEntityData<?>> implements IPreviewer<D>
 {
@@ -69,7 +79,7 @@ public class BipedPreviewer<D extends BipedEntityData<?>> implements IPreviewer<
 			data.overrideOnGroundState(false);
 			
 			double yOffset = Math.sin(t/JUMP_DURATION * Math.PI) * 0.8;
-			GlStateManager.translate(0, yOffset, 0);
+			RenderSystem.translate(0, yOffset, 0);
 		} else {
 			data.overrideOnGroundState(true);
 		}

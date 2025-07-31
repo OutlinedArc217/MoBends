@@ -3,7 +3,17 @@ package goblinbob.mobends.core.client.gui.packswindow;
 import goblinbob.mobends.core.client.gui.elements.GuiElement;
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiAddPackButton extends GuiElement
 {
@@ -44,7 +54,7 @@ public class GuiAddPackButton extends GuiElement
             return;
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(GuiPacksWindow.BACKGROUND_TEXTURE);
-        GlStateManager.color(1, 1, 1, 1);
+        RenderSystem.color(1, 1, 1, 1);
         int textureY = hover ? 105 : 93;
         Draw.texturedModalRect(0, 0, 0, textureY, WIDTH, HEIGHT);
     }

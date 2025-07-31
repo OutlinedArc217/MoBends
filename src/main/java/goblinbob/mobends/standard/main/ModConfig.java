@@ -108,7 +108,7 @@ public class ModConfig {
         final String resourcePath = resourceLocation.getPath();
 
         return patterns.stream().anyMatch(pattern -> {
-            final ResourceLocation patternLocation = new ResourceLocation(pattern);
+            final ResourceLocation patternLocation = ResourceLocation.parse(pattern);
 
             if (resourceLocation.equals(patternLocation)) {
                 return true;
@@ -151,6 +151,6 @@ public class ModConfig {
     }
 
     public static void register() {
-        ModLoadingContext.get().registerConfig(Type.COMMON, SPEC, ModStatics.MODID + "-common.toml");
+        ModLoadingContext.get() /* TODO: Verify this is still available in your Forge version */.registerConfig(Type.COMMON, SPEC, ModStatics.MODID + "-common.toml");
     }
 }

@@ -4,13 +4,23 @@ import goblinbob.mobends.standard.data.PlayerData;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GLAllocation;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class BendsCapeRenderer
 {
@@ -20,7 +30,7 @@ public class BendsCapeRenderer
     public static final int MODEL_DEPTH = 1;
     public static final int SLAB_AMOUNT = 16;
 
-    public static final ResourceLocation CAPE_TEXTURE = new ResourceLocation(ModStatics.MODID, "textures/cape.png");
+    public static final ResourceLocation CAPE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/cape.png");
 
     public Slab[] slabs;
 
@@ -171,16 +181,16 @@ public class BendsCapeRenderer
                         this.compileDisplayList(scale);
                     }
 
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate(this.rotationPointX * scale, this.rotationPointY * scale, (this.rotationPointZ + this.hingeOffset) * scale);
-                    GlStateManager.rotate(this.rotateAngle, 1.0F, 0.0F, 0.0F);
-                    GlStateManager.translate(0, 0, -this.hingeOffset * scale);
+                    RenderSystem.pushMatrix();
+                    RenderSystem.translate(this.rotationPointX * scale, this.rotationPointY * scale, (this.rotationPointZ + this.hingeOffset) * scale);
+                    RenderSystem.rotate(this.rotateAngle, 1.0F, 0.0F, 0.0F);
+                    RenderSystem.translate(0, 0, -this.hingeOffset * scale);
 
-                    GlStateManager.callList(this.displayList);
+                    RenderSystem.callList(this.displayList);
                     if (this.childSlab != null)
                         this.childSlab.render(scale);
 
-                    GlStateManager.popMatrix();
+                    RenderSystem.popMatrix();
                 }
             }
         }
@@ -188,15 +198,15 @@ public class BendsCapeRenderer
         private void compileDisplayList(float scale)
         {
             this.displayList = GLAllocation.generateDisplayLists(1);
-            GlStateManager.glNewList(this.displayList, 4864);
-            BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+            RenderSystem.glNewList(this.displayList, 4864);
+            VertexConsumer bufferbuilder = Tessellator.getInstance().getBuffer();
 
             for (TexturedQuad texturedquad : this.quadList)
             {
                 texturedquad.draw(bufferbuilder, scale);
             }
 
-            GlStateManager.glEndList();
+            RenderSystem.glEndList();
             this.compiled = true;
         }
 

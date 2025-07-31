@@ -6,11 +6,21 @@ import goblinbob.mobends.core.math.matrix.IMat4x4d;
 import goblinbob.mobends.core.math.matrix.MatrixUtils;
 import goblinbob.mobends.core.math.vector.IVec3dRead;
 import goblinbob.mobends.core.math.vector.IVec3fRead;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
+// REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GlHelper
 {
@@ -19,7 +29,7 @@ public class GlHelper
 	
 	public static void vertex(IVec3fRead vector)
 	{
-		GlStateManager.glVertex3f(vector.getX(), vector.getY(), vector.getZ());
+		RenderSystem.glVertex3f(vector.getX(), vector.getY(), vector.getZ());
 	}
 	
 	public static void vertex(IVec3dRead vector)
@@ -29,12 +39,12 @@ public class GlHelper
 	
 	public static void rotate(Quaternion quaternionIn)
     {
-        GlStateManager.multMatrix(QuaternionUtils.quatToGlMatrix(BUF_FLOAT_16, quaternionIn));
+        RenderSystem.multMatrix(QuaternionUtils.quatToGlMatrix(BUF_FLOAT_16, quaternionIn));
     }
 	
 	public static void transform(IMat4x4d matrixIn)
 	{
-		GlStateManager.multMatrix(MatrixUtils.matToGlMatrix(matrixIn, BUF_FLOAT_16));
+		RenderSystem.multMatrix(MatrixUtils.matToGlMatrix(matrixIn, BUF_FLOAT_16));
 	}
 	
 }

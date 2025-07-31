@@ -1,26 +1,36 @@
 package goblinbob.mobends.core.client;
 
 import goblinbob.mobends.core.util.IColorRead;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 
 import java.nio.ByteBuffer;
 import java.util.List;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class Mesh
 {
 	
 	private VertexFormat vertexFormat;
-	private BufferBuilder bufferBuilder;
+	private VertexConsumer bufferBuilder;
 	private VertexBuffer buffer;
 	
 	public Mesh(VertexFormat vertexFormat, int maxVertices)
 	{
 		this.vertexFormat = vertexFormat;
-		this.bufferBuilder = new BufferBuilder(vertexFormat.getNextOffset() * maxVertices);
+		this.bufferBuilder = new VertexConsumer(vertexFormat.getNextOffset() * maxVertices);
 	}
 	
 	public void beginDrawing(int drawMode)
@@ -82,7 +92,7 @@ public class Mesh
                 usage.preDraw(this.vertexFormat, j, i, bytebuffer);
             }
 
-            GlStateManager.glDrawArrays(this.bufferBuilder.getDrawMode(), 0, this.bufferBuilder.getVertexCount());
+            RenderSystem.glDrawArrays(this.bufferBuilder.getDrawMode(), 0, this.bufferBuilder.getVertexCount());
             int i1 = 0;
 
             for (int j1 = list.size(); i1 < j1; ++i1)
@@ -95,7 +105,7 @@ public class Mesh
         }
 	}
 
-	public BufferBuilder getBufferBuilder()
+	public VertexConsumer getBufferBuilder()
 	{
 		return this.bufferBuilder;
 	}

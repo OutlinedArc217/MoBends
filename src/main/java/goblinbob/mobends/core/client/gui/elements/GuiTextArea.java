@@ -5,12 +5,22 @@ import com.google.common.base.Predicates;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.VertexConsumer;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class GuiTextArea extends Gui
 {
@@ -596,19 +606,19 @@ public class GuiTextArea extends Gui
         }
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder vertexbuffer = tessellator.getBuffer();
-        GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableColorLogic();
-        GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
+        VertexConsumer vertexbuffer = tessellator.getBuffer();
+        RenderSystem.color(0.0F, 0.0F, 255.0F, 255.0F);
+        RenderSystem.disableTexture2D();
+        RenderSystem.enableColorLogic();
+        RenderSystem.colorLogicOp(RenderSystem.LogicOp.OR_REVERSE);
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION);
         vertexbuffer.pos((double)startX, (double)endY, 0.0D).endVertex();
         vertexbuffer.pos((double)endX, (double)endY, 0.0D).endVertex();
         vertexbuffer.pos((double)endX, (double)startY, 0.0D).endVertex();
         vertexbuffer.pos((double)startX, (double)startY, 0.0D).endVertex();
         tessellator.draw();
-        GlStateManager.disableColorLogic();
-        GlStateManager.enableTexture2D();
+        RenderSystem.disableColorLogic();
+        RenderSystem.enableTexture2D();
     }
 
     /**

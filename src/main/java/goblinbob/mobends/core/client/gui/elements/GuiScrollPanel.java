@@ -3,8 +3,18 @@ package goblinbob.mobends.core.client.gui.elements;
 import goblinbob.mobends.core.util.Draw;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.core.util.UIScissorHelper;
-import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public abstract class GuiScrollPanel extends GuiElement
 {
@@ -148,13 +158,13 @@ public abstract class GuiScrollPanel extends GuiElement
     {
         final float scroll = GUtil.lerp(this.prevScrollAmount, this.scrollAmount, partialTicks);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(this.getViewX(), this.getViewY(), 0);
+        RenderSystem.pushMatrix();
+        RenderSystem.translate(this.getViewX(), this.getViewY(), 0);
 
         this.drawBackground(partialTicks);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0, -scroll, 0);
+        RenderSystem.pushMatrix();
+        RenderSystem.translate(0, -scroll, 0);
         UIScissorHelper.INSTANCE.setUIBounds((int) this.getAbsoluteX(), (int) this.getAbsoluteY(), this.width - this.scrollBarWidth, this.height);
         UIScissorHelper.INSTANCE.enable();
 
@@ -162,11 +172,11 @@ public abstract class GuiScrollPanel extends GuiElement
         this.drawContent(partialTicks);
 
         UIScissorHelper.INSTANCE.disable();
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
 
         this.drawForeground(partialTicks);
 
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     protected abstract void drawContent(float partialTicks);
@@ -194,7 +204,7 @@ public abstract class GuiScrollPanel extends GuiElement
         // Handle
         Draw.rectangle(width - scrollBarWidth, this.getScrollHandleY(partialTicks), scrollBarWidth, scrollBarHeight, barColor);
 
-        GlStateManager.color(1, 1, 1, 1);
+        RenderSystem.color(1, 1, 1, 1);
     }
 
     public int getScrollAmount()

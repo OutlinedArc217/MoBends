@@ -6,7 +6,17 @@ import goblinbob.mobends.core.util.ModelUtils;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
-import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import org.joml.Matrix4f;
+import org.joml.Matrix3f;
+import com.mojang.math.Axis;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class MutatedBox extends net.minecraft.client.model.ModelBox
 {
@@ -136,7 +146,7 @@ public class MutatedBox extends net.minecraft.client.model.ModelBox
     }
 
     @Override
-    public void render(BufferBuilder bufferBuilder, float scale)
+    public void render(VertexConsumer bufferBuilder, float scale)
     {
     	byte tempFlag = this.faceVisibilityFlag;
         for (TexturedQuad quad : quadList)
