@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: WolfSittingAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.wolf;
 
 import goblinbob.mobends.core.animation.bit.KeyframeAnimationBit;
 import goblinbob.mobends.standard.data.WolfData;
 import goblinbob.mobends.standard.main.ModStatics;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class WolfSittingAnimationBit extends KeyframeAnimationBit<WolfData>
 {

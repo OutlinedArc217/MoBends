@@ -1,11 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PigZombieMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.standard.data.PigZombieData;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelZombie;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.world.entity.LivingEntity;
 
 public class PigZombieMutator extends BipedMutator<PigZombieData, EntityPigZombie, ModelZombie>
 {
@@ -19,7 +27,7 @@ public class PigZombieMutator extends BipedMutator<PigZombieData, EntityPigZombi
 	}
 	
 	@Override
-	public void fetchFields(RenderLivingBase<? extends EntityPigZombie> renderer)
+	public void fetchFields(LivingEntityRenderer<? extends EntityPigZombie> renderer)
 	{
 		super.fetchFields(renderer);
 
@@ -44,7 +52,7 @@ public class PigZombieMutator extends BipedMutator<PigZombieData, EntityPigZombi
 	}
 	
 	@Override
-	public boolean shouldModelBeSkipped(ModelBase model)
+	public boolean shouldModelBeSkipped(Model model)
 	{
 		return !(model instanceof ModelZombie);
 	}

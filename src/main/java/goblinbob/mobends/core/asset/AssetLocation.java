@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AssetLocation.java
+ */
+
 package goblinbob.mobends.core.asset;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import goblinbob.mobends.standard.main.ModStatics;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 

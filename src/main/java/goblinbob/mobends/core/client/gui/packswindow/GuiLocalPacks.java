@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiLocalPacks.java
+ */
+
 package goblinbob.mobends.core.client.gui.packswindow;
 
 import goblinbob.mobends.core.client.gui.GuiDragger;
@@ -12,7 +19,7 @@ import goblinbob.mobends.core.util.IDisposable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -132,8 +139,8 @@ public class GuiLocalPacks extends Gui implements ISubscriber, IDisposable
         availablePacksList.draw(partialTicks);
         appliedPacksList.draw(partialTicks);
 
-        drawCenteredString(fontRenderer, I18n.format("mobends.gui.unusedpacks"), x + GuiPacksWindow.EDITOR_WIDTH / 4, y + 8, 0xffffff);
-        drawCenteredString(fontRenderer, I18n.format("mobends.gui.appliedpacks"), x + GuiPacksWindow.EDITOR_WIDTH * 3 / 4 + 6, y + 8, 0xffffff);
+        drawCenteredString(fontRenderer, Component.format("mobends.gui.unusedpacks"), x + GuiPacksWindow.EDITOR_WIDTH / 4, y + 8, 0xffffff);
+        drawCenteredString(fontRenderer, Component.format("mobends.gui.appliedpacks"), x + GuiPacksWindow.EDITOR_WIDTH * 3 / 4 + 6, y + 8, 0xffffff);
 
         final GuiPackEntry element = dragger.getDraggedElement();
         if (element != null)

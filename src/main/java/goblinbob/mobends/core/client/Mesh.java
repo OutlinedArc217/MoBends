@@ -1,8 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: Mesh.java
+ */
+
 package goblinbob.mobends.core.client;
 
 import goblinbob.mobends.core.util.IColorRead;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;

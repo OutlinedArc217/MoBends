@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SleepingAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.player;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.standard.data.PlayerData;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class SleepingAnimationBit extends AnimationBit<PlayerData>
 {
@@ -39,7 +46,7 @@ public class SleepingAnimationBit extends AnimationBit<PlayerData>
 
         final float PI = (float) Math.PI;
         float phase = DataUpdateHandler.getTicks() / 10;
-        data.head.rotation.setSmoothness(1.0F).orientX(((MathHelper.cos(phase) - 1) / 2) * -3);
+        data.head.rotation.setSmoothness(1.0F).orientX(((Mth.cos(phase) - 1) / 2) * -3);
         data.rightArm.rotation.setSmoothness(0.4F).orientX(0.0F)
                 .rotateZ(2.5F);
         data.leftArm.rotation.setSmoothness(0.4F).orientX(0.0F)

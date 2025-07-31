@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: DefaultEntityBender.java
+ */
+
 package goblinbob.mobends.core.bender;
 
 import goblinbob.mobends.core.client.MutatedRenderer;
@@ -5,9 +12,9 @@ import goblinbob.mobends.core.data.EntityDatabase;
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.core.data.LivingEntityData;
 import goblinbob.mobends.core.mutators.IMutatorFactory;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 
-public class DefaultEntityBender<T extends EntityLivingBase> extends EntityBender<T>
+public class DefaultEntityBender<T extends LivingEntity> extends EntityBender<T>
 {
 
     private final IEntityDataFactory<T> entityDataFactory;

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GlHelper.java
+ */
+
 package goblinbob.mobends.core.util;
 
 import goblinbob.mobends.core.math.Quaternion;
@@ -6,7 +13,7 @@ import goblinbob.mobends.core.math.matrix.IMat4x4d;
 import goblinbob.mobends.core.math.matrix.MatrixUtils;
 import goblinbob.mobends.core.math.vector.IVec3dRead;
 import goblinbob.mobends.core.math.vector.IVec3fRead;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import org.lwjgl.BufferUtils;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
@@ -21,6 +28,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
 
 public class GlHelper
 {

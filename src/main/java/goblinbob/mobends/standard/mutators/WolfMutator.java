@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: WolfMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.FaceRotation;
@@ -9,9 +16,9 @@ import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.core.mutators.Mutator;
 import goblinbob.mobends.standard.client.renderer.entity.layers.LayerWolfMisc;
 import goblinbob.mobends.standard.data.WolfData;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelWolf;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.passive.EntityWolf;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,6 +30,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.LivingEntity;
 
 public class WolfMutator extends Mutator<WolfData, EntityWolf, ModelWolf>
 {
@@ -91,13 +99,13 @@ public class WolfMutator extends Mutator<WolfData, EntityWolf, ModelWolf>
     }
 
     @Override
-    public void swapLayer(RenderLivingBase<? extends EntityWolf> renderer, int index, boolean isModelVanilla)
+    public void swapLayer(LivingEntityRenderer<? extends EntityWolf> renderer, int index, boolean isModelVanilla)
     {
 
     }
 
     @Override
-    public void deswapLayer(RenderLivingBase<? extends EntityWolf> renderer, int index)
+    public void deswapLayer(LivingEntityRenderer<? extends EntityWolf> renderer, int index)
     {
     }
 
@@ -259,7 +267,7 @@ public class WolfMutator extends Mutator<WolfData, EntityWolf, ModelWolf>
     }
 
     @Override
-    public boolean shouldModelBeSkipped(ModelBase model)
+    public boolean shouldModelBeSkipped(Model model)
     {
         return !(model instanceof ModelWolf);
     }

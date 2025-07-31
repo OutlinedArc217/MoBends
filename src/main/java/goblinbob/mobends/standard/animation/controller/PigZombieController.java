@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PigZombieController.java
+ */
+
 package goblinbob.mobends.standard.animation.controller;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.animation.layer.HardAnimationLayer;
 import goblinbob.mobends.standard.animation.bit.biped.AttackSlashInwardAnimationBit;
 import goblinbob.mobends.standard.animation.bit.biped.JumpAnimationBit;
@@ -14,6 +21,7 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.world.entity.Entity;
 
 /**
  * This is an animation controller for a zombie instance.
@@ -22,7 +30,7 @@ import java.util.List;
  * @author Iwo Plaza
  *
  */
-public class PigZombieController implements IAnimationController<PigZombieData>
+public class PigZombieController implements Object /* TODO: Implement IAnimationController */<PigZombieData>
 {
 	
 	protected HardAnimationLayer<BipedEntityData<EntityPigZombie>> layerBase;

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ConnectionHelper.java
+ */
+
 package goblinbob.mobends.core.util;
 
 import com.google.gson.Gson;
@@ -22,6 +29,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import net.minecraft.world.entity.Entity;
 
 public class ConnectionHelper
 {

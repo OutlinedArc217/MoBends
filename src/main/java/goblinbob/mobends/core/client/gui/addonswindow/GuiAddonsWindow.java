@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiAddonsWindow.java
+ */
+
 package goblinbob.mobends.core.client.gui.addonswindow;
 
 import goblinbob.mobends.core.addon.Addons;
@@ -6,8 +13,8 @@ import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class GuiAddonsWindow extends Gui
 {
@@ -40,7 +47,7 @@ public class GuiAddonsWindow extends Gui
 		Minecraft.getMinecraft().getTextureManager().bindTexture(BACKGROUND_TEXTURE);
 		this.drawTexturedModalRect(this.x, this.y, 0, 0, WIDTH, HEIGHT);
 
-		this.drawCenteredString(this.fontRenderer, I18n.format("mobends.gui.addons"),
+		this.drawCenteredString(this.fontRenderer, Component.format("mobends.gui.addons"),
 				(int) (this.x + WIDTH/2), this.y + 4, 0xFFFFFF);
 		
 		int y = this.y + 50;

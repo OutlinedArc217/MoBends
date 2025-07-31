@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SkeletonMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.BoxSide;
@@ -6,9 +13,9 @@ import goblinbob.mobends.core.client.model.ModelPartExtended;
 import goblinbob.mobends.core.client.model.ModelPartPostOffset;
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.standard.data.SkeletonData;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelSkeleton;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.monster.EntitySkeleton;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,6 +27,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * Instantiated once per RenderSkeleton
@@ -38,7 +46,7 @@ public class SkeletonMutator extends BipedMutator<SkeletonData, EntitySkeleton, 
 	}
 
 	@Override
-	public void fetchFields(RenderLivingBase<? extends EntitySkeleton> renderer)
+	public void fetchFields(LivingEntityRenderer<? extends EntitySkeleton> renderer)
 	{
 		super.fetchFields(renderer);
 
@@ -68,17 +76,17 @@ public class SkeletonMutator extends BipedMutator<SkeletonData, EntitySkeleton, 
 
 		if (this.boneLimbs)
 		{
-//			this.bipedRightArm = new ModelRenderer(this, 40, 16);
+//			this.bipedRightArm = new ModelPart(this, 40, 16);
 //			this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
 //			this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
-//			this.bipedLeftArm = new ModelRenderer(this, 40, 16);
+//			this.bipedLeftArm = new ModelPart(this, 40, 16);
 //			this.bipedLeftArm.mirror = true;
 //			this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelSize);
 //			this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-//			this.bipedRightLeg = new ModelRenderer(this, 0, 16);
+//			this.bipedRightLeg = new ModelPart(this, 0, 16);
 //			this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
 //			this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
-//			this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
+//			this.bipedLeftLeg = new ModelPart(this, 0, 16);
 //			this.bipedLeftLeg.mirror = true;
 //			this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
 //			this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
@@ -124,7 +132,7 @@ public class SkeletonMutator extends BipedMutator<SkeletonData, EntitySkeleton, 
 					.create();
 			this.leftArm.setExtension(this.leftForeArm);
 
-			//			this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
+			//			this.bipedLeftLeg = new ModelPart(this, 0, 16);
 			//			this.bipedLeftLeg.mirror = true;
 			//			this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
 			//			this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelSize);
@@ -162,7 +170,7 @@ public class SkeletonMutator extends BipedMutator<SkeletonData, EntitySkeleton, 
 	}
 
 	@Override
-	public boolean shouldModelBeSkipped(ModelBase model)
+	public boolean shouldModelBeSkipped(Model model)
 	{
 		return !(model instanceof ModelSkeleton);
 	}

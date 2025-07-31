@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SwordTrail.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity;
 
 import goblinbob.mobends.core.client.model.ModelPartTransform;
@@ -7,10 +14,10 @@ import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.core.util.IColorRead;
 import goblinbob.mobends.standard.data.BipedEntityData;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.RenderSystem.DestFactor;
 import net.minecraft.client.renderer.RenderSystem.SourceFactor;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.EnumHandSide;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 
@@ -27,6 +34,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
 
 public class SwordTrail
 {
@@ -161,7 +169,7 @@ public class SwordTrail
 
     public void add(BipedEntityData<?> entityData, float velocityX, float velocityY, float velocityZ)
     {
-        final EntityLivingBase entity = entityData.getEntity();
+        final LivingEntity entity = entityData.getEntity();
         final EnumHandSide primaryHand = entity.getPrimaryHand();
         final TrailPart newPart = new TrailPart(primaryHand, this.baseColor.get(), velocityX, velocityY, velocityZ);
 

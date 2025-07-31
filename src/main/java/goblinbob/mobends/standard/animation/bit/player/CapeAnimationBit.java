@@ -1,10 +1,18 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: CapeAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.player;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 public class CapeAnimationBit extends AnimationBit<PlayerData>
 {
@@ -23,14 +31,14 @@ public class CapeAnimationBit extends AnimationBit<PlayerData>
         data.cape.rotation.orientX(0.0F);
 
         final double partialTicks = DataUpdateHandler.partialTicks;
-        double d0 = player.prevChasingPosX + (player.chasingPosX - player.prevChasingPosX) * partialTicks - (player.prevPosX + (player.posX - player.prevPosX) * partialTicks);
-        double d1 = player.prevChasingPosY + (player.chasingPosY - player.prevChasingPosY) * partialTicks - (player.prevPosY + (player.posY - player.prevPosY) * partialTicks);
-        double d2 = player.prevChasingPosZ + (player.chasingPosZ - player.prevChasingPosZ) * partialTicks - (player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks);
+        double d0 = player.prevChasingPosX + (player.chasingPosX - player.prevChasingPosX) * partialTicks - (player.prevPosX + (player.getX() - player.prevPosX) * partialTicks);
+        double d1 = player.prevChasingPosY + (player.chasingPosY - player.prevChasingPosY) * partialTicks - (player.prevPosY + (player.getY() - player.prevPosY) * partialTicks);
+        double d2 = player.prevChasingPosZ + (player.chasingPosZ - player.prevChasingPosZ) * partialTicks - (player.prevPosZ + (player.getZ() - player.prevPosZ) * partialTicks);
         double f = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks;
         double d3 = Math.sin(f * 0.017453292);
         double d4 = -Math.cos(f * 0.017453292);
         double f1 = d1 * 10.0;
-        f1 = MathHelper.clamp(f1, -6.0F, 32.0F);
+        f1 = Mth.clamp(f1, -6.0F, 32.0F);
         float f2 = (float)(d0 * d3 + d2 * d4) * 100.0F;
         float f3 = (float)(d0 * d4 - d2 * d3) * 100.0F;
 

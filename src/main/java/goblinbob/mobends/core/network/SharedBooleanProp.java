@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SharedBooleanProp.java
+ */
+
 package goblinbob.mobends.core.network;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class SharedBooleanProp extends SharedProperty<Boolean>
 {
@@ -18,13 +25,13 @@ public class SharedBooleanProp extends SharedProperty<Boolean>
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(CompoundTag tag)
     {
         tag.setBoolean(key, value);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(CompoundTag tag)
     {
         value = tag.getBoolean(key);
     }

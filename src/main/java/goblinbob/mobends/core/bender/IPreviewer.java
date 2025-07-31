@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: IPreviewer.java
+ */
+
 package goblinbob.mobends.core.bender;
 
 import goblinbob.mobends.core.data.EntityData;
@@ -5,6 +12,8 @@ import goblinbob.mobends.core.math.vector.IVec3fRead;
 import goblinbob.mobends.core.math.vector.Vec3f;
 
 import java.util.Map;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public interface IPreviewer<D extends EntityData<?>>
 {

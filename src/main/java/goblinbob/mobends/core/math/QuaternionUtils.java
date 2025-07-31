@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: QuaternionUtils.java
+ */
+
 package goblinbob.mobends.core.math;
 
 import goblinbob.mobends.core.math.matrix.IMat4x4d;
@@ -6,6 +13,7 @@ import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.math.vector.VectorUtils;
 
 import java.nio.FloatBuffer;
+import net.minecraft.world.phys.Vec3;
 
 public class QuaternionUtils
 {

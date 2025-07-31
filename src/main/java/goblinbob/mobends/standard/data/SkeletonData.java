@@ -1,7 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SkeletonData.java
+ */
+
 package goblinbob.mobends.standard.data;
 
 import goblinbob.mobends.standard.animation.controller.SkeletonController;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.world.entity.Entity;
 
 public class SkeletonData extends BipedEntityData<EntitySkeleton>
 {

@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: EntityRenderHandler.java
+ */
+
 package goblinbob.mobends.core.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.bender.EntityBenderRegistry;
-import goblinbob.mobends.core.client.model.ModelRenderer;
+import goblinbob.mobends.core.client.model.ModelPart;
 import goblinbob.mobends.core.data.EntityData;
 import goblinbob.mobends.core.math.matrix.IMat4x4d;
 import net.minecraft.client.Minecraft;
@@ -30,11 +37,11 @@ import net.minecraft.client.model.geom.PartPose;
 @OnlyIn(Dist.CLIENT)
 public class EntityRenderHandler {
     private static final WeakHashMap<Entity, EntityData<?>> ENTITY_DATA_CACHE = new WeakHashMap<>();
-    private static final ModelRenderer MODEL_RENDERER = new ModelRenderer();
+    private static final ModelPart MODEL_RENDERER = new ModelPart();
     
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
-        if (!IAnimationController.getGlobalAnimationsEnabled()) return;
+        if (!Object /* TODO: Implement IAnimationController */.getGlobalAnimationsEnabled()) return;
 
         LivingEntity entity = event.getEntity();
         var definition = EntityBenderRegistry.instance.getDefinition(entity.getType());
@@ -58,7 +65,7 @@ public class EntityRenderHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
-        if (!IAnimationController.getGlobalAnimationsEnabled()) return;
+        if (!Object /* TODO: Implement IAnimationController */.getGlobalAnimationsEnabled()) return;
 
         LivingEntity entity = event.getEntity();
         var definition = EntityBenderRegistry.instance.getDefinition(entity.getType());

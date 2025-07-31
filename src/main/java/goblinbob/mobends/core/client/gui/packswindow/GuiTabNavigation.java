@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiTabNavigation.java
+ */
+
 package goblinbob.mobends.core.client.gui.packswindow;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +63,7 @@ public class GuiTabNavigation
             // Drawing the selected tab after others, so it's on top.
             selectedTab.draw(mouseX, mouseY);
 
-            mc.fontRenderer.drawStringWithShadow(I18n.format(selectedTab.titleKey), x + (GuiPackTab.WIDTH - 2) * this.tabs.size() + 10, y - 10, 0xffffff);
+            mc.fontRenderer.drawStringWithShadow(Component.format(selectedTab.titleKey), x + (GuiPackTab.WIDTH - 2) * this.tabs.size() + 10, y - 10, 0xffffff);
         }
 
     }

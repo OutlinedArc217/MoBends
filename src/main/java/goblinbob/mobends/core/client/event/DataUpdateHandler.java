@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: DataUpdateHandler.java
+ */
+
 package goblinbob.mobends.core.client.event;
 
 import goblinbob.mobends.core.addon.Addons;
@@ -6,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraft.world.entity.Entity;
 
 public class DataUpdateHandler
 {

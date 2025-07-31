@@ -1,6 +1,13 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PreviewHelper.java
+ */
+
 package goblinbob.mobends.core.bender;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,8 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: Draw.java
+ */
+
 package goblinbob.mobends.core.util;
 
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
 // REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.vertex.VertexConsumer;

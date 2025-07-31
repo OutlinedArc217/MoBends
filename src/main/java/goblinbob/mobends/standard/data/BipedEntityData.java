@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BipedEntityData.java
+ */
+
 package goblinbob.mobends.standard.data;
 
 import goblinbob.mobends.core.client.model.ModelPartTransform;
@@ -5,7 +12,7 @@ import goblinbob.mobends.core.data.LivingEntityData;
 import goblinbob.mobends.core.math.SmoothOrientation;
 import goblinbob.mobends.core.supporters.SupporterContent;
 import goblinbob.mobends.standard.client.renderer.entity.SwordTrail;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,7 +24,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 
-public abstract class BipedEntityData<E extends EntityLivingBase> extends LivingEntityData<E>
+public abstract class BipedEntityData<E extends LivingEntity> extends LivingEntityData<E>
 {
 	/*
 	 * These models need to be represented only

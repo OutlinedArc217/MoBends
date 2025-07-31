@@ -1,12 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ModelBendsElytra.java
+ */
+
 package goblinbob.mobends.standard.client.model.items;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,15 +28,15 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 
 @SideOnly(Side.CLIENT)
-public class ModelBendsElytra extends ModelBase
+public class ModelBendsElytra extends Model
 {
-    private ModelRenderer field_187060_a;
-    private ModelRenderer field_187061_b = new ModelRenderer(this, 22, 0);
+    private ModelPart field_187060_a;
+    private ModelPart field_187061_b = new ModelPart(this, 22, 0);
 
     public ModelBendsElytra()
     {
         this.field_187061_b.addBox(-10.0F, 0.0F, 0.0F, 10, 20, 2, 1.0F);
-        this.field_187060_a = new ModelRenderer(this, 22, 0);
+        this.field_187060_a = new ModelPart(this, 22, 0);
         this.field_187060_a.mirror = true;
         this.field_187060_a.addBox(0.0F, 0.0F, 0.0F, 10, 20, 2, 1.0F);
     }
@@ -58,13 +65,13 @@ public class ModelBendsElytra extends ModelBase
         float f2 = 0.0F;
         float f3 = 0.0F;
 
-        if (entityIn instanceof EntityLivingBase && ((EntityLivingBase)entityIn).isElytraFlying())
+        if (entityIn instanceof LivingEntity && ((LivingEntity)entityIn).isElytraFlying())
         {
             float f4 = 1.0F;
 
             if (entityIn.motionY < 0.0D)
             {
-                Vec3d vec3d = (new Vec3d(entityIn.motionX, entityIn.motionY, entityIn.motionZ)).normalize();
+                Vec3 vec3d = (new Vec3(entityIn.motionX, entityIn.motionY, entityIn.motionZ)).normalize();
                 f4 = 1.0F - (float)Math.pow(-vec3d.y, 1.5D);
             }
 
@@ -103,7 +110,7 @@ public class ModelBendsElytra extends ModelBase
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)
+    public void setLivingAnimations(LivingEntity entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)
     {
         super.setLivingAnimations(entitylivingbaseIn, p_78086_2_, p_78086_3_, partialTickTime);
     }

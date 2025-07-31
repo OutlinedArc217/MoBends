@@ -1,8 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: KeyframeUtils.java
+ */
+
 package goblinbob.mobends.core.util;
 
 import goblinbob.mobends.core.math.SmoothOrientation;
 import goblinbob.mobends.core.math.vector.IVec3f;
 import goblinbob.mobends.core.math.vector.SmoothVector3f;
+import net.minecraft.world.phys.Vec3;
 
 public class KeyframeUtils
 {

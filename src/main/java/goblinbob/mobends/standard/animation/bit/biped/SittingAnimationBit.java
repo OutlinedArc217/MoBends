@@ -1,7 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SittingAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.standard.data.BipedEntityData;
+import net.minecraft.world.entity.Entity;
 
 public class SittingAnimationBit extends AnimationBit<BipedEntityData<?>>
 {

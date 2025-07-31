@@ -1,7 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PlayerPreviewer.java
+ */
+
 package goblinbob.mobends.standard.previewer;
 
 import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 
 public class PlayerPreviewer extends BipedPreviewer<PlayerData>
 {

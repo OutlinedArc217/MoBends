@@ -1,12 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ModelUtils.java
+ */
+
 package goblinbob.mobends.core.util;
 
 import goblinbob.mobends.core.client.model.BoxFactory;
 import goblinbob.mobends.core.client.model.FaceRotation;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.model.PositionTextureVertex;
-import net.minecraft.client.model.TexturedQuad;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.AABB;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.Collection;
@@ -25,12 +32,12 @@ import net.minecraft.client.model.geom.PartPose;
 public class ModelUtils
 {
 
-    public static AxisAlignedBB getBounds(ModelRenderer modelRenderer)
+    public static AABB getBounds(ModelPart modelRenderer)
     {
-        return getBounds(modelRenderer, new Vector3f(0, 0, 0), new AxisAlignedBB(0, 0, 0, 0, 0, 0));
+        return getBounds(modelRenderer, new Vector3f(0, 0, 0), new AABB(0, 0, 0, 0, 0, 0));
     }
 
-    public static AxisAlignedBB getBounds(ModelRenderer modelRenderer, Vector3f position, AxisAlignedBB oldBounds)
+    public static AABB getBounds(ModelPart modelRenderer, Vector3f position, AABB oldBounds)
     {
         double minX = oldBounds.minX;
         double minY = oldBounds.minY;
@@ -62,10 +69,10 @@ public class ModelUtils
             }
         }
 
-        AxisAlignedBB newBounds = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+        AABB newBounds = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
 
         if (modelRenderer.childModels != null)
-            for (ModelRenderer child : modelRenderer.childModels)
+            for (ModelPart child : modelRenderer.childModels)
             {
                 newBounds = getBounds(child, new Vector3f(x, y, z), newBounds);
             }
@@ -77,13 +84,13 @@ public class ModelUtils
      * This method iterates through all parts looking for the parent of the specified part. It then runs itself with
      * that parent as the next part, and it does that until the part is not null.
      */
-    public static ModelRenderer getRootParent(final ModelRenderer partIn, final Collection<ModelRenderer> partsIn)
+    public static ModelPart getRootParent(final ModelPart partIn, final Collection<ModelPart> partsIn)
     {
-        for (ModelRenderer possibleParent : partsIn)
+        for (ModelPart possibleParent : partsIn)
         {
             if (possibleParent != null && possibleParent.childModels != null && possibleParent.childModels.contains(partIn))
             {
-                ModelRenderer nextParent = getRootParent(possibleParent, partsIn);
+                ModelPart nextParent = getRootParent(possibleParent, partsIn);
                 if (nextParent != null)
                     return nextParent;
                 else
@@ -93,9 +100,9 @@ public class ModelUtils
         return null;
     }
 
-    public static Collection<ModelRenderer> getParentsList(ModelRenderer partIn, Collection<ModelRenderer> possibleParents, Collection<ModelRenderer> parentsList)
+    public static Collection<ModelPart> getParentsList(ModelPart partIn, Collection<ModelPart> possibleParents, Collection<ModelPart> parentsList)
     {
-        for (ModelRenderer possibleParent : possibleParents)
+        for (ModelPart possibleParent : possibleParents)
         {
             if (possibleParent != null && possibleParent.childModels != null && possibleParent.childModels.contains(partIn))
             {
@@ -107,17 +114,17 @@ public class ModelUtils
         return parentsList;
     }
 
-    public static Collection<ModelRenderer> getParentsList(ModelRenderer partIn, Collection<ModelRenderer> possibleParents)
+    public static Collection<ModelPart> getParentsList(ModelPart partIn, Collection<ModelPart> possibleParents)
     {
         return getParentsList(partIn, possibleParents, new LinkedList<>());
     }
 
-    public static Vector3f getGlobalOrigin(ModelRenderer partIn, Collection<ModelRenderer> possibleParents)
+    public static Vector3f getGlobalOrigin(ModelPart partIn, Collection<ModelPart> possibleParents)
     {
         Vector3f origin = new Vector3f(partIn.rotationPointX, partIn.rotationPointY, partIn.rotationPointZ);
 
-        Collection<ModelRenderer> parentsList = getParentsList(partIn, possibleParents);
-        for (ModelRenderer parent : parentsList)
+        Collection<ModelPart> parentsList = getParentsList(partIn, possibleParents);
+        for (ModelPart parent : parentsList)
         {
             origin.x += parent.rotationPointX;
             origin.y += parent.rotationPointY;

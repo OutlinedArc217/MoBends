@@ -1,9 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: StandAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 public class StandAnimationBit<T extends BipedEntityData<?>> extends AnimationBit<T>
 {
@@ -57,11 +65,11 @@ public class StandAnimationBit<T extends BipedEntityData<?>> extends AnimationBi
 
 		final float PI = (float) Math.PI;
 		float phase = DataUpdateHandler.getTicks() / 10;
-		data.body.rotation.setSmoothness(1.0F).orientX(((MathHelper.cos(phase) - 1) / 2) * -3);
+		data.body.rotation.setSmoothness(1.0F).orientX(((Mth.cos(phase) - 1) / 2) * -3);
 		data.rightArm.rotation.setSmoothness(0.4F).orientX(0.0F)
-				.rotateZ(MathHelper.cos(phase + PI/2) * -2.5F + 2.5F);
+				.rotateZ(Mth.cos(phase + PI/2) * -2.5F + 2.5F);
 		data.leftArm.rotation.setSmoothness(0.4F).orientX(0.0F)
-				.rotateZ(MathHelper.cos(phase + PI/2) * 2.5F - 2.5F);
+				.rotateZ(Mth.cos(phase + PI/2) * 2.5F - 2.5F);
 
 		float touchdown = Math.min(data.getTicksAfterTouchdown() * kneelDuration, 1.0F);
 		if (touchdown < 1.0F)

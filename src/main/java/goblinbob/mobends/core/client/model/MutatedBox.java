@@ -1,12 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: MutatedBox.java
+ */
+
 package goblinbob.mobends.core.client.model;
 
 import goblinbob.mobends.core.math.physics.AABBox;
 import goblinbob.mobends.core.math.vector.IVec3fRead;
 import goblinbob.mobends.core.util.ModelUtils;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.model.PositionTextureVertex;
-import net.minecraft.client.model.TexturedQuad;
-import net.minecraft.client.renderer.VertexConsumer;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.PartPose;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,6 +24,8 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 
 public class MutatedBox extends net.minecraft.client.model.ModelBox
 {
@@ -31,7 +40,7 @@ public class MutatedBox extends net.minecraft.client.model.ModelBox
     public static final int FRONT = 4;
     public static final int BACK = 5;
 
-    public MutatedBox(ModelRenderer renderer, IVec3fRead min, IVec3fRead max, BoxFactory.TextureFace[] faces, byte faceVisibilityFlag)
+    public MutatedBox(ModelPart renderer, IVec3fRead min, IVec3fRead max, BoxFactory.TextureFace[] faces, byte faceVisibilityFlag)
     {
         super(renderer, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
         this.faceVisibilityFlag = faceVisibilityFlag;
@@ -82,7 +91,7 @@ public class MutatedBox extends net.minecraft.client.model.ModelBox
         }
     }
 
-    public MutatedBox(ModelRenderer modelRenderer, int texU, int texV, float x, float y, float z, int width, int height, int length, float inflation, boolean mirrored, byte faceVisibilityFlag)
+    public MutatedBox(ModelPart modelRenderer, int texU, int texV, float x, float y, float z, int width, int height, int length, float inflation, boolean mirrored, byte faceVisibilityFlag)
     {
         super(modelRenderer, texU, texV, x, y, z, (int) width, (int) height, (int) length, inflation);
         this.faceVisibilityFlag = faceVisibilityFlag;
@@ -135,12 +144,12 @@ public class MutatedBox extends net.minecraft.client.model.ModelBox
         }
     }
 
-    public MutatedBox(ModelRenderer modelRenderer, int texU, int texV, float x, float y, float z, int width, int height, int length, float inflation, boolean mirrored)
+    public MutatedBox(ModelPart modelRenderer, int texU, int texV, float x, float y, float z, int width, int height, int length, float inflation, boolean mirrored)
     {
         this(modelRenderer, texU, texV, x, y, z, width, height, length, inflation, mirrored, (byte) 0b111111);
     }
 
-    public MutatedBox(ModelRenderer modelRenderer, int texU, int texV, float x, float y, float z, int width, int height, int length, float inflation)
+    public MutatedBox(ModelPart modelRenderer, int texU, int texV, float x, float y, float z, int width, int height, int length, float inflation)
     {
         this(modelRenderer, texU, texV, x, y, z, width, height, length, inflation, modelRenderer.mirror, (byte) 0b111111);
     }

@@ -1,6 +1,13 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiEditorNotFound.java
+ */
+
 package goblinbob.mobends.core.client.gui.popup;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.network.chat.Component;
 
 public class GuiEditorNotFound extends GuiPopUp
 {
@@ -8,9 +15,9 @@ public class GuiEditorNotFound extends GuiPopUp
 
     public GuiEditorNotFound(ButtonAction onBack, ButtonAction onGetEditor)
     {
-        super(I18n.format("mobends.gui.editornotfound"), 200, 100, new ButtonProps[] {
-                new ButtonProps(I18n.format("mobends.gui.back"), onBack),
-                new ButtonProps(I18n.format("mobends.gui.geteditor"), onGetEditor)
+        super(Component.format("mobends.gui.editornotfound"), 200, 100, new ButtonProps[] {
+                new ButtonProps(Component.format("mobends.gui.back"), onBack),
+                new ButtonProps(Component.format("mobends.gui.geteditor"), onGetEditor)
         });
     }
 

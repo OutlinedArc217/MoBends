@@ -1,8 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ElytraAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.player;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.standard.data.PlayerData;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class ElytraAnimationBit extends AnimationBit<PlayerData>
 {
@@ -22,9 +29,9 @@ public class ElytraAnimationBit extends AnimationBit<PlayerData>
 
         float headPitch = data.headPitch.get();
         float headYaw = data.headYaw.get();
-        float headYawAbs = MathHelper.abs(headYaw);
+        float headYawAbs = Mth.abs(headYaw);
 
-        float speedFactor = MathHelper.clamp((float) magnitude, 0.0F, 0.2F) / 0.2F;
+        float speedFactor = Mth.clamp((float) magnitude, 0.0F, 0.2F) / 0.2F;
 
         // Full Speed
 

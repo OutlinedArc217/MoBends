@@ -1,8 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ArrowTrailManager.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity;
 
 import net.minecraft.entity.projectile.EntityArrow;
 
 import java.util.HashMap;
+import net.minecraft.world.entity.Entity;
 
 public class ArrowTrailManager
 {

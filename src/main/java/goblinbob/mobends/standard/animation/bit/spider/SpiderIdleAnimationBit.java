@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SpiderIdleAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.spider;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
@@ -5,7 +12,9 @@ import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.standard.data.SpiderData;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 
 public class SpiderIdleAnimationBit extends AnimationBit<SpiderData>
 {
@@ -71,7 +80,7 @@ public class SpiderIdleAnimationBit extends AnimationBit<SpiderData>
 		}
 
 		float climbingRotation = 0;
-		float renderRotationY = MathHelper.wrapDegrees(spider.rotationYaw - data.headYaw.get() - climbingRotation);
+		float renderRotationY = Mth.wrapDegrees(spider.getYRot() - data.headYaw.get() - climbingRotation);
 
 		data.localOffset.slideToZero();
 		data.globalOffset.set((float) bodyX, (float) -groundLevel, (float) -bodyZ);

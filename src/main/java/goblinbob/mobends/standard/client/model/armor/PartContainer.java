@@ -1,3 +1,11 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PartContainer.java
+ */
+
+// WARNING: ModelPart is final in 1.20.1 - this class needs major refactoring
 package goblinbob.mobends.standard.client.model.armor;
 
 import goblinbob.mobends.core.client.model.IModelPart;
@@ -8,9 +16,9 @@ import goblinbob.mobends.core.math.physics.ICollider;
 import goblinbob.mobends.core.math.vector.IVec3f;
 import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.util.GlHelper;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -23,8 +31,9 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
 
-public class PartContainer extends ModelRenderer implements IModelPart
+public class PartContainer /* extends ModelPart - TODO: Reimplement as composition */ implements IModelPart
 {
 	public Vec3f position;
 	/**
@@ -46,12 +55,12 @@ public class PartContainer extends ModelRenderer implements IModelPart
 	 */
 	public Vec3f globalOffset = new Vec3f();
 	
-	private ModelRenderer innerModel;
+	private ModelPart innerModel;
 	
 	protected IModelPart parent;
 	protected ICollider collider;
 	
-	public PartContainer(ModelBase modelBase, ModelRenderer model)
+	public PartContainer(Model modelBase, ModelPart model)
 	{
 		super(modelBase, 0, 0);
 		this.innerModel = model;
@@ -64,7 +73,7 @@ public class PartContainer extends ModelRenderer implements IModelPart
 		this.mirror = model.mirror;
 	}
 
-	public ModelRenderer getModel() { return this.innerModel; }
+	public ModelPart getModel() { return this.innerModel; }
 	public IModelPart getParent() { return this.parent; }
 	
 	public PartContainer setParent(IModelPart parent)
@@ -138,7 +147,7 @@ public class PartContainer extends ModelRenderer implements IModelPart
         {
             for (int k = 0; k < this.childModels.size(); ++k)
             {
-                ((ModelRenderer)this.childModels.get(k)).render(scale);
+                ((ModelPart)this.childModels.get(k)).render(scale);
             }
         }
         RenderSystem.popMatrix();
@@ -162,7 +171,7 @@ public class PartContainer extends ModelRenderer implements IModelPart
         {
             for (int k = 0; k < this.childModels.size(); ++k)
             {
-                ((ModelRenderer)this.childModels.get(k)).render(scale);
+                ((ModelPart)this.childModels.get(k)).render(scale);
             }
         }
         RenderSystem.popMatrix();

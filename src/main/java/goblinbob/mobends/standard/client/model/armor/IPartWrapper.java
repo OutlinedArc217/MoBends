@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: IPartWrapper.java
+ */
+
 package goblinbob.mobends.standard.client.model.armor;
 
 import goblinbob.mobends.core.client.model.IModelPart;
 import goblinbob.mobends.core.client.model.ModelPartTransform;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,6 +22,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public interface IPartWrapper
 {
@@ -34,6 +42,6 @@ public interface IPartWrapper
     @FunctionalInterface
     public interface ModelPartSetter
     {
-        void replacePart(ModelBiped model, ModelRenderer part);
+        void replacePart(ModelBiped model, ModelPart part);
     }
 }

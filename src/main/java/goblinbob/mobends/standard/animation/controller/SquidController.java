@@ -1,21 +1,29 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SquidController.java
+ */
+
 package goblinbob.mobends.standard.animation.controller;
 
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.standard.data.SquidData;
 import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import net.minecraft.world.entity.Entity;
 
 /**
  * This is an animation controller for a squid instance. It's a part of the EntityData structure.
  *
  * @author Iwo Plaza
  */
-public class SquidController implements IAnimationController<SquidData>
+public class SquidController implements Object /* TODO: Implement IAnimationController */<SquidData>
 {
 
     @Override
@@ -30,7 +38,7 @@ public class SquidController implements IAnimationController<SquidData>
         float baseTentacleAngle = 0.0F;
         if (squid.prevSquidRotation < GUtil.PI)
         {
-            baseTentacleAngle = MathHelper.sin(f * f * (float) Math.PI) * 60.0f;
+            baseTentacleAngle = Mth.sin(f * f * (float) Math.PI) * 60.0f;
         }
 
         for (int i = 0; i < data.squidTentacles.length; ++i)
@@ -46,7 +54,7 @@ public class SquidController implements IAnimationController<SquidData>
                 float tentacleAngle = 0;
                 if (squid.squidRotation < GUtil.PI)
                 {
-                    tentacleAngle = MathHelper.sin(f2 * GUtil.PI * 2 + j * 0.1F) * 10.0F;
+                    tentacleAngle = Mth.sin(f2 * GUtil.PI * 2 + j * 0.1F) * 10.0F;
                 }
                 data.squidTentacles[i][j].rotation.setSmoothness(0.1F).orientX(-tentacleAngle);
             }

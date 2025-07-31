@@ -1,15 +1,22 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PartBoxes.java
+ */
+
 package goblinbob.mobends.standard.client.model.armor;
 
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.ModelPart;
 
 import java.util.*;
 
 public class PartBoxes
 {
-    protected HashMap<ModelRenderer, List<ModelBox>> modelToBoxesMap = new HashMap<>();
+    protected HashMap<ModelPart, List<ModelBox>> modelToBoxesMap = new HashMap<>();
 
-    public void put(ModelRenderer renderer, ModelBox box)
+    public void put(ModelPart renderer, ModelBox box)
     {
         if (!modelToBoxesMap.containsKey(renderer))
         {
@@ -24,17 +31,17 @@ public class PartBoxes
         this.modelToBoxesMap.clear();
     }
 
-    public void clearRenderer(ModelRenderer renderer)
+    public void clearRenderer(ModelPart renderer)
     {
         modelToBoxesMap.remove(renderer);
     }
 
-    public Set<Map.Entry<ModelRenderer, List<ModelBox>>> entrySet()
+    public Set<Map.Entry<ModelPart, List<ModelBox>>> entrySet()
     {
         return modelToBoxesMap.entrySet();
     }
 
-    public Set<ModelRenderer> keySet()
+    public Set<ModelPart> keySet()
     {
         return modelToBoxesMap.keySet();
     }

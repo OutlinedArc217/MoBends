@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BendsPackPerformer.java
+ */
+
 package goblinbob.mobends.core.pack;
 
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
@@ -6,6 +13,7 @@ import goblinbob.mobends.core.kumo.state.template.MalformedKumoTemplateException
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import net.minecraft.world.entity.Entity;
 
 public class BendsPackPerformer
 {

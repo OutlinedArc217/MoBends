@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ConnectionManager.java
+ */
+
 package goblinbob.mobends.core.connection;
 
 import goblinbob.mobends.core.module.IModule;
@@ -18,6 +25,9 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.Direction;
 
 public class ConnectionManager implements IModule {
     private static final String PROTOCOL_VERSION = ModStatics.PROTOCOL_VERSION;

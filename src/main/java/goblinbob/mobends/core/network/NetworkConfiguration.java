@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: NetworkConfiguration.java
+ */
+
 package goblinbob.mobends.core.network;
 
 import net.minecraft.client.Minecraft;
@@ -8,7 +15,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import goblinbob.mobends.standard.main.ModStatics;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class NetworkConfiguration {
+public class NetworkForgeConfigSpec {
     private static final String PROTOCOL_VERSION = ModStatics.PROTOCOL_VERSION;
     public static final SimpleChannel NETWORK = NetworkRegistry.newSimpleChannel(
         ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "network"),
@@ -18,14 +25,14 @@ public class NetworkConfiguration {
     );
     
     private static final AtomicInteger packetId = new AtomicInteger(0);
-    public static NetworkConfiguration instance = new NetworkConfiguration();
+    public static NetworkForgeConfigSpec instance = new NetworkForgeConfigSpec();
 
     private final SharedConfig sharedConfig = new SharedConfig();
     private final SharedProperty<Boolean> modelScalingAllowed;
     private final SharedProperty<Boolean> bendsPacksAllowed;
     private final SharedProperty<Boolean> movementLimited;
 
-    public NetworkConfiguration() {
+    public NetworkForgeConfigSpec() {
         sharedConfig.addProperty(modelScalingAllowed = new SharedBooleanProp(
                 "modelScalingAllowed",
                 false,
@@ -99,7 +106,7 @@ public class NetworkConfiguration {
 
         public static void handle(ConfigSyncPacket packet, Supplier<NetworkEvent.Context> context) {
             context.get().enqueueWork(() -> {
-                NetworkConfiguration.instance.sharedConfig.applyFrom(packet.config);
+                NetworkForgeConfigSpec.instance.sharedConfig.applyFrom(packet.config);
             });
             context.get().setPacketHandled(true);
         }

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BipedMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.IModelPart;
@@ -11,12 +18,12 @@ import goblinbob.mobends.standard.client.renderer.entity.layers.LayerCustomBiped
 import goblinbob.mobends.standard.client.renderer.entity.layers.LayerCustomHeldItem;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.entity.LivingEntity;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -29,7 +36,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 
 public abstract class BipedMutator<D extends BipedEntityData<E>,
-								   E extends EntityLivingBase,
+								   E extends LivingEntity,
 								   M extends ModelBiped>
 								  extends Mutator<D, E, M>
 {
@@ -98,9 +105,9 @@ public abstract class BipedMutator<D extends BipedEntityData<E>,
 	 * for future mutation reversal.
 	 */
 	@Override
-	public void swapLayer(RenderLivingBase<? extends E> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<? extends E> renderer, int index, boolean isModelVanilla)
 	{
-		LayerRenderer<?> layer = layerRenderers.get(index);
+		RenderLayer<?> layer = layerRenderers.get(index);
 		if (layer instanceof LayerBipedArmor)
 		{
 			this.layerArmor = new LayerCustomBipedArmor(renderer);
@@ -129,9 +136,9 @@ public abstract class BipedMutator<D extends BipedEntityData<E>,
 	 * Used to demutate the model.
 	 */
 	@Override
-	public void deswapLayer(RenderLivingBase<? extends E> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<? extends E> renderer, int index)
 	{
-		LayerRenderer<? extends EntityLivingBase> layer = layerRenderers.get(index);
+		RenderLayer<? extends LivingEntity> layer = layerRenderers.get(index);
 		if (layer instanceof LayerCustomBipedArmor)
 		{
 			layerRenderers.set(index, this.layerArmorVanilla);

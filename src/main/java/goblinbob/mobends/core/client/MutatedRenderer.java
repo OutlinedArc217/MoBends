@@ -1,12 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: MutatedRenderer.java
+ */
+
 package goblinbob.mobends.core.client;
 
 import goblinbob.mobends.core.data.EntityData;
 import goblinbob.mobends.core.util.GlHelper;
 import net.minecraft.client.Minecraft;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -18,7 +25,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 
-public abstract class MutatedRenderer<T extends EntityLivingBase>
+public abstract class MutatedRenderer<T extends LivingEntity>
 {
 
     protected final float scale = 0.0625F;
@@ -34,18 +41,18 @@ public abstract class MutatedRenderer<T extends EntityLivingBase>
      */
     public void beforeRender(EntityData<T> data, T entity, float partialTicks)
     {
-        double entityX = entity.prevPosX + (entity.posX - entity.prevPosX) * partialTicks;
-        double entityY = entity.prevPosY + (entity.posY - entity.prevPosY) * partialTicks;
-        double entityZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * partialTicks;
+        double entityX = entity.prevPosX + (entity.getX() - entity.prevPosX) * partialTicks;
+        double entityY = entity.prevPosY + (entity.getY() - entity.prevPosY) * partialTicks;
+        double entityZ = entity.prevPosZ + (entity.getZ() - entity.prevPosZ) * partialTicks;
 
         Entity viewEntity = Minecraft.getMinecraft().getRenderViewEntity();
         double viewX = entityX, viewY = entityY, viewZ = entityZ;
         if (viewEntity != null)
         {
             // Checking in case of Main Menu or GUI rendering.
-            viewX = viewEntity.prevPosX + (viewEntity.posX - viewEntity.prevPosX) * partialTicks;
-            viewY = viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks;
-            viewZ = viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks;
+            viewX = viewEntity.prevPosX + (viewEntity.getX() - viewEntity.prevPosX) * partialTicks;
+            viewY = viewEntity.prevPosY + (viewEntity.getY() - viewEntity.prevPosY) * partialTicks;
+            viewZ = viewEntity.prevPosZ + (viewEntity.getZ() - viewEntity.prevPosZ) * partialTicks;
         }
         RenderSystem.translate(entityX - viewX, entityY - viewY, entityZ - viewZ);
         RenderSystem.rotate(-interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks), 0F, 1F, 0F);

@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: KeyframeAnimationBit.java
+ */
+
 package goblinbob.mobends.core.animation.bit;
 
 import goblinbob.mobends.core.animation.keyframe.*;
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.client.model.IModelPart;
 import goblinbob.mobends.core.data.EntityData;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 import java.util.Map;
@@ -18,6 +25,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public class KeyframeAnimationBit<T extends EntityData<?>> extends AnimationBit<T>
 {

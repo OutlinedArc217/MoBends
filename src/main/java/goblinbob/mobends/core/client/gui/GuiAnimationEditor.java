@@ -1,8 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiAnimationEditor.java
+ */
+
 package goblinbob.mobends.core.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.configuration.AnimationConfig;
 import goblinbob.mobends.core.util.GUIHelper;
 import net.minecraft.client.gui.GuiGraphics;

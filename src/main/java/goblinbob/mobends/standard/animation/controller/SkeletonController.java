@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SkeletonController.java
+ */
+
 package goblinbob.mobends.standard.animation.controller;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.animation.layer.HardAnimationLayer;
 import goblinbob.mobends.standard.animation.bit.biped.AttackSlashInwardAnimationBit;
 import goblinbob.mobends.standard.animation.bit.biped.BowAnimationBit;
@@ -14,15 +21,16 @@ import goblinbob.mobends.standard.data.SkeletonData;
 import goblinbob.mobends.standard.main.ModConfig;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.item.EnumAction;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumHandSide;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.world.entity.Entity;
 
 /**
  * This is an animation controller for a skeleton instance.
@@ -31,7 +39,7 @@ import java.util.List;
  * @author Iwo Plaza
  *
  */
-public class SkeletonController implements IAnimationController<SkeletonData>
+public class SkeletonController implements Object /* TODO: Implement IAnimationController */<SkeletonData>
 {
 
 	protected HardAnimationLayer<BipedEntityData<EntitySkeleton>> layerBase;
@@ -125,11 +133,11 @@ public class SkeletonController implements IAnimationController<SkeletonData>
 		{
 			if (skeleton.getItemInUseCount() > 0)
 			{
-				EnumAction enumaction = heldItem.getItemUseAction();
+				UseAnim enumaction = heldItem.getItemUseAction();
 
-				if (enumaction == EnumAction.BLOCK)
+				if (enumaction == UseAnim.BLOCK)
 					return ModelBiped.ArmPose.BLOCK;
-				else if (enumaction == EnumAction.BOW)
+				else if (enumaction == UseAnim.BOW)
 					return ModelBiped.ArmPose.BOW_AND_ARROW;
 			}
 

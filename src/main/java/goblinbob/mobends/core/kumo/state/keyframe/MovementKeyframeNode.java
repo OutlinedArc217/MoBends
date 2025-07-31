@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: MovementKeyframeNode.java
+ */
+
 package goblinbob.mobends.core.kumo.state.keyframe;
 
 import goblinbob.mobends.core.animation.keyframe.Bone;
@@ -14,6 +21,7 @@ import goblinbob.mobends.core.kumo.state.template.keyframe.MovementKeyframeNodeT
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.entity.LivingEntity;
 
 public class MovementKeyframeNode implements INodeState
 {

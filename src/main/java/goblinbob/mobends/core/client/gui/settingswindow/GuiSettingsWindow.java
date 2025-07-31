@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiSettingsWindow.java
+ */
+
 package goblinbob.mobends.core.client.gui.settingswindow;
 
 import goblinbob.mobends.core.Core;
@@ -11,12 +18,13 @@ import goblinbob.mobends.core.util.GuiHelper;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
+import net.minecraft.world.entity.Entity;
 
 public class GuiSettingsWindow extends GuiScreen
 {
@@ -52,10 +60,10 @@ public class GuiSettingsWindow extends GuiScreen
         this.y = (this.height - EDITOR_HEIGHT) / 2;
 
         buttonList.clear();
-        buttonList.add(new GuiButton(COMPONENT_BUTTON_BACK, 10, height - 30, 60, 20, I18n.format("mobends.gui.back")));
+        buttonList.add(new GuiButton(COMPONENT_BUTTON_BACK, 10, height - 30, 60, 20, Component.format("mobends.gui.back")));
         filterQueryInput = new GuiCompactTextField(COMPONENT_QUERY_INPUT, this.fontRenderer, x + 6, y + 6, 150, 16);
         filterQueryInput.setFocused(true);
-        filterQueryInput.setPlaceholderText(I18n.format("mobends.gui.search"));
+        filterQueryInput.setPlaceholderText(Component.format("mobends.gui.search"));
         bendsSettingsListUI.initGui(this.x + 9, this.y + 9 + 20);
     }
 
@@ -74,7 +82,7 @@ public class GuiSettingsWindow extends GuiScreen
 
         bendsSettingsListUI.draw(DataUpdateHandler.partialTicks);
 
-        fontRenderer.drawStringWithShadow(I18n.format("mobends.gui.settings"), this.x + 6, this.y - 9, 0xffffff);
+        fontRenderer.drawStringWithShadow(Component.format("mobends.gui.settings"), this.x + 6, this.y - 9, 0xffffff);
         filterQueryInput.drawTextBox();
 
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: CoreClient.java
+ */
+
 package goblinbob.mobends.core;
 
 import goblinbob.mobends.core.asset.AssetReloadListener;
@@ -21,6 +28,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import net.minecraft.world.entity.Entity;
 
 @OnlyIn(Dist.CLIENT)
 public class CoreClient extends Core<CoreClientConfig> {

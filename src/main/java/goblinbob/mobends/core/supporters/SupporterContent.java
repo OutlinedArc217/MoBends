@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SupporterContent.java
+ */
+
 package goblinbob.mobends.core.supporters;
 
 import com.google.gson.JsonParseException;
@@ -8,7 +15,7 @@ import goblinbob.mobends.core.env.EnvironmentModule;
 import goblinbob.mobends.core.module.IModule;
 import goblinbob.mobends.core.util.Color;
 import goblinbob.mobends.core.util.IColorRead;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.http.conn.HttpHostConnectException;
 
@@ -80,7 +87,7 @@ public class SupporterContent
         return Collections.unmodifiableSet(INSTANCE.accessoryDetailsMap.entrySet());
     }
 
-    public static Map<String, AccessorySettings> getAccessorySettingsMapFor(EntityLivingBase entity)
+    public static Map<String, AccessorySettings> getAccessorySettingsMapFor(LivingEntity entity)
     {
         final String name = entity.getName();
 
@@ -100,7 +107,7 @@ public class SupporterContent
         return settings.getSettings();
     }
 
-    public static IColorRead getTrailColorFor(EntityLivingBase entity)
+    public static IColorRead getTrailColorFor(LivingEntity entity)
     {
         Map<String, AccessorySettings> settingsMap = getAccessorySettingsMapFor(entity);
         AccessorySettings swordTrailSettings = settingsMap.get("sword_trail");

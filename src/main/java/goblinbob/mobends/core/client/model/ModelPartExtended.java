@@ -1,8 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ModelPartExtended.java
+ */
+
+// WARNING: ModelPart is final in 1.20.1 - this class needs major refactoring
 package goblinbob.mobends.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -14,22 +22,22 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 
-public class ModelPartExtended extends ModelPart
+public class ModelPartExtended /* extends ModelPart - TODO: Reimplement as composition */
 {
 
     protected IModelPart extension;
 
-    public ModelPartExtended(ModelBase model, boolean register, int texOffsetX, int texOffsetY)
+    public ModelPartExtended(Model model, boolean register, int texOffsetX, int texOffsetY)
     {
         super(model, register, texOffsetX, texOffsetY);
     }
 
-    public ModelPartExtended(ModelBase model, boolean register)
+    public ModelPartExtended(Model model, boolean register)
     {
         super(model, register);
     }
 
-    public ModelPartExtended(ModelBase model, int texOffsetX, int texOffsetY)
+    public ModelPartExtended(Model model, int texOffsetX, int texOffsetY)
     {
         super(model, texOffsetX, texOffsetY);
     }
@@ -56,7 +64,7 @@ public class ModelPartExtended extends ModelPart
 
         if (this.childModels != null)
         {
-			for (ModelRenderer childModel : this.childModels)
+			for (ModelPart childModel : this.childModels)
 			{
 				childModel.render(scale);
 			}
@@ -80,7 +88,7 @@ public class ModelPartExtended extends ModelPart
 
         if (this.childModels != null)
         {
-			for (ModelRenderer childModel : this.childModels)
+			for (ModelPart childModel : this.childModels)
 			{
 				childModel.render(scale);
 			}

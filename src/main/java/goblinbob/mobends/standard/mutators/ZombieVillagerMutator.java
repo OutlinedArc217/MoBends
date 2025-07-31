@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ZombieVillagerMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.ModelPart;
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.standard.data.ZombieVillagerData;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelZombieVillager;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,6 +23,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public class ZombieVillagerMutator extends ZombieMutatorBase<ZombieVillagerData, EntityZombieVillager, ModelZombieVillager>
 {
@@ -53,7 +61,7 @@ public class ZombieVillagerMutator extends ZombieMutatorBase<ZombieVillagerData,
 	}
 
 	@Override
-	public boolean shouldModelBeSkipped(ModelBase model)
+	public boolean shouldModelBeSkipped(Model model)
 	{
 		return !(model instanceof ModelZombieVillager);
 	}

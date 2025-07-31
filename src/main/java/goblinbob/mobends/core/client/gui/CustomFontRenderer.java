@@ -1,8 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: CustomFontRenderer.java
+ */
+
 package goblinbob.mobends.core.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
 // REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;

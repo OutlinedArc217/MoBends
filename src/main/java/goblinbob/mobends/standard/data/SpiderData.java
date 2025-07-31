@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SpiderData.java
+ */
+
 package goblinbob.mobends.standard.data;
 
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
@@ -5,12 +12,12 @@ import goblinbob.mobends.core.client.model.ModelPartTransform;
 import goblinbob.mobends.core.data.LivingEntityData;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.standard.animation.controller.SpiderController;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -21,6 +28,8 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 public class SpiderData extends LivingEntityData<EntitySpider>
 {
@@ -34,7 +43,7 @@ public class SpiderData extends LivingEntityData<EntitySpider>
     protected final SpiderController controller = new SpiderController();
     protected float prevCrawlProgress = 0;
     protected float crawlProgress = 0;
-    protected EnumFacing wallFacing = null;
+    protected Direction wallFacing = null;
 
     public SpiderData(EntitySpider entity)
     {
@@ -122,32 +131,32 @@ public class SpiderData extends LivingEntityData<EntitySpider>
         }
 
         prevCrawlProgress = crawlProgress;
-        crawlProgress += MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+        crawlProgress += Mth.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
         wallFacing = calcWallFacing();
     }
 
-    public EnumFacing calcWallFacing()
+    public Direction calcWallFacing()
     {
         if (!entity.isOnLadder())
         {
             return null;
         }
 
-        final BlockPos position = new BlockPos(Math.floor(entity.posX), Math.floor(entity.posY), Math.floor(entity.posZ));
+        final BlockPos position = new BlockPos(Math.floor(entity.getX()), Math.floor(entity.getY()), Math.floor(entity.getZ()));
 
-        final IBlockState blockN = entity.world.getBlockState(position.add(EnumFacing.NORTH.getDirectionVec()));
-        final IBlockState blockS = entity.world.getBlockState(position.add(EnumFacing.SOUTH.getDirectionVec()));
-        final IBlockState blockW = entity.world.getBlockState(position.add(EnumFacing.WEST.getDirectionVec()));
-        final IBlockState blockE = entity.world.getBlockState(position.add(EnumFacing.EAST.getDirectionVec()));
+        final BlockState blockN = entity.world.getBlockState(position.add(Direction.NORTH.getDirectionVec()));
+        final BlockState blockS = entity.world.getBlockState(position.add(Direction.SOUTH.getDirectionVec()));
+        final BlockState blockW = entity.world.getBlockState(position.add(Direction.WEST.getDirectionVec()));
+        final BlockState blockE = entity.world.getBlockState(position.add(Direction.EAST.getDirectionVec()));
 
-        if (blockN.getBlock() != Blocks.AIR) return EnumFacing.NORTH;
-        if (blockS.getBlock() != Blocks.AIR) return EnumFacing.SOUTH;
-        if (blockW.getBlock() != Blocks.AIR) return EnumFacing.WEST;
-        if (blockE.getBlock() != Blocks.AIR) return EnumFacing.EAST;
+        if (blockN.getBlock() != Blocks.AIR) return Direction.NORTH;
+        if (blockS.getBlock() != Blocks.AIR) return Direction.SOUTH;
+        if (blockW.getBlock() != Blocks.AIR) return Direction.WEST;
+        if (blockE.getBlock() != Blocks.AIR) return Direction.EAST;
         return null;
     }
 
-    public EnumFacing getWallFacing()
+    public Direction getWallFacing()
     {
         return wallFacing;
     }
@@ -228,7 +237,7 @@ public class SpiderData extends LivingEntityData<EntitySpider>
 
         public void setAngleAndDistance(float angle, float distance)
         {
-            setLocalPosition(MathHelper.cos(angle) * distance + this.upperPart.position.x * 0.0625F, MathHelper.sin(angle) * distance - this.upperPart.position.z * 0.0625F);
+            setLocalPosition(Mth.cos(angle) * distance + this.upperPart.position.x * 0.0625F, Mth.sin(angle) * distance - this.upperPart.position.z * 0.0625F);
         }
 
         public void adjustToNeutralPosition()
@@ -279,8 +288,8 @@ public class SpiderData extends LivingEntityData<EntitySpider>
         public IKResult solveIK(double bodyX, double bodyZ, float pt)
         {
             final double renderYawOffset = (data.entity.prevRenderYawOffset + (data.entity.renderYawOffset - data.entity.prevRenderYawOffset) * pt) / 180F * Math.PI;
-            final double spiderX = data.entity.prevPosX + (data.entity.posX - data.entity.prevPosX) * pt;
-            final double spiderZ = data.entity.prevPosZ + (data.entity.posZ - data.entity.prevPosZ) * pt;
+            final double spiderX = data.entity.prevPosX + (data.entity.getX() - data.entity.prevPosX) * pt;
+            final double spiderZ = data.entity.prevPosZ + (data.entity.getZ() - data.entity.prevPosZ) * pt;
             final double worldLimbX = this.prevWorldX + (this.worldX - this.prevWorldX) * pt;
             final double worldLimbZ = this.prevWorldZ + (this.worldZ - this.prevWorldZ) * pt;
             final double x = (worldLimbX - spiderX) / 0.0625;

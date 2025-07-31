@@ -1,11 +1,18 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BoxFactory.java
+ */
+
 package goblinbob.mobends.core.client.model;
 
 import goblinbob.mobends.core.math.vector.IVec3fRead;
 import goblinbob.mobends.core.math.vector.Vec3f;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.model.PositionTextureVertex;
-import net.minecraft.client.model.TexturedQuad;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.PartPose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,6 +23,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
 
 public class BoxFactory
 {
@@ -36,7 +44,7 @@ public class BoxFactory
 	int textureU, textureV;
 	boolean textureUVSet = false;
 
-	public BoxFactory(ModelRenderer renderer, ModelBox source)
+	public BoxFactory(ModelPart renderer, ModelBox source)
 	{
 		this.min = new Vec3f(source.posX1, source.posY1, source.posZ1);
 		this.max = new Vec3f(source.posX2, source.posY2, source.posZ2);
@@ -252,7 +260,7 @@ public class BoxFactory
 		return box;
 	}
 	
-	public MutatedBox create(ModelRenderer renderer)
+	public MutatedBox create(ModelPart renderer)
 	{
 		return new MutatedBox(renderer, this.min, this.max, this.faces, this.faceVisibilityFlag);
 	}

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: Vec3fTest.java
+ */
+
 package goblinbob.mobends.test.core.math.vector;
 
 import static org.junit.Assert.*;
@@ -5,6 +12,7 @@ import org.junit.Test;
 
 import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.math.vector.VectorUtils;
+import net.minecraft.world.phys.Vec3;
 
 public class Vec3fTest
 {

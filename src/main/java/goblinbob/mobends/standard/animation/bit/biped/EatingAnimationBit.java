@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: EatingAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
@@ -5,7 +12,7 @@ import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.client.model.ModelPartTransform;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -16,6 +23,8 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.core.Direction;
 
 public class EatingAnimationBit extends AnimationBit<BipedEntityData<?>>
 {
@@ -62,7 +71,7 @@ public class EatingAnimationBit extends AnimationBit<BipedEntityData<?>>
 		}
 		else
 		{
-			float wiggle = MathHelper.cos(ticks * 1F);
+			float wiggle = Mth.cos(ticks * 1F);
 			data.head.rotation.orientX(wiggle * 5.0F)
 					.rotateY(15.0F * handDirMtp);
 		}

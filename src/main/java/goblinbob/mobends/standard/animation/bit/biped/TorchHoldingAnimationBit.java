@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: TorchHoldingAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.model.IModelPart;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumHand;
@@ -30,7 +37,7 @@ public class TorchHoldingAnimationBit extends AnimationBit<BipedEntityData<?>>
 		return ACTIONS;
 	}
 
-	private EnumHandSide getTorchHand(EntityLivingBase living)
+	private EnumHandSide getTorchHand(LivingEntity living)
 	{
 		final EnumHandSide mainHand = living.getPrimaryHand();
 		final EnumHandSide offHand = mainHand == EnumHandSide.LEFT ? EnumHandSide.RIGHT : EnumHandSide.LEFT;
@@ -50,7 +57,7 @@ public class TorchHoldingAnimationBit extends AnimationBit<BipedEntityData<?>>
 	@Override
 	public void perform(BipedEntityData<?> data)
 	{
-		final EntityLivingBase living = data.getEntity();
+		final LivingEntity living = data.getEntity();
 		final EnumHandSide torchHand = getTorchHand(living);
 
 		if (torchHand == null)

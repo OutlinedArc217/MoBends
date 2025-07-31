@@ -1,12 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BowAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.model.ModelPartTransform;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,6 +24,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.core.Direction;
 
 public class BowAnimationBit extends AnimationBit<BipedEntityData<?>>
 {
@@ -40,7 +48,7 @@ public class BowAnimationBit extends AnimationBit<BipedEntityData<?>>
 	{
 		data.localOffset.slideToZero(0.3F);
 
-		final EntityLivingBase living = data.getEntity();
+		final LivingEntity living = data.getEntity();
 		final float headPitch = data.headPitch.get();
 		final float headYaw = data.headYaw.get();
 
@@ -64,8 +72,8 @@ public class BowAnimationBit extends AnimationBit<BipedEntityData<?>>
 		if (data.isClimbing())
 		{
 			float climbingRotation = data.getClimbingRotation();
-			float renderRotationY = MathHelper.wrapDegrees(living.rotationYaw - headYaw - climbingRotation);
-			bodyRotationY = MathHelper.wrapDegrees(headYaw + renderRotationY);
+			float renderRotationY = Mth.wrapDegrees(living.getYRot() - headYaw - climbingRotation);
+			bodyRotationY = Mth.wrapDegrees(headYaw + renderRotationY);
 
 			data.head.rotation.setSmoothness(0.5F).orientX(headPitch);
 		}
@@ -81,7 +89,7 @@ public class BowAnimationBit extends AnimationBit<BipedEntityData<?>>
 				.rotateY(bodyTwistY);
 		offArm.rotation.setSmoothness(1F).orientY(80F * handDirMtp)
 				// Keeping it close to the arm no matter the head pitch
-				.rotateZ((-MathHelper.cos(headPitch/180F * GUtil.PI) * 40F + 40F) * handDirMtp)
+				.rotateZ((-Mth.cos(headPitch/180F * GUtil.PI) * 40F + 40F) * handDirMtp)
 				.rotateX(var5);
 
 		mainForeArm.rotation.setSmoothness(1F).orientX(0);

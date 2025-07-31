@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PackManager.java
+ */
+
 package goblinbob.mobends.core.pack;
 
 import goblinbob.mobends.core.configuration.CoreConfig;
@@ -16,6 +23,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+import net.minecraft.core.Direction;
 
 @OnlyIn(Dist.CLIENT)
 public class PackManager implements IDataSyncable {

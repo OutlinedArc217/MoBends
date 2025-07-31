@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: MessageConfigResponse.java
+ */
+
 package goblinbob.mobends.core.network.msg;
 
 import goblinbob.mobends.core.Core;
-import goblinbob.mobends.core.network.NetworkConfiguration;
+import goblinbob.mobends.core.network.NetworkForgeConfigSpec;
 import goblinbob.mobends.core.network.SharedProperty;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -25,9 +32,9 @@ public class MessageConfigResponse implements IMessage
     @Override
     public void toBytes(ByteBuf buf)
     {
-        NBTTagCompound tag = new NBTTagCompound();
+        CompoundTag tag = new CompoundTag();
 
-        NetworkConfiguration.instance.getSharedConfig().writeToNBT(tag);
+        NetworkForgeConfigSpec.instance.getSharedConfig().save(tag);
 
         ByteBufUtils.writeTag(buf, tag);
     }
@@ -35,14 +42,14 @@ public class MessageConfigResponse implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        NBTTagCompound tag = ByteBufUtils.readTag(buf);
+        CompoundTag tag = ByteBufUtils.readTag(buf);
         if (tag == null)
         {
             Core.LOG.severe("An error occurred while receiving server configuration.");
             return;
         }
 
-        NetworkConfiguration.instance.getSharedConfig().readFromNBT(tag);
+        NetworkForgeConfigSpec.instance.getSharedConfig().load(tag);
     }
 
     public static class Handler implements IMessageHandler<MessageConfigResponse, IMessage>
@@ -52,7 +59,7 @@ public class MessageConfigResponse implements IMessage
         public IMessage onMessage(MessageConfigResponse message, MessageContext ctx)
         {
             final StringBuilder builder = new StringBuilder("Received Mo' Bends server configuration.\n");
-            final Iterable<SharedProperty<?>> properties = NetworkConfiguration.instance.getSharedConfig().getProperties();
+            final Iterable<SharedProperty<?>> properties = NetworkForgeConfigSpec.instance.getSharedConfig().getProperties();
             for (SharedProperty<?> property : properties)
             {
                 builder.append(String.format(" - %s: %b\n", property.getKey(), property.getValue()));

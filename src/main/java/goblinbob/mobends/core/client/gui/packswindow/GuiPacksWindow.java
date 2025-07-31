@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiPacksWindow.java
+ */
+
 package goblinbob.mobends.core.client.gui.packswindow;
 
 import goblinbob.mobends.core.client.gui.GuiBendsMenu;
@@ -11,8 +18,8 @@ import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -78,7 +85,7 @@ public class GuiPacksWindow extends GuiScreen
         this.tabNavigation.initGui(this.x + 5, this.y);
 
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(BUTTON_BACK, 10, height - 30, 60, 20, I18n.format("mobends.gui.back")));
+        this.buttonList.add(new GuiButton(BUTTON_BACK, 10, height - 30, 60, 20, Component.format("mobends.gui.back")));
         this.localPacks.initGui(this.x, this.y);
     }
 

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: CoreClientConfig.java
+ */
+
 package goblinbob.mobends.core.configuration;
 
 import goblinbob.mobends.core.bender.EntityBender;
@@ -5,6 +12,7 @@ import goblinbob.mobends.core.bender.EntityBenderRegistry;
 
 import java.io.File;
 import java.util.Collection;
+import net.minecraft.world.entity.Entity;
 
 public class CoreClientConfig extends CoreConfig
 {

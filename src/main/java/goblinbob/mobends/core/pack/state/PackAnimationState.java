@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PackAnimationState.java
+ */
+
 package goblinbob.mobends.core.pack.state;
 
 import goblinbob.mobends.core.data.EntityData;
@@ -5,6 +12,7 @@ import goblinbob.mobends.core.kumo.state.KumoAnimatorState;
 import goblinbob.mobends.core.kumo.state.template.AnimatorTemplate;
 import goblinbob.mobends.core.kumo.state.template.MalformedKumoTemplateException;
 import goblinbob.mobends.core.pack.BendsPackData;
+import net.minecraft.world.entity.Entity;
 
 public class PackAnimationState
 {

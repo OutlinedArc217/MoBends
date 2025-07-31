@@ -1,6 +1,13 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: KumoVariableEntry.java
+ */
+
 package goblinbob.mobends.core.kumo.variable;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.network.chat.Component;
 
 public class KumoVariableEntry
 {
@@ -16,7 +23,7 @@ public class KumoVariableEntry
 
     public String getLocalizedName()
     {
-        return I18n.format(String.format("mobends.variable.%s", this.key));
+        return Component.format(String.format("mobends.variable.%s", this.key));
     }
 
 }

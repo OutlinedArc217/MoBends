@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SquidMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.IModelPart;
@@ -5,10 +12,10 @@ import goblinbob.mobends.core.client.model.ModelPart;
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.core.mutators.Mutator;
 import goblinbob.mobends.standard.data.SquidData;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.ModelSquid;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.passive.EntitySquid;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,6 +27,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.LivingEntity;
 
 public class SquidMutator extends Mutator<SquidData, EntitySquid, ModelSquid>
 {
@@ -48,13 +56,13 @@ public class SquidMutator extends Mutator<SquidData, EntitySquid, ModelSquid>
 	}
 
 	@Override
-	public void swapLayer(RenderLivingBase<? extends EntitySquid> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<? extends EntitySquid> renderer, int index, boolean isModelVanilla)
 	{
 		// No behaviour
 	}
 
 	@Override
-	public void deswapLayer(RenderLivingBase<? extends EntitySquid> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<? extends EntitySquid> renderer, int index)
 	{
 		// No behaviour
 	}
@@ -69,7 +77,7 @@ public class SquidMutator extends Mutator<SquidData, EntitySquid, ModelSquid>
 		this.squidBody.setPosition(0.0F, 8.0F, 0.0F);
 		this.squidBody.addBox(-6.0F, -8.0F, -6.0F, 12, 16, 12);
 
-		original.squidTentacles = new ModelRenderer[8];
+		original.squidTentacles = new ModelPart[8];
 		for (int i = 0; i < this.squidTentacles.length; ++i)
 		{
 			original.squidTentacles[i] = this.squidTentacles[i][0] = new ModelPart(original, 48, 0);
@@ -113,7 +121,7 @@ public class SquidMutator extends Mutator<SquidData, EntitySquid, ModelSquid>
 	}
 
 	@Override
-	public boolean shouldModelBeSkipped(ModelBase model)
+	public boolean shouldModelBeSkipped(Model model)
 	{
 		return !(model instanceof ModelSquid);
 	}

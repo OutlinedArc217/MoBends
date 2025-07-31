@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AttackWhirlSlashAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
@@ -5,11 +12,11 @@ import goblinbob.mobends.core.client.model.IModelPart;
 import goblinbob.mobends.core.math.SmoothOrientation;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import org.lwjgl.util.vector.Vector3f;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,6 +28,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.core.Direction;
 
 public class AttackWhirlSlashAnimationBit extends AnimationBit<BipedEntityData<?>>
 {
@@ -37,7 +45,7 @@ public class AttackWhirlSlashAnimationBit extends AnimationBit<BipedEntityData<?
 	{
 		data.localOffset.slideToZero(0.3F);
 
-		final EntityLivingBase living = data.getEntity();
+		final LivingEntity living = data.getEntity();
 		final EnumHandSide primaryHand = living.getPrimaryHand();
 
 		boolean mainHandSwitch = primaryHand == EnumHandSide.RIGHT;
@@ -75,8 +83,8 @@ public class AttackWhirlSlashAnimationBit extends AnimationBit<BipedEntityData<?
 
 		data.body.rotation.setSmoothness(.9F).orientX(bodyRot.x)
 				.orientY(bodyRot.y);
-		data.head.rotation.orientX(MathHelper.wrapDegrees(data.headPitch.get()) - bodyRot.x)
-						  .rotateY(MathHelper.wrapDegrees(data.headYaw.get()) - bodyRot.y - 30);
+		data.head.rotation.orientX(Mth.wrapDegrees(data.headPitch.get()) - bodyRot.x)
+						  .rotateY(Mth.wrapDegrees(data.headYaw.get()) - bodyRot.y - 30);
 		
 		offArm.getRotation().setSmoothness(.3F).orientZ(20F * handDirMtp);
 		offArm.getRotation().setSmoothness(.3F).orientZ(-80F * handDirMtp);
@@ -103,6 +111,6 @@ public class AttackWhirlSlashAnimationBit extends AnimationBit<BipedEntityData<?
 		data.globalOffset.slideY(-2F);
 		mainItemRotation.setSmoothness(.9F).orientX(90 * attackState);
 		float renderRotationY = 30 + 360 * var5;
-		data.renderRotation.orientInstantY(MathHelper.wrapDegrees(-renderRotationY * handDirMtp));
+		data.renderRotation.orientInstantY(Mth.wrapDegrees(-renderRotationY * handDirMtp));
 	}
 }

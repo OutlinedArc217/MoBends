@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SpiderMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.IModelPart;
@@ -5,9 +12,9 @@ import goblinbob.mobends.core.client.model.ModelPart;
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.core.mutators.Mutator;
 import goblinbob.mobends.standard.data.SpiderData;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelSpider;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.monster.EntitySpider;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,6 +26,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.LivingEntity;
 
 public class SpiderMutator extends Mutator<SpiderData, EntitySpider, ModelSpider>
 {
@@ -63,12 +71,12 @@ public class SpiderMutator extends Mutator<SpiderData, EntitySpider, ModelSpider
 	}
 
 	@Override
-	public void swapLayer(RenderLivingBase<? extends EntitySpider> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<? extends EntitySpider> renderer, int index, boolean isModelVanilla)
 	{
 	}
 
 	@Override
-	public void deswapLayer(RenderLivingBase<? extends EntitySpider> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<? extends EntitySpider> renderer, int index)
 	{
 	}
 
@@ -145,7 +153,7 @@ public class SpiderMutator extends Mutator<SpiderData, EntitySpider, ModelSpider
 	}
 	
 	@Override
-	public boolean shouldModelBeSkipped(ModelBase model)
+	public boolean shouldModelBeSkipped(Model model)
 	{
 		return !(model instanceof ModelSpider);
 	}

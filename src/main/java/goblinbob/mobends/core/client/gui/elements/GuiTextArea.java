@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiTextArea.java
+ */
+
 package goblinbob.mobends.core.client.gui.elements;
 
 import com.google.common.base.Predicate;
@@ -5,12 +12,12 @@ import com.google.common.base.Predicates;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
 // REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -290,7 +297,7 @@ public class GuiTextArea extends Gui
     {
         this.cursorPosition = pos;
         int i = this.text.length();
-        this.cursorPosition = MathHelper.clamp(this.cursorPosition, 0, i);
+        this.cursorPosition = Mth.clamp(this.cursorPosition, 0, i);
         this.setSelectionPos(this.cursorPosition);
     }
 

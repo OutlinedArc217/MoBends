@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PlayerController.java
+ */
+
 package goblinbob.mobends.standard.animation.controller;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.animation.keyframe.ArmatureMask;
 import goblinbob.mobends.core.animation.layer.HardAnimationLayer;
 import goblinbob.mobends.standard.animation.bit.biped.*;
@@ -13,7 +20,7 @@ import goblinbob.mobends.standard.main.ModConfig.ItemClassification;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBiped.ArmPose;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
@@ -27,7 +34,7 @@ import java.util.List;
  *
  * @author Iwo Plaza
  */
-public class PlayerController implements IAnimationController<PlayerData>
+public class PlayerController implements Object /* TODO: Implement IAnimationController */<PlayerData>
 {
     protected HardAnimationLayer<BipedEntityData<?>> layerBase = new HardAnimationLayer<>();
     protected HardAnimationLayer<BipedEntityData<?>> layerTorch = new HardAnimationLayer<>();
@@ -155,7 +162,7 @@ public class PlayerController implements IAnimationController<PlayerData>
         }
         else if (player.isRiding())
         {
-            if (player.getRidingEntity() instanceof EntityLivingBase)
+            if (player.getRidingEntity() instanceof LivingEntity)
             {
                 layerBase.playOrContinueBit(bitRiding, data);
             }
@@ -256,11 +263,11 @@ public class PlayerController implements IAnimationController<PlayerData>
         {
             if (player.getItemInUseCount() > 0)
             {
-                EnumAction enumaction = heldItem.getItemUseAction();
+                UseAnim enumaction = heldItem.getItemUseAction();
 
-                if (enumaction == EnumAction.BLOCK)
+                if (enumaction == UseAnim.BLOCK)
                     return ArmPose.BLOCK;
-                else if (enumaction == EnumAction.BOW)
+                else if (enumaction == UseAnim.BOW)
                     return ArmPose.BOW_AND_ARROW;
             }
 

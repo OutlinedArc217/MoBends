@@ -1,21 +1,28 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: EntityData.java
+ */
+
 package goblinbob.mobends.core.data;
 
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.client.model.IBendsModel;
 import goblinbob.mobends.core.math.SmoothOrientation;
 import goblinbob.mobends.core.math.vector.SmoothVector3f;
 import goblinbob.mobends.core.pack.state.PackAnimationState;
 import goblinbob.mobends.core.util.GUtil;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.BlockStaticLiquid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +65,9 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
         if (this.entity != null)
         {
             this.entityID = entity.getEntityId();
-            this.positionX = this.entity.posX;
-            this.positionY = this.entity.posY;
-            this.positionZ = this.entity.posZ;
+            this.positionX = this.entity.getX();
+            this.positionY = this.entity.getY();
+            this.positionZ = this.entity.getZ();
         }
 
         this.motionX = this.prevMotionX = 0.0D;
@@ -120,22 +127,22 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
             return this.onGroundOverride;
 
         // Checking if we're going down stairs.
-        BlockPos position = new BlockPos(Math.floor(entity.posX), Math.floor(entity.posY), Math.floor(entity.posZ));
+        BlockPos position = new BlockPos(Math.floor(entity.getX()), Math.floor(entity.getY()), Math.floor(entity.getZ()));
 
-        IBlockState block = entity.world.getBlockState(position);
-        IBlockState blockBelow = entity.world.getBlockState(position.add(0, -1, 0));
+        BlockState block = entity.world.getBlockState(position);
+        BlockState blockBelow = entity.world.getBlockState(position.add(0, -1, 0));
     
         if (motionY <= 0 && (block.getBlock() instanceof BlockStairs || blockBelow.getBlock() instanceof BlockStairs))
             return true;
 
         // Checking collisions.
-        List<AxisAlignedBB> list = entity.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().offset(0, -0.125F, 0));
+        List<AABB> list = entity.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().offset(0, -0.125F, 0));
         return list.size() > 0;
     }
 
     public boolean calcCollidedHorizontally()
     {
-        List<AxisAlignedBB> list = entity.world.getCollisionBoxes(entity,
+        List<AABB> list = entity.world.getCollisionBoxes(entity,
                 entity.getEntityBoundingBox().offset(this.motionX, 0, this.motionZ));
 
         return list.size() > 0;
@@ -178,7 +185,7 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
         return this.stillnessOverride != null ? this.stillnessOverride : horizontalSqMagnitude < deadZone;
     }
 
-    public abstract IAnimationController<?> getController();
+    public abstract Object /* TODO: Implement IAnimationController */<?> getController();
 
     /**
      * Called during the render tick in {@code EntityDatabase.updateRender()}
@@ -198,7 +205,7 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
 
     public float getLookAngle()
     {
-        final Vec3d lookVec = this.entity.getLookVec();
+        final Vec3 lookVec = this.entity.getLookVec();
         return (float) GUtil.angleFromCoordinates(lookVec.x, lookVec.z);
     }
 
@@ -219,8 +226,8 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
         if (isStillHorizontally())
             return 0;
 
-        final Vec3d lookVec = this.entity.getLookVec();
-        final Vec3d lookVecHorizontal = new Vec3d(lookVec.x, 0, lookVec.z).normalize();
+        final Vec3 lookVec = this.entity.getLookVec();
+        final Vec3 lookVecHorizontal = new Vec3(lookVec.x, 0, lookVec.z).normalize();
         return lookVecHorizontal.x * this.motionX + lookVecHorizontal.z * this.motionZ;
     }
 
@@ -228,8 +235,8 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
     {
         if (isStillHorizontally())
             return 0;
-        Vec3d rightVec = entity.getLookVec().rotateYaw(-GUtil.PI / 2.0F);
-        Vec3d rightVecHorizontal = new Vec3d(rightVec.x, 0, rightVec.z).normalize();
+        Vec3 rightVec = entity.getLookVec().rotateYaw(-GUtil.PI / 2.0F);
+        Vec3 rightVecHorizontal = new Vec3(rightVec.x, 0, rightVec.z).normalize();
         return rightVecHorizontal.x * this.motionX + rightVecHorizontal.z * this.motionZ;
     }
 
@@ -250,10 +257,10 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
         if (!this.entity.isInWater())
             return false;
 
-        int blockX = MathHelper.floor(this.entity.posX);
-        int blockY = MathHelper.floor(this.entity.posY + 2);
-        int blockZ = MathHelper.floor(this.entity.posZ);
-        IBlockState state = Minecraft.getMinecraft().world.getBlockState(new BlockPos(blockX, blockY, blockZ));
+        int blockX = Mth.floor(this.entity.getX());
+        int blockY = Mth.floor(this.entity.getY() + 2);
+        int blockZ = Mth.floor(this.entity.getZ());
+        BlockState state = Minecraft.getMinecraft().world.getBlockState(new BlockPos(blockX, blockY, blockZ));
         return state.getBlock() instanceof BlockStaticLiquid;
     }
 
@@ -298,13 +305,13 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
         this.prevMotionY = this.motionY;
         this.prevMotionZ = this.motionZ;
 
-        this.motionX = this.entity.posX - this.positionX;
-        this.motionY = this.entity.posY - this.positionY;
-        this.motionZ = this.entity.posZ - this.positionZ;
+        this.motionX = this.entity.getX() - this.positionX;
+        this.motionY = this.entity.getY() - this.positionY;
+        this.motionZ = this.entity.getZ() - this.positionZ;
 
-        this.positionX = this.entity.posX;
-        this.positionY = this.entity.posY;
-        this.positionZ = this.entity.posZ;
+        this.positionX = this.entity.getX();
+        this.positionY = this.entity.getY();
+        this.positionZ = this.entity.getZ();
     }
 
     @Override

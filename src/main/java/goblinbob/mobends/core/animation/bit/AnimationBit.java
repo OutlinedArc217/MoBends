@@ -1,7 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AnimationBit.java
+ */
+
 package goblinbob.mobends.core.animation.bit;
 
 import goblinbob.mobends.core.animation.layer.AnimationLayer;
 import goblinbob.mobends.core.data.EntityData;
+import net.minecraft.world.entity.Entity;
 
 public abstract class AnimationBit<T extends EntityData<?>>
 {

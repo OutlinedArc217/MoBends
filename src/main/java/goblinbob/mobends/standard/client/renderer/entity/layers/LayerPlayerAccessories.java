@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: LayerPlayerAccessories.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity.layers;
 
 import goblinbob.mobends.core.asset.AssetLocation;
@@ -10,19 +17,19 @@ import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.RenderItem;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
 import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.TextureManager;
 // REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 
 import java.util.Map;
 import java.util.Set;
@@ -36,16 +43,18 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
-public class LayerPlayerAccessories implements LayerRenderer<AbstractClientPlayer>
+public class LayerPlayerAccessories implements RenderLayer<AbstractClientPlayer>
 {
-    private final RenderLivingBase<? extends AbstractClientPlayer> renderPlayer;
+    private final LivingEntityRenderer<? extends AbstractClientPlayer> renderPlayer;
     private final RenderItem itemRenderer;
     private final ModelManager modelManager;
     private final TextureManager textureManager;
     private final ItemStack emptyItemStack = new ItemStack(Items.AIR);
 
-    public LayerPlayerAccessories(RenderLivingBase<? extends AbstractClientPlayer> renderPlayer)
+    public LayerPlayerAccessories(LivingEntityRenderer<? extends AbstractClientPlayer> renderPlayer)
     {
         Minecraft mc = Minecraft.getMinecraft();
         this.renderPlayer = renderPlayer;
@@ -140,7 +149,7 @@ public class LayerPlayerAccessories implements LayerRenderer<AbstractClientPlaye
         VertexConsumer bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (Direction enumfacing : Direction.values())
         {
             itemRenderer.renderQuads(bufferbuilder, model.getQuads(null, enumfacing, 0L), color, emptyItemStack);
         }

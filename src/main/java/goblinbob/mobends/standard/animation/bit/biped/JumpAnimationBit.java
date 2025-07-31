@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: JumpAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.Mth;
 
 public class JumpAnimationBit<T extends BipedEntityData<?>> extends AnimationBit<T>
 {
@@ -43,7 +50,7 @@ public class JumpAnimationBit<T extends BipedEntityData<?>> extends AnimationBit
 			this.onPlay(data);
 		}
 
-		EntityLivingBase biped = data.getEntity();
+		LivingEntity biped = data.getEntity();
 
 		data.globalOffset.slideToZero(0.3F);
 		data.renderRotation.setSmoothness(.3F).orientZero();
@@ -66,14 +73,14 @@ public class JumpAnimationBit<T extends BipedEntityData<?>> extends AnimationBit
 			final float PI = (float) Math.PI;
 			float limbSwing = data.limbSwing.get() * 0.6662F;
 			float limbSwingAmount = 0.7F * data.limbSwingAmount.get() / PI * 180F;
-			data.rightLeg.rotation.setSmoothness(1.0F).orientX(-5F + MathHelper.cos(limbSwing) * limbSwingAmount);
-			data.leftLeg.rotation.setSmoothness(1.0F).orientX(-5F + MathHelper.cos(limbSwing + PI) * limbSwingAmount);
+			data.rightLeg.rotation.setSmoothness(1.0F).orientX(-5F + Mth.cos(limbSwing) * limbSwingAmount);
+			data.leftLeg.rotation.setSmoothness(1.0F).orientX(-5F + Mth.cos(limbSwing + PI) * limbSwingAmount);
 
 			float var = (limbSwing / PI) % 2;
 			data.leftForeLeg.rotation.setSmoothness(0.3F).orientX((var > 1 ? 45 : 0));
 			data.rightForeLeg.rotation.setSmoothness(0.3F).orientX((var > 1 ? 0 : 45));
-			data.leftForeArm.rotation.setSmoothness(0.3F).orientX((MathHelper.cos(limbSwing + PI/2) / 2F + 0.5F) * -20F);
-			data.rightForeArm.rotation.setSmoothness(0.3F).orientX((MathHelper.cos(limbSwing) / 2F + 0.5F) * -20F);
+			data.leftForeArm.rotation.setSmoothness(0.3F).orientX((Mth.cos(limbSwing + PI/2) / 2F + 0.5F) * -20F);
+			data.rightForeArm.rotation.setSmoothness(0.3F).orientX((Mth.cos(limbSwing) / 2F + 0.5F) * -20F);
 		}
 		else
 		{

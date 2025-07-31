@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: EntityBender.java
+ */
+
 package goblinbob.mobends.core.bender;
 
 import goblinbob.mobends.core.client.MutatedRenderer;
@@ -9,13 +16,13 @@ import goblinbob.mobends.core.math.matrix.IMat4x4d;
 import goblinbob.mobends.core.mutators.IMutatorFactory;
 import goblinbob.mobends.core.mutators.Mutator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public abstract class EntityBender<T extends EntityLivingBase>
+public abstract class EntityBender<T extends LivingEntity>
 {
 	protected final String key;
 	protected final String unlocalizedName;
@@ -31,7 +38,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 	private final MutatedRenderer<T> renderer;
 	public final Class<T> entityClass;
 
-	private final Map<RenderLivingBase<? extends T>, Mutator<LivingEntityData<T>, T, ?>> mutatorMap = new HashMap<>();
+	private final Map<LivingEntityRenderer<? extends T>, Mutator<LivingEntityData<T>, T, ?>> mutatorMap = new HashMap<>();
 
 	private boolean animate;
 	protected Map<String, BoneMetadata> boneMetadataMap;
@@ -83,7 +90,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 
 	public String getLocalizedName()
 	{
-		return I18n.format(this.unlocalizedName);
+		return Component.format(this.unlocalizedName);
 	}
 
 	/**
@@ -115,7 +122,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 	 * Called from EntityBender.
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean applyMutation(RenderLivingBase<? extends T> renderer, T entity, float partialTicks)
+	public boolean applyMutation(LivingEntityRenderer<? extends T> renderer, T entity, float partialTicks)
 	{
 		Mutator<LivingEntityData<T>, T, ?> mutator = mutatorMap.get(renderer);
 		if (mutator == null)
@@ -141,7 +148,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 	 * Used to reverse the effect of the mutation.
 	 * Called from EntityBender.
 	 */
-	public void deapplyMutation(RenderLivingBase<? extends T> renderer, EntityLivingBase entity)
+	public void deapplyMutation(LivingEntityRenderer<? extends T> renderer, LivingEntity entity)
 	{
 		if (mutatorMap.containsKey(renderer))
 		{
@@ -156,7 +163,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 	 */
 	public void refreshMutation()
 	{
-		for (Entry<RenderLivingBase<? extends T>, Mutator<LivingEntityData<T>, T, ?>> entry : mutatorMap.entrySet())
+		for (Entry<LivingEntityRenderer<? extends T>, Mutator<LivingEntityData<T>, T, ?>> entry : mutatorMap.entrySet())
 		{
 			Mutator<?, T, ?> mutator = entry.getValue();
 			mutator.demutate(entry.getKey());
@@ -170,7 +177,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 	{
 		try
 		{
-			EntityLiving entity = (EntityLiving) this.entityClass.getConstructor(World.class).newInstance(Minecraft.getMinecraft().world);
+			Mob entity = (Mob) this.entityClass.getConstructor(World.class).newInstance(Minecraft.getMinecraft().world);
 			entity.world = Minecraft.getMinecraft().world;
 			entity.setLocationAndAngles(0, 0, 0, 0, 0);
 			entity.onInitialSpawn(entity.world.getDifficultyForLocation(entity.getPosition()), null);
@@ -192,7 +199,7 @@ public abstract class EntityBender<T extends EntityLivingBase>
 		TransformUtils.translate(matrixOut, 0.0F, -1.501F, 0.0F);
 	}
 
-	public Mutator<?, ?, ?> getMutator(RenderLivingBase<? extends EntityLivingBase> renderer)
+	public Mutator<?, ?, ?> getMutator(LivingEntityRenderer<? extends LivingEntity> renderer)
 	{
 		return this.mutatorMap.get(renderer);
 	}

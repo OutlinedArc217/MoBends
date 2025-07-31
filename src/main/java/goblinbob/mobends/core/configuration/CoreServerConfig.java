@@ -1,6 +1,13 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: CoreServerConfig.java
+ */
+
 package goblinbob.mobends.core.configuration;
 
-import goblinbob.mobends.core.network.NetworkConfiguration;
+import goblinbob.mobends.core.network.NetworkForgeConfigSpec;
 import goblinbob.mobends.core.network.SharedProperty;
 
 import java.io.File;
@@ -13,7 +20,7 @@ public class CoreServerConfig extends CoreConfig
     {
         super(file);
 
-        final Iterable<SharedProperty<?>> props = NetworkConfiguration.instance.getSharedConfig().getProperties();
+        final Iterable<SharedProperty<?>> props = NetworkForgeConfigSpec.instance.getSharedConfig().getProperties();
 
         for (SharedProperty<?> prop : props)
         {

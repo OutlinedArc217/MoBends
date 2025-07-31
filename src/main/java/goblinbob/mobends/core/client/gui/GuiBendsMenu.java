@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiBendsMenu.java
+ */
+
 package goblinbob.mobends.core.client.gui;
 
 import goblinbob.mobends.core.WebAPI;
@@ -11,9 +18,9 @@ import goblinbob.mobends.core.util.Draw;
 import goblinbob.mobends.core.util.GuiHelper;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.gui.GuiScreen;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
@@ -46,13 +53,13 @@ public class GuiBendsMenu extends GuiScreen
 	{
 		Keyboard.enableRepeatEvents(true);
 
-		this.settingsButton = new GuiSectionButton(I18n.format("mobends.gui.section.settings"), 0xFFDA3A00)
+		this.settingsButton = new GuiSectionButton(Component.format("mobends.gui.section.settings"), 0xFFDA3A00)
 				.setLeftIcon(0, 43, 19, 19).setRightIcon(19, 43, 19, 19);
-		this.packsButton = new GuiSectionButton(I18n.format("mobends.gui.section.packs"), 0xFF4577DE)
+		this.packsButton = new GuiSectionButton(Component.format("mobends.gui.section.packs"), 0xFF4577DE)
 				.setLeftIcon(38, 43, 23, 20).setRightIcon(38, 43, 23, 20);
-		this.customizeButton = new GuiSectionButton(I18n.format("mobends.gui.section.customize"), 0xFF26DAA3)
+		this.customizeButton = new GuiSectionButton(Component.format("mobends.gui.section.customize"), 0xFF26DAA3)
 				.setLeftIcon(80, 43, 19, 14).setRightIcon(80, 43, 19, 14);
-//		this.addonsButton = new GuiSectionButton(I18n.format("mobends.gui.section.addons"), 0xFFFFE565)
+//		this.addonsButton = new GuiSectionButton(Component.format("mobends.gui.section.addons"), 0xFFFFE565)
 //				.setLeftIcon(61, 43, 19, 18).setRightIcon(61, 43, 19, 18);
 
 		this.popUp = null;

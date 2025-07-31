@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: LocalBendsPack.java
+ */
+
 package goblinbob.mobends.core.pack;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import goblinbob.mobends.core.util.BendsPackHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.io.File;

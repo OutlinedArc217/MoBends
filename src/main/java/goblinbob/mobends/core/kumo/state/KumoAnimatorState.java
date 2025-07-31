@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: KumoAnimatorState.java
+ */
+
 package goblinbob.mobends.core.kumo.state;
 
 import goblinbob.mobends.core.data.EntityData;
@@ -7,6 +14,7 @@ import goblinbob.mobends.core.kumo.state.template.MalformedKumoTemplateException
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.entity.Entity;
 
 public class KumoAnimatorState<D extends EntityData<?>>
 {

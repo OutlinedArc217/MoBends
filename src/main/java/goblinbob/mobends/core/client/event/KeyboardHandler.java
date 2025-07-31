@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: KeyboardHandler.java
+ */
+
 package goblinbob.mobends.core.client.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import goblinbob.mobends.core.client.gui.GuiMainMenu;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.KeyMapping;
@@ -56,8 +63,8 @@ public class KeyboardHandler {
         if (mc.screen != null) return;
 
         while (TOGGLE_ANIMATIONS.consumeClick()) {
-            boolean newState = !IAnimationController.getGlobalAnimationsEnabled();
-            IAnimationController.setGlobalAnimationsEnabled(newState);
+            boolean newState = !Object /* TODO: Implement IAnimationController */.getGlobalAnimationsEnabled();
+            Object /* TODO: Implement IAnimationController */.setGlobalAnimationsEnabled(newState);
             
             String key = newState ? "message.animations_enabled" : "message.animations_disabled";
             mc.player.displayClientMessage(

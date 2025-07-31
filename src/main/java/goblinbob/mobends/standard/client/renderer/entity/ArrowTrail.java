@@ -1,16 +1,23 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ArrowTrail.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity;
 
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.math.vector.VectorUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
 // REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -81,9 +88,9 @@ public class ArrowTrail
 
         if (viewEntity == null)
             return;
-        Vec3d viewPos = new Vec3d(viewEntity.prevPosX + (viewEntity.posX - viewEntity.prevPosX) * partialTicks,
-                viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks,
-                viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks);
+        Vec3 viewPos = new Vec3(viewEntity.prevPosX + (viewEntity.getX() - viewEntity.prevPosX) * partialTicks,
+                viewEntity.prevPosY + (viewEntity.getY() - viewEntity.prevPosY) * partialTicks,
+                viewEntity.prevPosZ + (viewEntity.getZ() - viewEntity.prevPosZ) * partialTicks);
 
         float r = 1;
         float g = 1;
@@ -106,8 +113,8 @@ public class ArrowTrail
             TrailNode node0 = nodes[i - 1];
             TrailNode node1 = nodes[i];
 
-            Vec3d pos0 = new Vec3d(node0.x - viewPos.x, node0.y - viewPos.y, node0.z - viewPos.z);
-            Vec3d pos1 = new Vec3d(node1.x - viewPos.x, node1.y - viewPos.y, node1.z - viewPos.z);
+            Vec3 pos0 = new Vec3(node0.x - viewPos.x, node0.y - viewPos.y, node0.z - viewPos.z);
+            Vec3 pos1 = new Vec3(node1.x - viewPos.x, node1.y - viewPos.y, node1.z - viewPos.z);
             float scale0 = ((float) (MAX_LENGTH - i)) / MAX_LENGTH * .1F;
             float scale1 = ((float) MAX_LENGTH - i - 1.0f) / MAX_LENGTH * .1F;
             if (i == 1)
@@ -155,11 +162,11 @@ public class ArrowTrail
      */
     public void renderAxis(double x, double y, double z)
     {
-        Vec3d forward = trackedArrow.getForward();
-        forward = new Vec3d(-forward.x, -forward.y, forward.z);
-        Vec3d up = Vec3d.fromPitchYaw(trackedArrow.rotationPitch + 90.0f, trackedArrow.rotationYaw);
-        up = new Vec3d(-up.x, -up.y, up.z);
-        Vec3d right = forward.crossProduct(up);
+        Vec3 forward = trackedArrow.getForward();
+        forward = new Vec3(-forward.x, -forward.y, forward.z);
+        Vec3 up = Vec3.fromPitchYaw(trackedArrow.getXRot() + 90.0f, trackedArrow.getYRot());
+        up = new Vec3(-up.x, -up.y, up.z);
+        Vec3 right = forward.crossProduct(up);
 
         RenderSystem.pushMatrix();
         RenderSystem.disableTexture2D();
@@ -224,12 +231,12 @@ public class ArrowTrail
 
         public void moveTo(EntityArrow arrow)
         {
-            this.x = arrow.posX;
-            this.y = arrow.posY;
-            this.z = arrow.posZ;
+            this.x = arrow.getX();
+            this.y = arrow.getY();
+            this.z = arrow.getZ();
 
-            final Vec3d forward = arrow.getForward();
-            final Vec3d up = Vec3d.fromPitchYaw(arrow.rotationPitch + 90F, arrow.rotationYaw);
+            final Vec3 forward = arrow.getForward();
+            final Vec3 up = Vec3.fromPitchYaw(arrow.getXRot() + 90F, arrow.getYRot());
 
             this.up.set((float) -up.x, (float) -up.y, (float) up.z);
 

@@ -1,10 +1,18 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SpiderAnimationBitBase.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.spider;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.util.GUtil;
 import goblinbob.mobends.standard.animation.controller.SpiderController;
 import goblinbob.mobends.standard.data.SpiderData;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 public abstract class SpiderAnimationBitBase extends AnimationBit<SpiderData>
 {
@@ -16,9 +24,9 @@ public abstract class SpiderAnimationBitBase extends AnimationBit<SpiderData>
         final boolean odd = index % 2 == 1;
         final float offset = (index + 1) / 2 % 2 == 0 ? GUtil.PI : 0;
         float smoothness = 1F;
-        float sideRotation = minRot + (MathHelper.sin(limbSwing + offset) * .5F + .5F) * (maxRot - minRot);
-        float dist = minDist + (MathHelper.sin(limbSwing + offset) * .5F + .5F) * (maxDist - minDist);
-        groundLevel += -7 + Math.max(0, MathHelper.cos(limbSwing + offset)) * 4;
+        float sideRotation = minRot + (Mth.sin(limbSwing + offset) * .5F + .5F) * (maxRot - minRot);
+        float dist = minDist + (Mth.sin(limbSwing + offset) * .5F + .5F) * (maxDist - minDist);
+        groundLevel += -7 + Math.max(0, Mth.cos(limbSwing + offset)) * 4;
 
         SpiderData.Limb limb = data.limbs[index];
         limb.upperPart.rotation.setSmoothness(smoothness).orientY(odd ? sideRotation : -sideRotation);

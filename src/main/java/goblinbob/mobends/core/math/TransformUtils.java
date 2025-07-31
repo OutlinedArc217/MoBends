@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: TransformUtils.java
+ */
+
 package goblinbob.mobends.core.math;
 
 import goblinbob.mobends.core.math.matrix.IMat4x4d;
@@ -7,6 +14,7 @@ import goblinbob.mobends.core.math.vector.IVec3d;
 import goblinbob.mobends.core.math.vector.IVec3dRead;
 import goblinbob.mobends.core.math.vector.IVec4d;
 import goblinbob.mobends.core.math.vector.IVec4dRead;
+import net.minecraft.world.phys.Vec3;
 
 public class TransformUtils
 {
@@ -95,7 +103,7 @@ public class TransformUtils
 		double tempX = axisX * (1 - c);
 		double tempY = axisY * (1 - c);
 		double tempZ = axisZ * (1 - c);
-		//Vec3d temp = VectorUtils.getScaled(naxis, 1 - c);
+		//Vec3 temp = VectorUtils.getScaled(naxis, 1 - c);
 
 		double[] rotate = new double[] {
 			// First column

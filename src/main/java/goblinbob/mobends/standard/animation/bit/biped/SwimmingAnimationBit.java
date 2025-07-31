@@ -1,10 +1,18 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SwimmingAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.core.util.Tween;
 import goblinbob.mobends.standard.data.BipedEntityData;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 public class SwimmingAnimationBit extends AnimationBit<BipedEntityData<?>>
 {
@@ -37,9 +45,9 @@ public class SwimmingAnimationBit extends AnimationBit<BipedEntityData<?>>
 	{
 		float ticks = DataUpdateHandler.getTicks();
 		
-		float armSway = (MathHelper.cos(ticks * .1625F)+1F)/2.0f;
-		float armSway2 = (-MathHelper.sin(ticks * .1625F)+1F)/2.0f;
-		float legFlap = MathHelper.cos(ticks * .4625F);
+		float armSway = (Mth.cos(ticks * .1625F)+1F)/2.0f;
+		float armSway2 = (-Mth.sin(ticks * .1625F)+1F)/2.0f;
+		float legFlap = Mth.cos(ticks * .4625F);
 		float foreArmSway = ((ticks * .1625F) % PI_2)/PI_2;
 		float foreArmStretch = armSway * 2F;
 		foreArmStretch -= 1F;
@@ -55,9 +63,9 @@ public class SwimmingAnimationBit extends AnimationBit<BipedEntityData<?>>
 				this.transformTransition = Math.max(0F, this.transformTransition);
 			}
 			
-			armSway = (MathHelper.cos(ticks * .0825F) + 1) / 2;
-			armSway2 = (-MathHelper.sin(ticks * .0825F) + 1) / 2;
-			legFlap = MathHelper.cos(ticks * .2625F);
+			armSway = (Mth.cos(ticks * .0825F) + 1) / 2;
+			armSway2 = (-Mth.sin(ticks * .0825F) + 1) / 2;
+			legFlap = Mth.cos(ticks * .2625F);
 			
 			data.leftArm.rotation.setSmoothness(.3F).orientX(armSway2*30-15).rotateZ(-armSway*30);
 			data.rightArm.rotation.setSmoothness(.3F).orientX(armSway2*30-15).rotateZ(armSway*30);

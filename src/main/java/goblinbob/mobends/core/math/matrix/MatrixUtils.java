@@ -1,8 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: MatrixUtils.java
+ */
+
 package goblinbob.mobends.core.math.matrix;
 
 import goblinbob.mobends.core.math.vector.Vec4d;
 
 import java.nio.FloatBuffer;
+import net.minecraft.world.phys.Vec3;
 
 public class MatrixUtils
 {

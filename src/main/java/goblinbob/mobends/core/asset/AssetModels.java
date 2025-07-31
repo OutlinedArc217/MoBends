@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AssetModels.java
+ */
+
 package goblinbob.mobends.core.asset;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.PngSizeInfo;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.core.Direction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,7 +75,7 @@ public class AssetModels
         return new AssetLocation("textures/" + name);
     }
 
-    protected BakedQuad makeBakedQuad(BlockPart p_177589_1_, BlockPartFace p_177589_2_, TextureAtlasSprite p_177589_3_, EnumFacing p_177589_4_, net.minecraftforge.common.model.ITransformation p_177589_5_, boolean p_177589_6_)
+    protected BakedQuad makeBakedQuad(BlockPart p_177589_1_, BlockPartFace p_177589_2_, TextureAtlasSprite p_177589_3_, Direction p_177589_4_, net.minecraftforge.common.model.ITransformation p_177589_5_, boolean p_177589_6_)
     {
         return this.faceBakery.makeBakedQuad(p_177589_1_.positionFrom, p_177589_1_.positionTo, p_177589_2_, p_177589_3_, p_177589_4_, p_177589_5_, p_177589_1_.partRotation, p_177589_6_, p_177589_1_.shade);
     }
@@ -86,7 +93,7 @@ public class AssetModels
         {
             for (BlockPart blockpart : modelBlock.getElements())
             {
-                for (EnumFacing enumfacing : blockpart.mapFaces.keySet())
+                for (Direction enumfacing : blockpart.mapFaces.keySet())
                 {
                     BlockPartFace blockpartface = blockpart.mapFaces.get(enumfacing);
                     AssetLocation textureLocation = resolveTextureName(modelBlock.resolveTextureName(blockpartface.texture));

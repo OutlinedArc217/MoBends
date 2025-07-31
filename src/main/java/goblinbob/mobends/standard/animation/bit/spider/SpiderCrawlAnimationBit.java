@@ -1,9 +1,18 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SpiderCrawlAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.spider;
 
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.standard.data.SpiderData;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 
 public class SpiderCrawlAnimationBit extends SpiderAnimationBitBase
 {
@@ -26,7 +35,7 @@ public class SpiderCrawlAnimationBit extends SpiderAnimationBitBase
         final float headPitch = data.headPitch.get();
         final float limbSwing = data.getInterpolatedCrawlProgress() * 5.0F;
 
-        float groundLevel = MathHelper.sin(limbSwing * 0.6F) * 1.2F;
+        float groundLevel = Mth.sin(limbSwing * 0.6F) * 1.2F;
 
         if (startTransition < 1.0F)
             startTransition += DataUpdateHandler.ticksPerFrame * 0.1F;
@@ -51,8 +60,8 @@ public class SpiderCrawlAnimationBit extends SpiderAnimationBitBase
         animateMovingLimb(data, groundLevel, limbSwing + .4F, 7, 10F, 20.0F, 60, 80.0F);
 
         final float climbingRotation = data.getCrawlingRotation();
-        final float yaw = spider.prevRotationYaw + (spider.rotationYaw - spider.prevRotationYaw) * pt;
-        final float renderRotationY = MathHelper.wrapDegrees(yaw - climbingRotation);
+        final float yaw = spider.prevRotationYaw + (spider.getYRot() - spider.prevRotationYaw) * pt;
+        final float renderRotationY = Mth.wrapDegrees(yaw - climbingRotation);
         data.renderRotation.orientX(-90F);
         data.renderRotation.setSmoothness(.6F).rotateY(renderRotationY);
 

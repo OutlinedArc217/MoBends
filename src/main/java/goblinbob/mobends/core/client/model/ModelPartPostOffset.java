@@ -1,7 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ModelPartPostOffset.java
+ */
+
+// WARNING: ModelPart is final in 1.20.1 - this class needs major refactoring
 package goblinbob.mobends.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.model.Model;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import org.lwjgl.util.vector.Vector3f;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,7 +26,7 @@ import net.minecraft.client.model.geom.PartPose;
  * This part is used, when accessories are rendered using it's postRender() method. It simply offsets those accessories
  * by a certain transformation.
  */
-public class ModelPartPostOffset extends ModelPart
+public class ModelPartPostOffset /* extends ModelPart - TODO: Reimplement as composition */
 {
 
     /**
@@ -26,17 +34,17 @@ public class ModelPartPostOffset extends ModelPart
      */
     protected Vector3f postOffset = new Vector3f(0.0F, 0.0F, 0.0F);
 
-    public ModelPartPostOffset(ModelBase model, boolean register, int texOffsetX, int texOffsetY)
+    public ModelPartPostOffset(Model model, boolean register, int texOffsetX, int texOffsetY)
     {
         super(model, register, texOffsetY, texOffsetY);
     }
 
-    public ModelPartPostOffset(ModelBase model, boolean register)
+    public ModelPartPostOffset(Model model, boolean register)
     {
         super(model, register);
     }
 
-    public ModelPartPostOffset(ModelBase model, int texOffsetX, int texOffsetY)
+    public ModelPartPostOffset(Model model, int texOffsetX, int texOffsetY)
     {
         super(model, texOffsetX, texOffsetY);
     }

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: WolfStateCondition.java
+ */
+
 package goblinbob.mobends.standard.kumo;
 
 import goblinbob.mobends.core.kumo.state.condition.ITriggerCondition;
@@ -5,6 +12,7 @@ import goblinbob.mobends.core.kumo.state.condition.ITriggerConditionContext;
 import goblinbob.mobends.core.kumo.state.template.MalformedKumoTemplateException;
 import goblinbob.mobends.core.kumo.state.template.TriggerConditionTemplate;
 import goblinbob.mobends.standard.data.WolfData;
+import net.minecraft.world.entity.Entity;
 
 /**
  * This condition is met once the wolf is in the provided state.

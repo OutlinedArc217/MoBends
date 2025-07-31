@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: EntityDatabase.java
+ */
+
 package goblinbob.mobends.core.data;
 
 import goblinbob.mobends.core.bender.EntityBenderRegistry;
 import goblinbob.mobends.core.bender.PreviewHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +33,7 @@ public class EntityDatabase
         return entryMap.get(identifier);
     }
 
-    public <T extends LivingEntityData<E>, E extends EntityLivingBase> T get(E entity)
+    public <T extends LivingEntityData<E>, E extends LivingEntity> T get(E entity)
     {
         return (T) this.get(entity.getEntityId());
     }
@@ -40,7 +47,7 @@ public class EntityDatabase
      * @param entity               The entity whose data we want to get (or first create if there is none)
      * @return Entity's data
      */
-    public <T extends LivingEntityData<E>, E extends EntityLivingBase> T getOrMake(IEntityDataFactory<E> dataCreationFunction, E entity)
+    public <T extends LivingEntityData<E>, E extends LivingEntity> T getOrMake(IEntityDataFactory<E> dataCreationFunction, E entity)
     {
         final int entityId = entity.getEntityId();
 
@@ -74,7 +81,7 @@ public class EntityDatabase
             Entry<Integer, LivingEntityData<?>> entry = it.next();
 
             LivingEntityData<?> entityData = entry.getValue();
-            EntityLivingBase entityInData = entityData.getEntity();
+            LivingEntity entityInData = entityData.getEntity();
             Entity entity = Minecraft.getMinecraft().world.getEntityByID(entry.getKey());
             if (!PreviewHelper.isPreviewEntity(entityInData) && (entity == null || entityInData != entity))
             {

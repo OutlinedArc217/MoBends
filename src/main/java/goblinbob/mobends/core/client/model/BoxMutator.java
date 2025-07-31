@@ -1,21 +1,28 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BoxMutator.java
+ */
+
 package goblinbob.mobends.core.client.model;
 
 import goblinbob.mobends.core.client.model.BoxFactory.TextureFace;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.model.TexturedQuad;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 
 public class BoxMutator
 {
-	protected ModelBase targetModel;
-	protected ModelRenderer targetRenderer;
+	protected Model targetModel;
+	protected ModelPart targetRenderer;
 	protected BoxFactory factory;
 	
 	protected int textureOffsetX;
 	protected int textureOffsetY;
 	
-	public BoxMutator(ModelBase targetModel, ModelRenderer targetRenderer, BoxFactory factory, int textureOffsetX, int textureOffsetY)
+	public BoxMutator(Model targetModel, ModelPart targetRenderer, BoxFactory factory, int textureOffsetX, int textureOffsetY)
 	{
 		this.targetModel = targetModel;
 		this.targetRenderer = targetRenderer;
@@ -28,7 +35,7 @@ public class BoxMutator
 	 * It creates a BoxMutator with a copy of the original model, that can be mutated.
 	 * The original stays in it's original state.
 	 */
-	public static BoxMutator createFrom(final ModelBase modelBase, final ModelRenderer modelRenderer, final ModelBox original)
+	public static BoxMutator createFrom(final Model modelBase, final ModelPart modelRenderer, final ModelBox original)
 	{
 		TexturedQuad[] quadList = original.quadList;
 		if (quadList == null)

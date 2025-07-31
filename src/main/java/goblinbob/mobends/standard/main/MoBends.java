@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: MoBends.java
+ */
+
 package goblinbob.mobends.standard.main;
 
 import goblinbob.mobends.core.Core;
@@ -21,6 +28,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.logging.Logger;
+import net.minecraft.world.entity.Entity;
 
 @Mod(modid = ModStatics.MODID)
 public class MoBends

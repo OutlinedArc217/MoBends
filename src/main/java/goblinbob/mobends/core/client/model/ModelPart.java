@@ -1,3 +1,11 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ModelPart.java
+ */
+
+// WARNING: ModelPart is final in 1.20.1 - this class needs major refactoring
 package goblinbob.mobends.core.client.model;
 
 import goblinbob.mobends.core.math.SmoothOrientation;
@@ -9,14 +17,14 @@ import goblinbob.mobends.core.math.physics.ICollider;
 import goblinbob.mobends.core.math.vector.IVec3f;
 import goblinbob.mobends.core.math.vector.Vec3f;
 import goblinbob.mobends.core.util.GlHelper;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
-// REMOVED DEPRECATED: import net.minecraft.client.model.TextureOffset;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GLAllocation;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.ModelPart;
+// REMOVED DEPRECATED: // REMOVED: import net.minecraft.client.model.TextureOffset;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: // REMOVED: import net.minecraft.client.renderer.GLAllocation;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,8 +40,10 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 
-public class ModelPart extends ModelRenderer implements IModelPart
+public class ModelPart /* extends ModelPart - TODO: Reimplement as composition */ implements IModelPart
 {
     public Vec3f position = new Vec3f();
     public Vec3f scale = new Vec3f(1, 1, 1);
@@ -55,7 +65,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
     protected IModelPart parent;
     protected ICollider collider;
 
-    public ModelPart(ModelBase model, boolean register, int texOffsetX, int texOffsetY)
+    public ModelPart(Model model, boolean register, int texOffsetX, int texOffsetY)
     {
         super(model, texOffsetX, texOffsetY);
 
@@ -65,12 +75,12 @@ public class ModelPart extends ModelRenderer implements IModelPart
             model.boxList.remove(model.boxList.size() - 1);
     }
 
-    public ModelPart(ModelBase model, boolean register)
+    public ModelPart(Model model, boolean register)
     {
         this(model, register, 0, 0);
     }
 
-    public ModelPart(ModelBase model, int texOffsetX, int texOffsetY)
+    public ModelPart(Model model, int texOffsetX, int texOffsetY)
     {
         this(model, true, texOffsetX, texOffsetY);
     }
@@ -103,7 +113,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
 
         if (this.childModels != null)
         {
-			for (ModelRenderer childModel : this.childModels)
+			for (ModelPart childModel : this.childModels)
 			{
 				childModel.render(scale);
 			}
@@ -126,7 +136,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
 
         if (this.childModels != null)
         {
-			for (ModelRenderer childModel : this.childModels)
+			for (ModelPart childModel : this.childModels)
 			{
 				childModel.render(scale);
 			}
@@ -198,7 +208,7 @@ public class ModelPart extends ModelRenderer implements IModelPart
     @SideOnly(Side.CLIENT)
     protected void compileDisplayList(float scale)
     {
-        this.displayList = GLAllocation.generateDisplayLists(1);
+        this.displayList = /* TODO: GLAllocation removed - implement alternative memory management */
         RenderSystem.glNewList(this.displayList, 4864);
         VertexConsumer bufferbuilder = Tessellator.getInstance().getBuffer();
 

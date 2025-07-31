@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: HumanoidPartWrapper.java
+ */
+
 package goblinbob.mobends.standard.client.model.armor;
 
 import goblinbob.mobends.core.client.model.IModelPart;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -14,6 +21,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public class HumanoidPartWrapper implements IPartWrapper
 {
@@ -23,7 +31,7 @@ public class HumanoidPartWrapper implements IPartWrapper
     /**
      * The vanilla body part model.
      */
-    protected ModelRenderer vanillaPart;
+    protected ModelPart vanillaPart;
     /**
      * The container for the vanilla part.
      */
@@ -31,7 +39,7 @@ public class HumanoidPartWrapper implements IPartWrapper
 
     public HumanoidPartWrapper(
         ModelBiped vanillaModel,
-        ModelRenderer vanillaPart,
+        ModelPart vanillaPart,
         IPartWrapper.ModelPartSetter modelPartSetter,
         IPartWrapper.DataPartSelector dataPartSelector)
     {
@@ -44,7 +52,7 @@ public class HumanoidPartWrapper implements IPartWrapper
         if (vanillaPart instanceof PartContainer)
         {
             throw new MalformedArmorModelException("Tried to mutate a previously mutated part. " +
-                "A ModelRenderer instance has to have been used between Model instances.");
+                "A ModelPart instance has to have been used between Model instances.");
         }
 
         // Create a part container for the original MR.

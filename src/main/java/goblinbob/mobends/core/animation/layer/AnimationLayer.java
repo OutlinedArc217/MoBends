@@ -1,9 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AnimationLayer.java
+ */
+
 package goblinbob.mobends.core.animation.layer;
 
 import goblinbob.mobends.core.data.EntityData;
 
 import java.util.Arrays;
 import java.util.Collection;
+import net.minecraft.world.entity.Entity;
 
 public abstract class AnimationLayer<T extends EntityData<?>>
 {

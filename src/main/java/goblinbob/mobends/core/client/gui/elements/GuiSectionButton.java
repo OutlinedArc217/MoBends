@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiSectionButton.java
+ */
+
 package goblinbob.mobends.core.client.gui.elements;
 
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
@@ -9,9 +16,9 @@ import goblinbob.mobends.core.util.GuiHelper;
 import goblinbob.mobends.core.util.IColorRead;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -183,8 +190,8 @@ public class GuiSectionButton
             {
                 float PI = (float) Math.PI;
                 float t = this.ticksAfterHovered / HOVER_ICON_ANIMATION_DURATION;
-                scale = (1F - MathHelper.cos(t * PI * 1.5F));
-                scale = MathHelper.sqrt(scale);
+                scale = (1F - Mth.cos(t * PI * 1.5F));
+                scale = Mth.sqrt(scale);
             }
 
             int iconSpacing = 30;

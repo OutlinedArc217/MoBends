@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: HumanoidLimbWrapper.java
+ */
+
 package goblinbob.mobends.standard.client.model.armor;
 
 import goblinbob.mobends.core.client.model.BoxFactory;
@@ -6,8 +13,8 @@ import goblinbob.mobends.core.client.model.IModelPart;
 import goblinbob.mobends.core.client.model.ModelPart;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.ModelPart;
 
 import java.util.List;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,10 +27,11 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public class HumanoidLimbWrapper implements IPartWrapper
 {
-    private final ModelRenderer vanillaPart;
+    private final ModelPart vanillaPart;
     protected IPartWrapper.DataPartSelector upperPartDataSelector;
     protected IPartWrapper.ModelPartSetter modelPartSetter;
     private final IPartWrapper.DataPartSelector lowerPartDataSelector;
@@ -36,7 +44,7 @@ public class HumanoidLimbWrapper implements IPartWrapper
 
     public HumanoidLimbWrapper(
         ModelBiped vanillaModel,
-        ModelRenderer vanillaPart,
+        ModelPart vanillaPart,
         IPartWrapper.ModelPartSetter modelPartSetter,
         IPartWrapper.DataPartSelector upperPartDataSelector,
         IPartWrapper.DataPartSelector lowerPartDataSelector,
@@ -52,7 +60,7 @@ public class HumanoidLimbWrapper implements IPartWrapper
         if (vanillaPart instanceof PartContainer)
         {
             throw new MalformedArmorModelException("Tried to mutate a previously mutated part. " +
-                "A ModelRenderer instance has to have been used between Model instances.");
+                "A ModelPart instance has to have been used between Model instances.");
         }
 
         this.upperPart = new ModelPart(vanillaModel, false);
@@ -69,7 +77,7 @@ public class HumanoidLimbWrapper implements IPartWrapper
         this.sliceAppendage(vanillaModel, vanillaPart, cutPlane);
     }
 
-    private void sliceAppendage(ModelBiped vanillaModel, ModelRenderer vanillaPart, float cutPlane)
+    private void sliceAppendage(ModelBiped vanillaModel, ModelPart vanillaPart, float cutPlane)
     {
         // Storing the vanilla boxes
         List<ModelBox> vanillaBoxes = vanillaPart.cubeList;
@@ -105,11 +113,11 @@ public class HumanoidLimbWrapper implements IPartWrapper
         }
 
         // Reassigning children
-        List<ModelRenderer> vanillaChildren = vanillaPart.childModels;
+        List<ModelPart> vanillaChildren = vanillaPart.childModels;
 
         if (vanillaChildren != null)
         {
-            for (ModelRenderer child : vanillaChildren)
+            for (ModelPart child : vanillaChildren)
             {
                 if (child == null)
                     continue;

@@ -1,7 +1,14 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiPopUpCreatePack.java
+ */
+
 package goblinbob.mobends.core.client.gui.popup;
 
 import goblinbob.mobends.core.client.gui.elements.GuiCompactTextField;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.network.chat.Component;
 
 public class GuiPopUpCreatePack extends GuiPopUp
 {
@@ -10,7 +17,7 @@ public class GuiPopUpCreatePack extends GuiPopUp
 
     public GuiPopUpCreatePack()
     {
-        super(I18n.format("mobends.gui.createpack"), new ButtonProps[] {
+        super(Component.format("mobends.gui.createpack"), new ButtonProps[] {
             new ButtonProps("Cancel", () -> {}),
             new ButtonProps("Create", () -> {})
         });

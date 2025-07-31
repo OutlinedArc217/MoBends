@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: LayerWolfMisc.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity.layers;
 
 import goblinbob.mobends.core.client.Mesh;
@@ -8,12 +15,12 @@ import goblinbob.mobends.core.util.MeshBuilder;
 import goblinbob.mobends.standard.data.WolfData;
 import goblinbob.mobends.standard.main.ModStatics;
 import net.minecraft.client.Minecraft;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.TextureManager;
 // REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,8 +32,9 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
-public class LayerWolfMisc implements LayerRenderer<EntityWolf>
+public class LayerWolfMisc implements RenderLayer<EntityWolf>
 {
 
     private static final ResourceLocation WOLF_MISC_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModStatics.MODID, "textures/entity/wolf_misc.png");

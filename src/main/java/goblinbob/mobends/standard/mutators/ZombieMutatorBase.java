@@ -1,11 +1,19 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ZombieMutatorBase.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.data.IEntityDataFactory;
 import goblinbob.mobends.standard.data.ZombieDataBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * This base is used both by ZombieMutator and ZombieVillagerMutator, but since
@@ -33,7 +41,7 @@ public abstract class ZombieMutatorBase<D extends ZombieDataBase<E>,
 	}
 	
 	@Override
-	public void fetchFields(RenderLivingBase<? extends E> renderer)
+	public void fetchFields(LivingEntityRenderer<? extends E> renderer)
 	{
 		super.fetchFields(renderer);
 

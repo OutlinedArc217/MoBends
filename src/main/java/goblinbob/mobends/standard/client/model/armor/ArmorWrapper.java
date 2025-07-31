@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ArmorWrapper.java
+ */
+
 package goblinbob.mobends.standard.client.model.armor;
 
 import goblinbob.mobends.core.bender.EntityBender;
@@ -9,9 +16,9 @@ import goblinbob.mobends.standard.data.BipedEntityData;
 import goblinbob.mobends.standard.data.PlayerData;
 import goblinbob.mobends.standard.previewer.PlayerPreviewer;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,14 +103,14 @@ public class ArmorWrapper extends ModelBiped
             .offsetLower(-1.9F, -6.0F, 2.0F).offsetInner(-1.9F, 0, 0);
     }
 
-    private HumanoidPartWrapper registerWrapper(ModelBiped vanillaModel, ModelRenderer vanillaPart, IPartWrapper.ModelPartSetter setter, IPartWrapper.DataPartSelector dataSelector)
+    private HumanoidPartWrapper registerWrapper(ModelBiped vanillaModel, ModelPart vanillaPart, IPartWrapper.ModelPartSetter setter, IPartWrapper.DataPartSelector dataSelector)
     {
         HumanoidPartWrapper wrapper = new HumanoidPartWrapper(vanillaModel, vanillaPart, setter, dataSelector);
         this.partWrappers.add(wrapper);
         return wrapper;
     }
 
-    private HumanoidLimbWrapper registerWrapper(ModelBiped vanillaModel, ModelRenderer vanillaPart, IPartWrapper.ModelPartSetter setter, IPartWrapper.DataPartSelector data, IPartWrapper.DataPartSelector lowerData, float cutPlane, float inflation)
+    private HumanoidLimbWrapper registerWrapper(ModelBiped vanillaModel, ModelPart vanillaPart, IPartWrapper.ModelPartSetter setter, IPartWrapper.DataPartSelector data, IPartWrapper.DataPartSelector lowerData, float cutPlane, float inflation)
     {
         HumanoidLimbWrapper wrapper = new HumanoidLimbWrapper(vanillaModel, vanillaPart, setter, data, lowerData, cutPlane, inflation);
         this.partWrappers.add(wrapper);
@@ -119,11 +126,11 @@ public class ArmorWrapper extends ModelBiped
             throw new MalformedArmorModelException("Operating on a demutated armor wrapper.");
         }
 
-        if (!(entityIn instanceof EntityLivingBase))
+        if (!(entityIn instanceof LivingEntity))
             return;
-        EntityLivingBase entityLiving = (EntityLivingBase) entityIn;
+        LivingEntity entityLiving = (LivingEntity) entityIn;
 
-        EntityBender<EntityLivingBase> entityBender = EntityBenderRegistry.instance.getForEntity(entityLiving);
+        EntityBender<LivingEntity> entityBender = EntityBenderRegistry.instance.getForEntity(entityLiving);
         if (entityBender == null)
             return;
 

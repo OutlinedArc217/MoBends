@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: VectorUtils.java
+ */
+
 package goblinbob.mobends.core.math.vector;
 
 public class VectorUtils
@@ -38,9 +45,9 @@ public class VectorUtils
         return vec;
     }
 
-    public static Vec3d getNormalized(IVec3dRead src) throws IllegalArgumentException
+    public static Vec3 getNormalized(IVec3dRead src) throws IllegalArgumentException
     {
-        Vec3d vec = new Vec3d();
+        Vec3 vec = new Vec3();
         normalize(src, vec);
         return vec;
     }
@@ -50,9 +57,9 @@ public class VectorUtils
         return new Vec3f(vec.getX() * a, vec.getY() * a, vec.getZ() * a);
     }
 
-    public static Vec3d getScaled(IVec3dRead vec, double a)
+    public static Vec3 getScaled(IVec3dRead vec, double a)
     {
-        return new Vec3d(vec.getX() * a, vec.getY() * a, vec.getZ() * a);
+        return new Vec3(vec.getX() * a, vec.getY() * a, vec.getZ() * a);
     }
 
     public static float dot(IVec3fRead left, IVec3fRead right)
@@ -133,9 +140,9 @@ public class VectorUtils
         return vec;
     }
 
-    public static Vec3d subtract(IVec3dRead a, IVec3dRead b)
+    public static Vec3 subtract(IVec3dRead a, IVec3dRead b)
     {
-        Vec3d vec = new Vec3d();
+        Vec3 vec = new Vec3();
         subtract(a, b, vec);
         return vec;
     }
@@ -154,9 +161,9 @@ public class VectorUtils
                 a.getZ() * t1 + b.getZ() * t2);
     }
 
-    public static Vec3d slerp(IVec3dRead a, IVec3dRead b, double t)
+    public static Vec3 slerp(IVec3dRead a, IVec3dRead b, double t)
     {
-        Vec3d vec = new Vec3d();
+        Vec3 vec = new Vec3();
         slerp(a, b, t, vec);
         return vec;
     }

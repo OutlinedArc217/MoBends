@@ -1,6 +1,13 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AnimationScheduler.java
+ */
+
 package goblinbob.mobends.core.animation.scheduler;
 
-import goblinbob.mobends.core.animation.controller.IAnimationController;
+// TODO: Create Object /* TODO: Implement IAnimationController */ interface - package missing
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +43,7 @@ public class AnimationScheduler {
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END || 
-            !IAnimationController.getGlobalAnimationsEnabled()) {
+            !Object /* TODO: Implement IAnimationController */.getGlobalAnimationsEnabled()) {
             return;
         }
 

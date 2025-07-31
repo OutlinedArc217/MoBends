@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: LayerCustomHeldItem.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity.layers;
 
 import goblinbob.mobends.core.data.EntityData;
@@ -7,12 +14,12 @@ import goblinbob.mobends.core.util.GlHelper;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,17 +35,17 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 
 @SideOnly(Side.CLIENT)
-public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
+public class LayerCustomHeldItem implements RenderLayer<LivingEntity>
 {
 
-    protected final RenderLivingBase<?> livingEntityRenderer;
+    protected final LivingEntityRenderer<?> livingEntityRenderer;
 
-    public LayerCustomHeldItem(RenderLivingBase<?> livingEntityRendererIn)
+    public LayerCustomHeldItem(LivingEntityRenderer<?> livingEntityRendererIn)
     {
         this.livingEntityRenderer = livingEntityRendererIn;
     }
 
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void doRenderLayer(LivingEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         boolean flag = entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT;
         ItemStack itemstack = flag ? entitylivingbaseIn.getHeldItemOffhand() : entitylivingbaseIn.getHeldItemMainhand();
@@ -60,7 +67,7 @@ public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
         }
     }
 
-    private void renderHeldItem(EntityLivingBase entity, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, EnumHandSide handSide)
+    private void renderHeldItem(LivingEntity entity, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, EnumHandSide handSide)
     {
         if (!p_188358_2_.isEmpty())
         {
@@ -85,7 +92,7 @@ public class LayerCustomHeldItem implements LayerRenderer<EntityLivingBase>
      * MO BENDS
      * This is the only function that had it's code changed
      */
-    protected void translateToHand(EnumHandSide handSide, EntityLivingBase entity)
+    protected void translateToHand(EnumHandSide handSide, LivingEntity entity)
     {
     	((ModelBiped)this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, handSide);
     	

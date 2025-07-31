@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: ModelPartRenderer.java
+ */
+
 package goblinbob.mobends.core.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import goblinbob.mobends.core.math.matrix.IMat4x4d;
-import goblinbob.mobends.core.math.vector.Vec3d;
+import goblinbob.mobends.core.math.vector.Vec3;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,19 +21,20 @@ import org.joml.Matrix4f;
 import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.phys.Vec3;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelPartRenderer {
     private final ModelPart modelPart;
-    private final Vec3d position;
-    private final Vec3d rotation;
-    private final Vec3d scale;
+    private final Vec3 position;
+    private final Vec3 rotation;
+    private final Vec3 scale;
 
     public ModelPartRenderer(ModelPart modelPart) {
         this.modelPart = modelPart;
-        this.position = new Vec3d();
-        this.rotation = new Vec3d();
-        this.scale = new Vec3d(1.0, 1.0, 1.0);
+        this.position = new Vec3();
+        this.rotation = new Vec3();
+        this.scale = new Vec3(1.0, 1.0, 1.0);
     }
 
     public void render(PoseStack matrixStack, 
@@ -57,15 +65,15 @@ public class ModelPartRenderer {
         return modelPart;
     }
 
-    public Vec3d getPosition() {
+    public Vec3 getPosition() {
         return position;
     }
 
-    public Vec3d getRotation() {
+    public Vec3 getRotation() {
         return rotation;
     }
 
-    public Vec3d getScale() {
+    public Vec3 getScale() {
         return scale;
     }
           }

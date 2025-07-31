@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: HarvestAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.biped;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
 import goblinbob.mobends.core.client.model.ModelPartTransform;
 import goblinbob.mobends.standard.data.BipedEntityData;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,6 +22,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public class HarvestAnimationBit extends AnimationBit<BipedEntityData<?>>
 {
@@ -55,7 +63,7 @@ public class HarvestAnimationBit extends AnimationBit<BipedEntityData<?>>
         data.centerRotation.setSmoothness(.3F).orientZero();
 
         float swingProgress = data.swingProgress.get();
-        final float bodyYaw = MathHelper.sin(MathHelper.sqrt(swingProgress) * ((float)Math.PI * 2F)) * 30.0F * sideMultiplier;
+        final float bodyYaw = Mth.sin(Mth.sqrt(swingProgress) * ((float)Math.PI * 2F)) * 30.0F * sideMultiplier;
         data.body.rotation.setSmoothness(0.8F).orientY(bodyYaw);
 
         float bodyPitch = 0;
@@ -68,8 +76,8 @@ public class HarvestAnimationBit extends AnimationBit<BipedEntityData<?>>
         data.head.rotation.setSmoothness(0.8F).orientX(headPitch - bodyPitch)
                 .rotateY(headYaw - bodyYaw);
 
-        mainArm.rotation.orientInstantX(MathHelper.sin(MathHelper.sqrt(swingProgress) * ((float)Math.PI * 2F)) * 50.0F - 30.0F);
-        mainArm.rotation.localRotateZ(MathHelper.cos(MathHelper.sqrt(swingProgress) * ((float)Math.PI * 2F)) * -20.0F + 10.0F).finish();
+        mainArm.rotation.orientInstantX(Mth.sin(Mth.sqrt(swingProgress) * ((float)Math.PI * 2F)) * 50.0F - 30.0F);
+        mainArm.rotation.localRotateZ(Mth.cos(Mth.sqrt(swingProgress) * ((float)Math.PI * 2F)) * -20.0F + 10.0F).finish();
     }
 
 }

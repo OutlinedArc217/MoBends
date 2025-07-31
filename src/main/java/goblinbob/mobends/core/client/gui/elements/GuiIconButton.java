@@ -1,9 +1,16 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: GuiIconButton.java
+ */
+
 package goblinbob.mobends.core.client.gui.elements;
 
 import goblinbob.mobends.core.client.gui.GuiBendsMenu;
 import goblinbob.mobends.core.util.Draw;
 import net.minecraft.client.Minecraft;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.RenderSystem.DestFactor;
 import net.minecraft.client.renderer.RenderSystem.SourceFactor;
 import com.mojang.blaze3d.vertex.VertexConsumer;

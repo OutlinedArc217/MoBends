@@ -1,7 +1,15 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BoneMetadata.java
+ */
+
 package goblinbob.mobends.core.bender;
 
 import goblinbob.mobends.core.math.physics.AABBox;
 import goblinbob.mobends.core.math.physics.IAABBox;
+import net.minecraft.world.phys.AABB;
 
 public class BoneMetadata
 {

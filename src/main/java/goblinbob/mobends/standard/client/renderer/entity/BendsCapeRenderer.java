@@ -1,14 +1,21 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: BendsCapeRenderer.java
+ */
+
 package goblinbob.mobends.standard.client.renderer.entity;
 
 import goblinbob.mobends.standard.data.PlayerData;
 import goblinbob.mobends.standard.main.ModStatics;
-import net.minecraft.client.model.PositionTextureVertex;
-import net.minecraft.client.model.TexturedQuad;
-import net.minecraft.client.renderer.VertexConsumer;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GLAllocation;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.PartPose;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+// REMOVED DEPRECATED: // REMOVED: import net.minecraft.client.renderer.GLAllocation;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -197,7 +204,7 @@ public class BendsCapeRenderer
 
         private void compileDisplayList(float scale)
         {
-            this.displayList = GLAllocation.generateDisplayLists(1);
+            this.displayList = /* TODO: GLAllocation removed - implement alternative memory management */
             RenderSystem.glNewList(this.displayList, 4864);
             VertexConsumer bufferbuilder = Tessellator.getInstance().getBuffer();
 

@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: PlayerMutator.java
+ */
+
 package goblinbob.mobends.standard.mutators;
 
 import goblinbob.mobends.core.client.model.IModelPart;
@@ -12,14 +19,14 @@ import goblinbob.mobends.standard.client.renderer.entity.layers.LayerPlayerAcces
 import goblinbob.mobends.standard.data.PlayerData;
 import goblinbob.mobends.standard.previewer.PlayerPreviewer;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerCape;
 import net.minecraft.client.renderer.entity.layers.LayerElytra;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.entity.LivingEntity;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -65,7 +72,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public boolean mutate(RenderLivingBase<? extends AbstractClientPlayer> renderer)
+	public boolean mutate(LivingEntityRenderer<? extends AbstractClientPlayer> renderer)
 	{
 		if (super.mutate(renderer))
 		{
@@ -78,7 +85,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void demutate(RenderLivingBase<? extends AbstractClientPlayer> renderer)
+	public void demutate(LivingEntityRenderer<? extends AbstractClientPlayer> renderer)
 	{
 		super.demutate(renderer);
 
@@ -86,7 +93,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void fetchFields(RenderLivingBase<? extends AbstractClientPlayer> renderer)
+	public void fetchFields(LivingEntityRenderer<? extends AbstractClientPlayer> renderer)
 	{
 		super.fetchFields(renderer);
 
@@ -125,11 +132,11 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void swapLayer(RenderLivingBase<? extends AbstractClientPlayer> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<? extends AbstractClientPlayer> renderer, int index, boolean isModelVanilla)
 	{
 		super.swapLayer(renderer, index, isModelVanilla);
 
-		final LayerRenderer<?> layer = layerRenderers.get(index);
+		final RenderLayer<?> layer = layerRenderers.get(index);
 		if (layer instanceof LayerCape)
 		{
 			this.layerCape = new LayerCustomCape((RenderPlayer) renderer);
@@ -148,11 +155,11 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void deswapLayer(RenderLivingBase<? extends AbstractClientPlayer> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<? extends AbstractClientPlayer> renderer, int index)
 	{
 		super.deswapLayer(renderer, index);
 
-		final LayerRenderer<? extends EntityLivingBase> layer = layerRenderers.get(index);
+		final RenderLayer<? extends LivingEntity> layer = layerRenderers.get(index);
 		if (layer instanceof LayerCustomCape)
 		{
 			layerRenderers.set(index, this.layerCapeVanilla);
@@ -225,10 +232,10 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 		this.bodywear.setParent(body);
 		this.bodywear.addBox(-4F, -12F, -2F, 8, 12, 4, scaleFactor + 0.25F);
 		
-		// this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
+		// this.bipedLeftArmwear = new ModelPart(this, 48, 48);
 		// this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
 		// this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
-		// this.bipedRightArmwear = new ModelRenderer(this, 40, 32);
+		// this.bipedRightArmwear = new ModelPart(this, 40, 32);
 		// this.bipedRightArmwear.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
 		// this.bipedRightArmwear.setRotationPoint(-5.0F, 2.0F, 10.0F);
 
@@ -314,7 +321,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void performAnimations(PlayerData data, String animatedEntityKey, RenderLivingBase<? extends AbstractClientPlayer> renderer, float partialTicks)
+	public void performAnimations(PlayerData data, String animatedEntityKey, LivingEntityRenderer<? extends AbstractClientPlayer> renderer, float partialTicks)
 	{
 		leftForeArmwear.setVisible(leftArmwear.isShowing());
 		rightForeArmwear.setVisible(rightArmwear.isShowing());
@@ -351,7 +358,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public boolean shouldModelBeSkipped(ModelBase model)
+	public boolean shouldModelBeSkipped(Model model)
 	{
 		return !(model instanceof ModelPlayer);
 	}

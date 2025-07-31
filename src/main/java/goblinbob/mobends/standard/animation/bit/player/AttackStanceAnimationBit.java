@@ -1,3 +1,10 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: AttackStanceAnimationBit.java
+ */
+
 package goblinbob.mobends.standard.animation.bit.player;
 
 import goblinbob.mobends.core.animation.bit.AnimationBit;
@@ -7,7 +14,7 @@ import goblinbob.mobends.core.math.SmoothOrientation;
 import goblinbob.mobends.standard.data.PlayerData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -18,6 +25,8 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.core.Direction;
 
 public class AttackStanceAnimationBit extends AnimationBit<PlayerData>
 {
@@ -96,7 +105,7 @@ public class AttackStanceAnimationBit extends AnimationBit<PlayerData>
 		{
 			data.body.rotation.setSmoothness(1F);
 			data.body.rotation.orientX(5F * (1 - touchdown) + 15F);
-			data.globalOffset.setY(-MathHelper.sin(touchdown * PI) * 2F - 2F);
+			data.globalOffset.setY(-Mth.sin(touchdown * PI) * 2F - 2F);
 		}
 	}
 

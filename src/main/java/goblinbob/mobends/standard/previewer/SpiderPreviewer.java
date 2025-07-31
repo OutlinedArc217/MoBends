@@ -1,10 +1,17 @@
+/*
+ * MIGRATED TO MC 1.20.1 by automated script
+ * This file has been automatically updated for Minecraft 1.20.1 compatibility
+ * Manual review and testing required for proper functionality
+ * Original file: SpiderPreviewer.java
+ */
+
 package goblinbob.mobends.standard.previewer;
 
 import goblinbob.mobends.core.bender.BoneMetadata;
 import goblinbob.mobends.core.bender.IPreviewer;
 import goblinbob.mobends.core.client.event.DataUpdateHandler;
 import goblinbob.mobends.standard.data.SpiderData;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.GlStateManager;
+// REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 
 import java.util.Map;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -17,6 +24,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.world.entity.Entity;
 
 public class SpiderPreviewer implements IPreviewer<SpiderData>
 {
@@ -58,10 +66,10 @@ public class SpiderPreviewer implements IPreviewer<SpiderData>
 			case "move":
 				final float ticks = DataUpdateHandler.getTicks();
 				
-				data.getEntity().posZ += DataUpdateHandler.ticksPerFrame * 0.1F;
-				data.getEntity().prevPosZ = data.getEntity().posZ;
+				data.getEntity().getZ() += DataUpdateHandler.ticksPerFrame * 0.1F;
+				data.getEntity().prevPosZ = data.getEntity().getZ();
 				data.getEntity().noClip = true;
-				//System.out.println(data.getEntity().posZ);
+				//System.out.println(data.getEntity().getZ());
 				data.limbSwing.override(ticks * 0.6F);
 				data.overrideOnGroundState(true);
 				data.limbSwingAmount.override(1F);
