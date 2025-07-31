@@ -2,9 +2,9 @@ name: Build MoBends
 
 on:
   push:
-    branches: [ "1.X/forge-1.12" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "1.X/forge-1.12" ]
+    branches: [ "master" ]
 
 jobs:
   build:
