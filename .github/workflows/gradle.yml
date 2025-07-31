@@ -14,10 +14,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Set up JDK 8
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '8'
+        java-version: '17'
         distribution: 'temurin'
         
     - name: Setup Gradle 8.7
@@ -32,7 +32,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: Cache Gradle packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.gradle/caches
@@ -41,8 +41,17 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
           
+    - name: List available Gradle tasks
+      run: ./gradlew tasks --no-daemon
+      
     - name: Setup Minecraft Development Kit
-      run: ./gradlew setupDecompWorkspace --no-daemon
+      run: |
+        # For modern Forge (1.20.1), check for genEclipseRuns/genIntellijRuns
+        if ./gradlew tasks --no-daemon | grep -q "genEclipseRuns"; then
+          ./gradlew genEclipseRuns genIntellijRuns --no-daemon
+        else
+          echo "No IDE setup tasks found, proceeding directly to build"
+        fi
       
     - name: Build with Gradle
       run: ./gradlew build --no-daemon
