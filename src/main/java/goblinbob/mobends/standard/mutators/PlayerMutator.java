@@ -37,6 +37,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.EntityModel;
 
 /**
  * Instantiated once per RenderPlayer
@@ -72,7 +73,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public boolean mutate(LivingEntityRenderer<? extends AbstractClientPlayer> renderer)
+	public boolean mutate(LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderer)
 	{
 		if (super.mutate(renderer))
 		{
@@ -85,7 +86,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void demutate(LivingEntityRenderer<? extends AbstractClientPlayer> renderer)
+	public void demutate(LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderer)
 	{
 		super.demutate(renderer);
 
@@ -93,7 +94,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void fetchFields(LivingEntityRenderer<? extends AbstractClientPlayer> renderer)
+	public void fetchFields(LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderer)
 	{
 		super.fetchFields(renderer);
 
@@ -132,11 +133,11 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void swapLayer(LivingEntityRenderer<? extends AbstractClientPlayer> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderer, int index, boolean isModelVanilla)
 	{
 		super.swapLayer(renderer, index, isModelVanilla);
 
-		final RenderLayer<?> layer = layerRenderers.get(index);
+		final RenderLayer<?, ?> layer = layerRenderers.get(index);
 		if (layer instanceof LayerCape)
 		{
 			this.layerCape = new LayerCustomCape((RenderPlayer) renderer);
@@ -155,7 +156,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void deswapLayer(LivingEntityRenderer<? extends AbstractClientPlayer> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderer, int index)
 	{
 		super.deswapLayer(renderer, index);
 
@@ -321,7 +322,7 @@ public class PlayerMutator extends BipedMutator<PlayerData, AbstractClientPlayer
 	}
 
 	@Override
-	public void performAnimations(PlayerData data, String animatedEntityKey, LivingEntityRenderer<? extends AbstractClientPlayer> renderer, float partialTicks)
+	public void performAnimations(PlayerData data, String animatedEntityKey, LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderer, float partialTicks)
 	{
 		leftForeArmwear.setVisible(leftArmwear.isShowing());
 		rightForeArmwear.setVisible(rightArmwear.isShowing());

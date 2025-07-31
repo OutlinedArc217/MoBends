@@ -28,6 +28,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 public class SquidMutator extends Mutator<SquidData, EntitySquid, ModelSquid>
 {
@@ -56,13 +57,13 @@ public class SquidMutator extends Mutator<SquidData, EntitySquid, ModelSquid>
 	}
 
 	@Override
-	public void swapLayer(LivingEntityRenderer<? extends EntitySquid> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<EntitySquid, EntityModel<EntitySquid>> renderer, int index, boolean isModelVanilla)
 	{
 		// No behaviour
 	}
 
 	@Override
-	public void deswapLayer(LivingEntityRenderer<? extends EntitySquid> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<EntitySquid, EntityModel<EntitySquid>> renderer, int index)
 	{
 		// No behaviour
 	}

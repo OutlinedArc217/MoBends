@@ -18,7 +18,7 @@ import net.minecraft.client.Minecraft;
 // REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.TextureManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: // MC 1.20.1: Removed - import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.resources.ResourceLocation;
 // REMOVED DEPRECATED: import org.lwjgl.opengl.GL11;

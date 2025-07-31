@@ -27,6 +27,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 public class SpiderMutator extends Mutator<SpiderData, EntitySpider, ModelSpider>
 {
@@ -71,12 +72,12 @@ public class SpiderMutator extends Mutator<SpiderData, EntitySpider, ModelSpider
 	}
 
 	@Override
-	public void swapLayer(LivingEntityRenderer<? extends EntitySpider> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<EntitySpider, EntityModel<EntitySpider>> renderer, int index, boolean isModelVanilla)
 	{
 	}
 
 	@Override
-	public void deswapLayer(LivingEntityRenderer<? extends EntitySpider> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<EntitySpider, EntityModel<EntitySpider>> renderer, int index)
 	{
 	}
 

@@ -14,6 +14,7 @@ import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 public class PigZombieMutator extends BipedMutator<PigZombieData, EntityPigZombie, ModelZombie>
 {
@@ -27,7 +28,7 @@ public class PigZombieMutator extends BipedMutator<PigZombieData, EntityPigZombi
 	}
 	
 	@Override
-	public void fetchFields(LivingEntityRenderer<? extends EntityPigZombie> renderer)
+	public void fetchFields(LivingEntityRenderer<EntityPigZombie, EntityModel<EntityPigZombie>> renderer)
 	{
 		super.fetchFields(renderer);
 

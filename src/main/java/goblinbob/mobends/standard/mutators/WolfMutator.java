@@ -31,6 +31,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 public class WolfMutator extends Mutator<WolfData, EntityWolf, ModelWolf>
 {
@@ -99,13 +100,13 @@ public class WolfMutator extends Mutator<WolfData, EntityWolf, ModelWolf>
     }
 
     @Override
-    public void swapLayer(LivingEntityRenderer<? extends EntityWolf> renderer, int index, boolean isModelVanilla)
+    public void swapLayer(LivingEntityRenderer<EntityWolf, EntityModel<EntityWolf>> renderer, int index, boolean isModelVanilla)
     {
 
     }
 
     @Override
-    public void deswapLayer(LivingEntityRenderer<? extends EntityWolf> renderer, int index)
+    public void deswapLayer(LivingEntityRenderer<EntityWolf, EntityModel<EntityWolf>> renderer, int index)
     {
     }
 

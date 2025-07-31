@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import net.minecraft.client.model.EntityModel;
 
 public abstract class EntityBender<T extends LivingEntity>
 {
@@ -38,7 +39,7 @@ public abstract class EntityBender<T extends LivingEntity>
 	private final MutatedRenderer<T> renderer;
 	public final Class<T> entityClass;
 
-	private final Map<LivingEntityRenderer<? extends T>, Mutator<LivingEntityData<T>, T, ?>> mutatorMap = new HashMap<>();
+	private final Map<LivingEntityRenderer<T, EntityModel<T>>, Mutator<LivingEntityData<T>, T, ?>> mutatorMap = new HashMap<>();
 
 	private boolean animate;
 	protected Map<String, BoneMetadata> boneMetadataMap;
@@ -122,7 +123,7 @@ public abstract class EntityBender<T extends LivingEntity>
 	 * Called from EntityBender.
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean applyMutation(LivingEntityRenderer<? extends T> renderer, T entity, float partialTicks)
+	public boolean applyMutation(LivingEntityRenderer<T, EntityModel<T>> renderer, T entity, float partialTicks)
 	{
 		Mutator<LivingEntityData<T>, T, ?> mutator = mutatorMap.get(renderer);
 		if (mutator == null)
@@ -148,7 +149,7 @@ public abstract class EntityBender<T extends LivingEntity>
 	 * Used to reverse the effect of the mutation.
 	 * Called from EntityBender.
 	 */
-	public void deapplyMutation(LivingEntityRenderer<? extends T> renderer, LivingEntity entity)
+	public void deapplyMutation(LivingEntityRenderer<T, EntityModel<T>> renderer, LivingEntity entity)
 	{
 		if (mutatorMap.containsKey(renderer))
 		{
@@ -163,9 +164,9 @@ public abstract class EntityBender<T extends LivingEntity>
 	 */
 	public void refreshMutation()
 	{
-		for (Entry<LivingEntityRenderer<? extends T>, Mutator<LivingEntityData<T>, T, ?>> entry : mutatorMap.entrySet())
+		for (Entry<LivingEntityRenderer<T, EntityModel<T>>, Mutator<LivingEntityData<T>, T, ?>> entry : mutatorMap.entrySet())
 		{
-			Mutator<?, T, ?> mutator = entry.getValue();
+			Mutator<?, T> mutator = entry.getValue();
 			mutator.demutate(entry.getKey());
 			mutator.mutate(entry.getKey());
 			mutator.postRefresh();
@@ -199,7 +200,7 @@ public abstract class EntityBender<T extends LivingEntity>
 		TransformUtils.translate(matrixOut, 0.0F, -1.501F, 0.0F);
 	}
 
-	public Mutator<?, ?, ?> getMutator(LivingEntityRenderer<? extends LivingEntity> renderer)
+	public Mutator<?, ?> getMutator(LivingEntityRenderer<LivingEntity, EntityModel<LivingEntity>> renderer)
 	{
 		return this.mutatorMap.get(renderer);
 	}

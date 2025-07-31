@@ -10,7 +10,7 @@ package goblinbob.mobends.core.client.gui;
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 // REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: // MC 1.20.1: Removed - import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;

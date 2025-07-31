@@ -54,7 +54,7 @@ public class WolfData extends LivingEntityData<EntityWolf>
     }
 
     @Override
-    public Object /* TODO: Implement IAnimationController */<?> getController()
+    public Object /* TODO: Implement IAnimationController interface */ getController()
     {
         return controller;
     }

@@ -14,6 +14,7 @@ import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 /**
  * This base is used both by ZombieMutator and ZombieVillagerMutator, but since
@@ -41,7 +42,7 @@ public abstract class ZombieMutatorBase<D extends ZombieDataBase<E>,
 	}
 	
 	@Override
-	public void fetchFields(LivingEntityRenderer<? extends E> renderer)
+	public void fetchFields(LivingEntityRenderer<E, EntityModel<E>> renderer)
 	{
 		super.fetchFields(renderer);
 

@@ -24,6 +24,7 @@ import net.minecraft.util.Mth;
 
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.client.model.EntityModel;
 
 public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEntity, M extends Model>
 {
@@ -36,7 +37,7 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
     protected float swingProgress;
 
     private IEntityDataFactory<E> dataFactory;
-    protected List<RenderLayer<?>> layerRenderers;
+    protected List<RenderLayer<?, ?>> layerRenderers;
 
     public Mutator(IEntityDataFactory<E> dataFactory)
     {
@@ -47,10 +48,10 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
      * Used to fetch private data from the original
      * renderer.
      */
-    public void fetchFields(LivingEntityRenderer<? extends E> renderer)
+    public void fetchFields(LivingEntityRenderer<E, EntityModel<E>> renderer)
     {
         // Getting the layer renderers
-        this.layerRenderers = (List<RenderLayer<?>>) ((Object) renderer.layerRenderers); // Type safety hack...
+        this.layerRenderers = (List<RenderLayer<?, ?>>) ((Object) renderer.layerRenderers); // Type safety hack...
     }
 
     public abstract void storeVanillaModel(M model);
@@ -66,13 +67,13 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
      * and if it's a vanilla model, it stores the vanilla layers
      * for future mutation reversal.
      */
-    public abstract void swapLayer(LivingEntityRenderer<? extends E> renderer, int index, boolean isModelVanilla);
+    public abstract void swapLayer(LivingEntityRenderer<E, EntityModel<E>> renderer, int index, boolean isModelVanilla);
 
     /**
      * Swaps the custom layers back with the vanilla layers.
      * Used to demutate the model.
      */
-    public abstract void deswapLayer(LivingEntityRenderer<? extends E> renderer, int index);
+    public abstract void deswapLayer(LivingEntityRenderer<E, EntityModel<E>> renderer, int index);
 
     /**
      * Creates all the custom parts you need! It swaps all the
@@ -80,7 +81,7 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
      */
     public abstract boolean createParts(M original, float scaleFactor);
 
-    public boolean mutate(LivingEntityRenderer<? extends E> renderer)
+    public boolean mutate(LivingEntityRenderer<E, EntityModel<E>> renderer)
     {
         if (renderer.getMainModel() == null || this.shouldModelBeSkipped(renderer.getMainModel()))
             return false;
@@ -114,7 +115,7 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
     /**
      * Performs the steps needed to demutate the model.
      */
-    public void demutate(LivingEntityRenderer<? extends E> renderer)
+    public void demutate(LivingEntityRenderer<E, EntityModel<E>> renderer)
     {
         if (this.shouldModelBeSkipped(renderer.getMainModel()))
             return;
@@ -132,7 +133,7 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
         }
     }
 
-    public void updateModel(E entity, LivingEntityRenderer<? extends E> renderer, float partialTicks)
+    public void updateModel(E entity, LivingEntityRenderer<E, EntityModel<E>> renderer, float partialTicks)
     {
         boolean shouldSit = entity.isRiding()
                 && (entity.getRidingEntity() != null && entity.getRidingEntity().shouldRiderSit());
@@ -184,7 +185,7 @@ public abstract class Mutator<D extends LivingEntityData<E>, E extends LivingEnt
         this.swingProgress = entity.getSwingProgress(partialTicks);
     }
 
-    public void performAnimations(D data, String animatedEntityKey, LivingEntityRenderer<? extends E> renderer, float partialTicks)
+    public void performAnimations(D data, String animatedEntityKey, LivingEntityRenderer<E, EntityModel<E>> renderer, float partialTicks)
     {
         data.headYaw.set(Mth.wrapDegrees(this.headYaw));
         data.headPitch.set(Mth.wrapDegrees(this.headPitch));

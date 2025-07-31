@@ -11,6 +11,7 @@ import goblinbob.mobends.core.network.NetworkForgeConfigSpec;
 import goblinbob.mobends.core.network.SharedProperty;
 
 import java.io.File;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CoreServerConfig extends CoreConfig
 {

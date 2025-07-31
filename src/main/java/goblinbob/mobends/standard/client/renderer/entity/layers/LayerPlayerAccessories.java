@@ -26,7 +26,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.TextureManager;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: // MC 1.20.1: Removed - import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
@@ -45,16 +45,17 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.client.model.EntityModel;
 
 public class LayerPlayerAccessories implements RenderLayer<AbstractClientPlayer>
 {
-    private final LivingEntityRenderer<? extends AbstractClientPlayer> renderPlayer;
+    private final LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderPlayer;
     private final RenderItem itemRenderer;
     private final ModelManager modelManager;
     private final TextureManager textureManager;
     private final ItemStack emptyItemStack = new ItemStack(Items.AIR);
 
-    public LayerPlayerAccessories(LivingEntityRenderer<? extends AbstractClientPlayer> renderPlayer)
+    public LayerPlayerAccessories(LivingEntityRenderer<AbstractClientPlayer, EntityModel<AbstractClientPlayer>> renderPlayer)
     {
         Minecraft mc = Minecraft.getMinecraft();
         this.renderPlayer = renderPlayer;

@@ -15,7 +15,7 @@ import net.minecraft.client.gui.GuiScreen;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 // REMOVED DEPRECATED: import com.mojang.blaze3d.systems.RenderSystem;
 // REMOVED DEPRECATED: import com.mojang.blaze3d.vertex.Tessellator;
-// REMOVED DEPRECATED: import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+// REMOVED DEPRECATED: // MC 1.20.1: Removed - import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.VertexConsumer;

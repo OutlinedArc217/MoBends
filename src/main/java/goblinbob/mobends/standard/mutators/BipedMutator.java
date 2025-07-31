@@ -34,6 +34,7 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.EntityModel;
 
 public abstract class BipedMutator<D extends BipedEntityData<E>,
 								   E extends LivingEntity,
@@ -105,9 +106,9 @@ public abstract class BipedMutator<D extends BipedEntityData<E>,
 	 * for future mutation reversal.
 	 */
 	@Override
-	public void swapLayer(LivingEntityRenderer<? extends E> renderer, int index, boolean isModelVanilla)
+	public void swapLayer(LivingEntityRenderer<E, EntityModel<E>> renderer, int index, boolean isModelVanilla)
 	{
-		RenderLayer<?> layer = layerRenderers.get(index);
+		RenderLayer<?, ?> layer = layerRenderers.get(index);
 		if (layer instanceof LayerBipedArmor)
 		{
 			this.layerArmor = new LayerCustomBipedArmor(renderer);
@@ -136,7 +137,7 @@ public abstract class BipedMutator<D extends BipedEntityData<E>,
 	 * Used to demutate the model.
 	 */
 	@Override
-	public void deswapLayer(LivingEntityRenderer<? extends E> renderer, int index)
+	public void deswapLayer(LivingEntityRenderer<E, EntityModel<E>> renderer, int index)
 	{
 		RenderLayer<? extends LivingEntity> layer = layerRenderers.get(index);
 		if (layer instanceof LayerCustomBipedArmor)

@@ -185,7 +185,7 @@ public abstract class EntityData<E extends Entity> implements IBendsModel
         return this.stillnessOverride != null ? this.stillnessOverride : horizontalSqMagnitude < deadZone;
     }
 
-    public abstract Object /* TODO: Implement IAnimationController */<?> getController();
+    public abstract Object /* TODO: Implement IAnimationController interface */ getController();
 
     /**
      * Called during the render tick in {@code EntityDatabase.updateRender()}

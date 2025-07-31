@@ -28,6 +28,7 @@ import java.util.concurrent.Executor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class ConnectionManager implements IModule {
     private static final String PROTOCOL_VERSION = ModStatics.PROTOCOL_VERSION;

@@ -28,6 +28,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 /**
  * Instantiated once per RenderSkeleton
@@ -46,7 +47,7 @@ public class SkeletonMutator extends BipedMutator<SkeletonData, EntitySkeleton, 
 	}
 
 	@Override
-	public void fetchFields(LivingEntityRenderer<? extends EntitySkeleton> renderer)
+	public void fetchFields(LivingEntityRenderer<EntitySkeleton, EntityModel<EntitySkeleton>> renderer)
 	{
 		super.fetchFields(renderer);
 

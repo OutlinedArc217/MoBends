@@ -33,14 +33,15 @@ import org.joml.Matrix3f;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.EntityModel;
 
 @SideOnly(Side.CLIENT)
 public class LayerCustomHeldItem implements RenderLayer<LivingEntity>
 {
 
-    protected final LivingEntityRenderer<?> livingEntityRenderer;
+    protected final LivingEntityRenderer<?, EntityModel<?>> livingEntityRenderer;
 
-    public LayerCustomHeldItem(LivingEntityRenderer<?> livingEntityRendererIn)
+    public LayerCustomHeldItem(LivingEntityRenderer<?, EntityModel<?>> livingEntityRendererIn)
     {
         this.livingEntityRenderer = livingEntityRendererIn;
     }

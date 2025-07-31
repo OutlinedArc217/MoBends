@@ -30,12 +30,13 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.client.model.EntityModel;
 
 @SideOnly(Side.CLIENT)
 public class LayerCustomBipedArmor extends LayerArmorBase<ModelBiped>
 {
 	
-    public LayerCustomBipedArmor(LivingEntityRenderer<?> rendererIn)
+    public LayerCustomBipedArmor(LivingEntityRenderer<?, EntityModel<?>> rendererIn)
     {
         super(rendererIn);
     }
