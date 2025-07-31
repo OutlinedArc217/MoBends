@@ -308,9 +308,9 @@ jobs:
                     f.write(f"  3. Verify mod loading context calls\n")
                     f.write(f"  4. Run gradle build to check for remaining errors\n")
         
-        # 运行修复器
+                # 运行修复器
         if __name__ == "__main__":
-            import datetime
+            # 移除重复的 import datetime
             fixer = MoBendsAPIFixer()
             fixer.process_all_files()
         EOF
